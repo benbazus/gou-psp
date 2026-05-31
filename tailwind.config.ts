@@ -13,6 +13,7 @@ export default {
         accent: {
           DEFAULT: '#F4B000',
           light: '#FDD835',
+          dark: '#B8860B',
         },
         danger: {
           DEFAULT: '#D62828',
