@@ -1,0 +1,421 @@
+You are a senior product designer, frontend architect, and React engineer.
+
+Build a stunning demo UI for a Government of Uganda Payment Service Provider / Payment System Operator platform.
+
+This is a DEMO ONLY application. Do not build real payment integrations. Use mocked data, simulated transactions, fake institutions, fake reconciliation records, fake settlement files, and fake APIs. The goal is to demonstrate how a national-grade payment platform could work visually and operationally.
+
+Tech stack:
+- React + Vite
+- TypeScript
+- TanStack Router
+- TanStack Query
+- Tailwind CSS
+- Native HTML controls where possible
+- Framer Motion for animations
+- Lucide React icons
+- Recharts for charts
+- No backend required; use mock services and local JSON data
+- Build clean, modular, production-quality frontend code
+
+Application name:
+Uganda GovPay Switch
+
+Purpose:
+Create a compelling demo for a government-owned Payment Service Provider / Payment System Operator that supports:
+- Government collections
+- Citizen payments
+- Institution payments
+- Interbank routing simulation
+- Mobile money routing simulation
+- Bank payment routing simulation
+- Settlement
+- Reconciliation
+- Treasury reporting
+- Compliance monitoring
+- Dispute management
+- Real-time payment monitoring
+- Participant onboarding
+
+Main UI goal:
+The UI must feel like an enterprise-grade national payment infrastructure dashboard used by the Government of Uganda, Bank of Uganda, ministries, agencies, banks, mobile money operators, and public service portals.
+
+Design style:
+- Modern, premium, clean, and trustworthy
+- Use Uganda-inspired accents subtly: black, yellow, red, and neutral government blue
+- Large dashboard cards
+- Soft shadows
+- Rounded corners
+- Animated process flows
+- Beautiful timelines
+- Interactive diagrams
+- Step-by-step payment journey animation
+- Clear empty states
+- Professional fintech/government tone
+- Responsive desktop-first layout, but should also work on tablets
+
+Core pages/modules:
+
+1. Landing Dashboard
+Create a high-impact executive dashboard showing:
+- Total transactions today
+- Total value processed
+- Success rate
+- Failed transactions
+- Pending settlements
+- Active participants
+- System uptime
+- Average processing time
+- Real-time transaction feed
+- Payment channel breakdown
+- Government agency collections
+- Treasury settlement status
+- Fraud/compliance alerts
+
+Include animated counters and live mock updates.
+
+2. Payment Flow Simulator
+Create an interactive animated flow showing how a payment moves through the system.
+
+Flow:
+Citizen / Business
+→ Government Service Portal
+→ GovPay Switch
+→ Validation Engine
+→ Routing Engine
+→ Bank / Mobile Money / Card Processor
+→ Confirmation
+→ Government Agency
+→ Treasury
+→ Settlement & Reconciliation
+
+Requirements:
+- Animated nodes and connecting lines
+- User can click “Simulate Payment”
+- Show each step lighting up in sequence
+- Show transaction ID, amount, payer, channel, status
+- Include success and failed scenarios
+- Include retry flow
+- Include timeout flow
+- Include reversal flow
+
+3. Collections Module
+For government revenue collection:
+- Select agency: URA, NIRA, URSB, Ministry of Lands, Police, Immigration, Local Government
+- Select service: tax, passport, land search, business registration, fines, permits
+- Generate mock invoice / PRN
+- Pay using mock channel: bank, mobile money, card, wallet
+- Show payment confirmation
+- Show receipt preview
+- Show payment lifecycle status
+
+4. Payment Routing Module
+Show how the system routes payments:
+- Channel availability
+- Bank status
+- Mobile money operator status
+- Routing rules
+- Fee rules
+- Transaction priority
+- Fallback routing
+- Failed channel rerouting
+
+Add visual routing animation:
+- Primary route
+- Backup route
+- Failed route
+- Successful route
+
+5. Participant Management
+Manage mock participants:
+- Banks
+- Mobile money operators
+- Government agencies
+- Payment aggregators
+- Treasury accounts
+- Local governments
+
+Each participant should show:
+- Name
+- Type
+- Status
+- API health
+- Settlement account
+- Daily volume
+- SLA status
+- Risk rating
+
+Actions:
+- View profile
+- Suspend participant
+- Activate participant
+- View API keys mock screen
+- View settlement rules
+- View transaction limits
+
+6. Settlement Module
+Create a settlement dashboard:
+- Settlement batches
+- Pending settlements
+- Completed settlements
+- Failed settlements
+- Net settlement position
+- Gross settlement position
+- Treasury settlement account
+- Agency settlement accounts
+- Bank settlement accounts
+
+Include:
+- Settlement batch table
+- Settlement timeline
+- Animated batch processing
+- Download mock settlement file
+- Approve settlement
+- Reject settlement
+- Re-run settlement
+
+7. Reconciliation Module
+Create reconciliation views:
+- Payment records
+- Agency records
+- Bank/mobile money records
+- Treasury records
+- Matched transactions
+- Unmatched transactions
+- Duplicates
+- Missing confirmations
+- Overpayments
+- Underpayments
+
+Include:
+- Reconciliation score
+- Match rate chart
+- Exception queue
+- Manual resolution modal
+- Animated “Run Reconciliation” process
+
+8. Compliance & Risk Module
+Show:
+- AML rules
+- Suspicious transactions
+- Transaction velocity checks
+- Blacklisted accounts
+- High-value payments
+- Failed payment spikes
+- Participant SLA breaches
+- Audit logs
+
+Use mock alerts:
+- High transaction volume from same payer
+- Suspicious repeated failed payments
+- Agency settlement mismatch
+- Bank response timeout
+- Mobile money confirmation delay
+
+9. Dispute & Refund Module
+Show:
+- Payment disputes
+- Failed but debited transactions
+- Duplicate payments
+- Refund requests
+- Reversal status
+- SLA countdown
+- Evidence attachments mock
+- Resolution workflow
+
+Process flow:
+Dispute raised
+→ Investigation
+→ Participant response
+→ Approval
+→ Refund / reversal
+→ Closure
+
+10. API Platform Module
+Show mock government payment APIs:
+- Create invoice API
+- Validate payment API
+- Initiate payment API
+- Confirm payment API
+- Query transaction API
+- Settlement report API
+- Reconciliation API
+- Webhook events
+
+Create a beautiful developer portal page:
+- API cards
+- Mock documentation
+- Example request/response
+- API key management mock
+- Webhook logs
+- Sandbox environment status
+
+11. Real-time Operations Center
+Create a live operations screen:
+- Map-like regional transaction activity in Uganda
+- Transaction stream
+- Channel health monitor
+- Participant health monitor
+- Incident alerts
+- Processing latency
+- Queue depth
+- Success/failure graph
+- System components status
+
+Make it visually impressive and suitable for presentation on a large screen.
+
+12. Reports & Analytics
+Create:
+- Daily transaction volume chart
+- Revenue by agency
+- Revenue by payment channel
+- Failed transaction analysis
+- Settlement trends
+- Reconciliation exceptions
+- Regional payment activity
+- Treasury collection summary
+- Export report buttons
+
+13. Admin & Configuration
+Mock configuration pages:
+- Fees
+- Transaction limits
+- Routing rules
+- Settlement cycles
+- Agency accounts
+- Notification templates
+- Webhook settings
+- User roles
+- Approval workflows
+
+Roles:
+- Super Admin
+- Bank of Uganda Operator
+- Treasury Officer
+- Agency Officer
+- Compliance Officer
+- Settlement Officer
+- Support Officer
+- Developer
+
+Navigation:
+Use a professional sidebar layout with:
+- Dashboard
+- Payment Simulator
+- Collections
+- Routing
+- Participants
+- Settlement
+- Reconciliation
+- Compliance
+- Disputes
+- API Platform
+- Operations Center
+- Reports
+- Admin Settings
+
+Important UI components:
+- Animated transaction flow diagram
+- Animated settlement pipeline
+- Animated reconciliation matching
+- Status badges
+- KPI cards
+- Charts
+- Data tables
+- Detail drawers
+- Modals
+- Stepper workflows
+- Timeline components
+- Toast notifications
+- Command/search bar
+- Mock loading states
+- Mock error states
+- Empty states
+- Confirmation dialogs
+
+Mock data:
+Create realistic Ugandan mock data:
+- Agencies: URA, NIRA, URSB, Ministry of Lands, Uganda Police, Immigration, KCCA, Ministry of Works
+- Banks: Stanbic Bank, Centenary Bank, DFCU, Equity Bank, Absa Uganda, Bank of Africa, Housing Finance Bank
+- Mobile money: MTN Mobile Money, Airtel Money
+- Currency: UGX
+- Example payments: taxes, passports, driving permits, land fees, business registration, court fines, local government fees
+- Regions: Kampala, Wakiso, Mukono, Jinja, Mbarara, Gulu, Mbale, Arua, Fort Portal, Masaka
+
+Functional expectations:
+- All pages should be navigable
+- Use mock services with async delays
+- Simulate live updates
+- Use local state and mock APIs
+- No real payment processing
+- No real credentials
+- No external financial API calls
+- Every button should either perform a mock action, open a modal, update UI state, or show a toast
+- Avoid dead buttons
+
+Animation expectations:
+- Use Framer Motion
+- Animate cards on load
+- Animate payment flows step by step
+- Animate routing decisions
+- Animate reconciliation matching
+- Animate settlement progress
+- Animate live transaction feed
+- Use smooth transitions between pages
+- Add subtle hover and click effects
+
+Deliverables:
+- Complete React + Vite project
+- Clean folder structure
+- Reusable components
+- Mock API layer
+- Mock data files
+- TanStack Router routes
+- Dashboard layouts
+- Responsive design
+- Clear README explaining demo purpose, setup, and limitations
+
+Suggested folder structure:
+
+src/
+  app/
+    router.tsx
+    routeTree.gen.ts
+  components/
+    layout/
+    ui/
+    charts/
+    flows/
+    tables/
+    modals/
+    cards/
+  data/
+    mockAgencies.ts
+    mockParticipants.ts
+    mockTransactions.ts
+    mockSettlements.ts
+    mockDisputes.ts
+  features/
+    dashboard/
+    simulator/
+    collections/
+    routing/
+    participants/
+    settlement/
+    reconciliation/
+    compliance/
+    disputes/
+    api-platform/
+    operations/
+    reports/
+    admin/
+  services/
+    mockApi.ts
+    simulatorService.ts
+  hooks/
+  types/
+  utils/
+  styles/
+
+Make the first screen extremely impressive. This demo should look good enough to present to senior government officials, central bank stakeholders, treasury officers, banks, and payment operators.
+
+The final result should not be a basic CRUD dashboard. It must feel like a national payment infrastructure command center.
