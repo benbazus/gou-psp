@@ -21,8 +21,11 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set) => ({
-  activeRole: null,
-  setRole: (role) => set({ activeRole: role }),
+  activeRole: (localStorage.getItem('govpay_role') as Role | null) ?? null,
+  setRole: (role) => {
+    localStorage.setItem('govpay_role', role)
+    set({ activeRole: role })
+  },
 
   sidebarCollapsed: false,
   toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
