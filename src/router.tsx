@@ -1,4 +1,5 @@
 import { createRouter, createRootRoute, createRoute, Outlet, redirect } from '@tanstack/react-router'
+import { AppShell } from './components/layout/AppShell'
 import LoginPage from './routes/login'
 import DashboardPage from './routes/app/dashboard'
 import SimulatorPage from './routes/app/simulator'
@@ -41,7 +42,7 @@ const loginRoute = createRoute({
 const appRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/app',
-  component: Outlet,
+  component: AppShell,
 })
 
 const dashboardRoute = createRoute({ getParentRoute: () => appRoute, path: '/dashboard', component: DashboardPage })
