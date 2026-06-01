@@ -9,7 +9,7 @@ export const mockDisputes: Dispute[] = [
     timeline: [
       { stage: 'Dispute Raised', actor: 'Namutebi Grace', timestamp: '2026-05-29T10:23:00Z', note: 'Reported via citizen portal — debited but no passport confirmation received' },
       { stage: 'Investigation', actor: 'Support Officer', timestamp: '2026-05-29T11:05:00Z', note: 'Transaction confirmed on MTN side. Awaiting NIRA confirmation API response' },
-      { stage: 'Participant Response', actor: 'NIRA', timestamp: '', note: '' },
+      { stage: 'Participant Response', actor: 'NIRA', timestamp: '2026-06-01T09:00:00Z', note: 'Awaiting formal response from NIRA technical team' },
     ] satisfies DisputeTimelineEntry[],
   },
   {

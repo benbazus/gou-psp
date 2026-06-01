@@ -9,17 +9,30 @@ const LIVE_STATUSES = ['completed', 'completed', 'completed', 'failed', 'pending
 const PAYERS = ['Mugisha Robert', 'Namutebi Grace', 'Okello James', 'Nakato Fatuma', 'Ssekandi Paul']
 const AGENCIES = ['URA', 'NIRA', 'MOW', 'MOL', 'KCCA']
 
+const SERVICE_MAP: Record<string, string> = {
+  URA: 'Income Tax',
+  NIRA: 'Passport',
+  MOW: 'Driving License',
+  MOL: 'Land Search',
+  KCCA: 'Business Permit',
+}
+
 function randomItem<T>(arr: readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
 function generateLiveTx(): Transaction {
   const base = mockTransactions[Math.floor(Math.random() * 100)]
+  const agency = randomItem(AGENCIES)
+  const service = SERVICE_MAP[agency] ?? 'Government Service'
   return {
     ...base,
     id: generateTxnId(),
     payer: randomItem(PAYERS),
-    agency: randomItem(AGENCIES),
+    payee: agency,
+    agency,
+    service,
+    prn: `PRN${Date.now().toString().slice(-8)}`,
     channel: randomItem(CHANNELS),
     status: randomItem(LIVE_STATUSES),
     amount: 10000 + Math.floor(Math.random() * 2000000),
