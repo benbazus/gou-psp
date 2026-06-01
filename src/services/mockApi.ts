@@ -68,7 +68,7 @@ export const complianceApi = {
 export const routingApi = {
   listRules: async () => { await delay(400); return mockRoutingRules },
   listChannelHealth: async () => { await delay(300); return mockChannelHealth },
-  testRoute: async (amount: number, channel: string) => {
+  testRoute: async (_amount: number, channel: string) => {
     await delay(1000)
     const rule = mockRoutingRules.find((r) => r.channel === channel && r.status === 'active')
     return { success: !!rule, rule: rule ?? null, fallback: !rule ? mockRoutingRules[0] : null }

@@ -7,7 +7,7 @@ interface BarConfig {
 }
 
 interface Props {
-  data: Record<string, unknown>[]
+  data: object[]
   xKey: string
   bars: BarConfig[]
   height?: number
