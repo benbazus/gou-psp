@@ -1,3 +1,64 @@
+import { useState } from 'react'
+import { useRouterState } from '@tanstack/react-router'
+import { Search, Bell } from 'lucide-react'
+import { useAppStore } from '../../store/appStore'
+import { CommandPalette } from './CommandPalette'
+
+const BREADCRUMB_MAP: Record<string, string> = {
+  '/app/dashboard':      'Dashboard',
+  '/app/simulator':      'Payment Simulator',
+  '/app/collections':    'Collections',
+  '/app/routing':        'Payment Routing',
+  '/app/participants':   'Participant Management',
+  '/app/settlement':     'Settlement',
+  '/app/reconciliation': 'Reconciliation',
+  '/app/compliance':     'Compliance & Risk',
+  '/app/disputes':       'Disputes & Refunds',
+  '/app/api-platform':   'API Platform',
+  '/app/operations':     'Operations Center',
+  '/app/reports':        'Reports & Analytics',
+  '/app/admin':          'Admin & Configuration',
+}
+
 export function Topbar() {
-  return <div className="h-14 border-b border-border bg-card" />
+  const [cmdOpen, setCmdOpen] = useState(false)
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const role = useAppStore((s) => s.activeRole)
+  const pageTitle = BREADCRUMB_MAP[pathname] ?? 'GovPay Switch'
+
+  return (
+    <>
+      <header className="h-14 bg-card border-b border-border flex items-center justify-between px-6 flex-shrink-0 z-30">
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-muted">GovPay Switch</span>
+          <span className="text-muted">/</span>
+          <span className="font-semibold text-slate-800">{pageTitle}</span>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setCmdOpen(true)}
+            className="flex items-center gap-2 text-sm text-muted bg-surface border border-border rounded-lg px-3 py-1.5 hover:border-primary/30 transition-colors"
+          >
+            <Search size={14} />
+            <span>Search...</span>
+            <kbd className="text-xs bg-card border border-border rounded px-1">⌘K</kbd>
+          </button>
+
+          <button className="relative p-2 text-muted hover:text-slate-800 transition-colors">
+            <Bell size={18} />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-danger rounded-full" />
+          </button>
+
+          <div className="flex items-center gap-2 pl-3 border-l border-border">
+            <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+              <span className="text-primary text-xs font-bold">{role ? role[0] : 'G'}</span>
+            </div>
+            <span className="text-sm font-medium text-slate-700 hidden md:block">{role ?? 'Guest'}</span>
+          </div>
+        </div>
+      </header>
+      <CommandPalette open={cmdOpen} onClose={() => setCmdOpen(false)} />
+    </>
+  )
 }
