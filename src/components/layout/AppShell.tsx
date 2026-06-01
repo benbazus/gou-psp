@@ -3,6 +3,7 @@ import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
 import { useAppStore } from '../../store/appStore'
 import { motion } from 'framer-motion'
+import { ToastStack } from '../ui/ToastStack'
 
 export function AppShell() {
   const collapsed = useAppStore((s) => s.sidebarCollapsed)
@@ -22,6 +23,7 @@ export function AppShell() {
           <Outlet />
         </main>
       </div>
+      <ToastStack />
     </div>
   )
 }
