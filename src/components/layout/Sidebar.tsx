@@ -78,7 +78,7 @@ export function Sidebar() {
         {/* Nav items */}
         <nav className="flex-1 py-3 overflow-y-auto overflow-x-hidden">
           {NAV_ITEMS.map(({ path, icon: Icon, label }) => {
-            const active = pathname.startsWith(path)
+            const active = pathname === path || pathname.startsWith(path + '/')
             const item = (
               <Link
                 key={path}
@@ -97,6 +97,7 @@ export function Sidebar() {
                 <AnimatePresence>
                   {!collapsed && (
                     <motion.span
+                      key="label"
                       initial={{ opacity: 0, width: 0 }}
                       animate={{ opacity: 1, width: 'auto' }}
                       exit={{ opacity: 0, width: 0 }}

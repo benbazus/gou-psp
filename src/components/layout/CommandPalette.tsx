@@ -15,6 +15,11 @@ export function CommandPalette({ open, onClose }: Props) {
   const [query, setQuery] = useState('')
   const transactions = useAppStore((s) => s.liveTransactions)
 
+  function handleClose() {
+    setQuery('')
+    onClose()
+  }
+
   const filtered = transactions.filter(
     (t) =>
       t.id.toLowerCase().includes(query.toLowerCase()) ||
@@ -23,7 +28,7 @@ export function CommandPalette({ open, onClose }: Props) {
   )
 
   return (
-    <Dialog.Root open={open} onOpenChange={(o) => !o && onClose()}>
+    <Dialog.Root open={open} onOpenChange={(o) => !o && handleClose()}>
       <Dialog.Portal>
         <AnimatePresence>
           {open && (
@@ -63,7 +68,7 @@ export function CommandPalette({ open, onClose }: Props) {
                     {filtered.slice(0, 8).map((t) => (
                       <button
                         key={t.id}
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="w-full text-left px-4 py-3 hover:bg-surface transition-colors flex items-center justify-between"
                       >
                         <div>

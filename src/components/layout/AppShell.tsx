@@ -9,17 +9,19 @@ export function AppShell() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-surface">
-      <Sidebar />
+      {/* Spacer matches sidebar width so content div doesn't overlap */}
       <motion.div
-        className="flex flex-col flex-1 overflow-hidden"
-        animate={{ marginLeft: collapsed ? 56 : 240 }}
+        className="flex-shrink-0"
+        animate={{ width: collapsed ? 56 : 240 }}
         transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-      >
+      />
+      <Sidebar />
+      <div className="flex flex-col flex-1 overflow-hidden min-w-0">
         <Topbar />
         <main className="flex-1 overflow-y-auto p-6">
           <Outlet />
         </main>
-      </motion.div>
+      </div>
     </div>
   )
 }

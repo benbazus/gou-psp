@@ -62,10 +62,17 @@ export default function LoginPage() {
         </motion.div>
 
         {/* Role grid */}
-        <motion.div variants={fadeInUp} className="grid grid-cols-2 gap-3 mb-6">
+        <motion.div
+          variants={fadeInUp}
+          className="grid grid-cols-2 gap-3 mb-6"
+          role="radiogroup"
+          aria-label="Select your role"
+        >
           {ROLES.map(({ role, icon: Icon, description }) => (
             <button
               key={role}
+              role="radio"
+              aria-checked={selected === role}
               onClick={() => setSelected(role)}
               className={`
                 text-left p-4 rounded-xl border-2 transition-all duration-200

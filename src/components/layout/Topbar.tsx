@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouterState } from '@tanstack/react-router'
 import { Search, Bell } from 'lucide-react'
 import { useAppStore } from '../../store/appStore'
@@ -23,6 +23,17 @@ const BREADCRUMB_MAP: Record<string, string> = {
 export function Topbar() {
   const [cmdOpen, setCmdOpen] = useState(false)
   const pathname = useRouterState({ select: (s) => s.location.pathname })
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setCmdOpen(true)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
   const role = useAppStore((s) => s.activeRole)
   const pageTitle = BREADCRUMB_MAP[pathname] ?? 'GovPay Switch'
 
