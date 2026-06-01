@@ -209,3 +209,51 @@ export interface Toast {
   variant: ToastVariant
   createdAt: number
 }
+
+// ─── MFA / Auth ───────────────────────────────────────────
+export type MfaMethod = 'totp' | 'sms' | 'email'
+
+export interface MfaChallenge {
+  code: string         // mock generated OTP (shown to user in demo)
+  method: MfaMethod
+  expiresAt: number    // epoch ms
+  attempts: number
+}
+
+export interface SessionInfo {
+  role: Role
+  loginAt: number      // epoch ms
+  mfaVerifiedAt: number
+  sessionId: string
+  ip: string
+  tlsVersion: 'TLS 1.3'
+  encryptionCipher: 'AES-256-GCM'
+  expiresAt: number
+}
+
+// ─── Security Event (live audit) ──────────────────────────
+export type SecurityEventType =
+  | 'LOGIN'
+  | 'MFA_VERIFIED'
+  | 'MFA_FAILED'
+  | 'LOGOUT'
+  | 'ROUTE_ACCESS_DENIED'
+  | 'SETTLEMENT_APPROVED'
+  | 'SETTLEMENT_REJECTED'
+  | 'PARTICIPANT_SUSPENDED'
+  | 'PARTICIPANT_ACTIVATED'
+  | 'BLACKLIST_ADDED'
+  | 'CONFIG_CHANGED'
+  | 'DISPUTE_RESOLVED'
+
+export interface SecurityEvent {
+  id: string
+  type: SecurityEventType
+  actor: string
+  role: Role
+  resource?: string
+  detail: string
+  timestamp: number
+  ip: string
+  sessionId: string
+}

@@ -1,0 +1,398 @@
+You are a senior fintech product designer and React frontend engineer.
+
+Create a stunning React + Vite demo application for a Uganda Government national payment switch platform, similar in concept to Nigeria’s NIBSS, but designed for Uganda.
+
+The application is for demo purposes only. Build only the React UI with mock data, mocked API services, fake transactions, fake banks, fake government agencies, fake PSPs, and stubbed workflows. Do not connect to real APIs.
+
+Product name:
+Uganda National Payment Switch — UNPS
+
+Purpose:
+A government-backed payment infrastructure platform that connects banks, mobile money operators, payment service providers, government ministries, agencies, local governments, merchants, and citizens into one interoperable real-time payment ecosystem.
+
+Tech stack:
+- React
+- Vite
+- TypeScript
+- TanStack Router
+- TanStack Query
+- Tailwind CSS
+- Native HTML controls where possible
+- Lucide React icons
+- Recharts for charts
+- Framer Motion for animations
+- Mock API layer using local TypeScript services
+- No backend required
+
+Core UI goal:
+Create a premium enterprise fintech dashboard that looks suitable for Bank of Uganda, Ministry of Finance, NITA-U, URA, NSSF, banks, mobile money operators, and payment service providers.
+
+The UI must feel:
+- Government-grade
+- Secure
+- Enterprise-level
+- Modern
+- Animated
+- Data-rich
+- Suitable for a boardroom demo
+
+Main modules to build:
+
+1. Executive Dashboard
+Show:
+- Total transaction volume
+- Total transaction value
+- Successful transactions
+- Failed transactions
+- Pending settlements
+- Active institutions
+- Fraud alerts
+- System uptime
+- Real-time transaction stream
+- Payment rail health status
+- Settlement queue
+- Top participating institutions
+- Transaction success/failure charts
+
+2. Real-Time Interbank Transfer Rail
+Create screens for:
+- Bank-to-bank transfer monitoring
+- Instant transfer status
+- Transaction search
+- Transaction timeline
+- Transfer validation flow
+- Debit institution
+- Credit institution
+- Switch processing
+- Fraud/risk checks
+- Settlement posting
+- Final status
+
+Use mock banks such as:
+- Stanbic Bank Uganda
+- Centenary Bank
+- dfcu Bank
+- Equity Bank Uganda
+- Absa Bank Uganda
+- Housing Finance Bank
+- Bank of Baroda Uganda
+
+3. Mobile Money Interoperability
+Create UI showing interoperability between:
+- MTN Mobile Money
+- Airtel Money
+- Bank accounts
+- PSP wallets
+- Government collection accounts
+
+Include:
+- Wallet-to-bank
+- Bank-to-wallet
+- Wallet-to-wallet
+- Merchant collections
+- Government payments
+- Failed transaction retry flow
+
+4. Government Collections Module
+Create dashboard for government revenue collections.
+
+Include agencies:
+- Uganda Revenue Authority
+- NSSF
+- Kampala Capital City Authority
+- Ministry of Lands
+- Uganda Registration Services Bureau
+- National Identification and Registration Authority
+- Uganda Police
+- Immigration
+
+Features:
+- Tax payments
+- Permit payments
+- Passport payments
+- Land fees
+- Business registration fees
+- Traffic fines
+- Agency settlement reports
+- Collection reconciliation
+
+5. Institution Management
+Create screens for:
+- Participating banks
+- PSPs
+- Mobile money operators
+- Government agencies
+- Institution onboarding
+- Compliance status
+- API credentials status
+- Connection health
+- KYC/KYB status
+- Risk classification
+- License status
+
+6. Payment System Operator Console
+Create UI for:
+- Switch configuration
+- Payment rail configuration
+- Transaction limits
+- Institution limits
+- Cut-off times
+- Settlement windows
+- Fee configuration
+- Routing rules
+- Retry rules
+- Downtime management
+
+7. Settlement and Reconciliation
+Create screens for:
+- Daily settlement cycles
+- Net settlement positions
+- Gross settlement positions
+- Institution balances
+- Unmatched transactions
+- Reconciliation exceptions
+- Settlement approvals
+- Export reports
+- Settlement timeline
+
+8. Fraud, Risk and Compliance
+Create UI for:
+- Suspicious transactions
+- AML flags
+- Velocity checks
+- Duplicate transaction detection
+- Blacklisted accounts
+- High-risk institutions
+- Risk scoring
+- Compliance audit logs
+- Regulatory reports
+
+9. API Gateway / Developer Portal
+Create UI for:
+- API products
+- API keys
+- Webhooks
+- Sandbox credentials
+- Transaction simulation
+- API usage analytics
+- Error logs
+- Documentation preview
+- Partner onboarding
+
+Example API products:
+- Instant Transfer API
+- Account Name Enquiry API
+- Transaction Status API
+- Government Collections API
+- Settlement Report API
+- Mobile Money Interop API
+- Institution Verification API
+
+10. Transaction Simulator
+Create an interactive demo screen where a user can simulate:
+- Bank-to-bank transfer
+- Mobile money to bank
+- Bank to mobile money
+- Government payment
+- Merchant payment
+
+Show animated process flow:
+Customer → Origin Institution → Uganda National Payment Switch → Risk Engine → Destination Institution → Settlement Ledger → Notification
+
+Each stage should animate with:
+- Pending
+- Processing
+- Success
+- Failed
+
+11. Monitoring and Operations Center
+Create a live operations room UI with:
+- System health cards
+- Institution connection map
+- Active incidents
+- Real-time logs
+- Queue depth
+- API latency
+- Failed webhook deliveries
+- Payment rail status
+- Settlement engine status
+
+12. Audit and Reports
+Create pages for:
+- Regulatory reports
+- Institution reports
+- Transaction audit trail
+- Settlement reports
+- Fraud reports
+- Revenue collection reports
+- Export buttons
+- Date filters
+- Institution filters
+
+Navigation:
+Use TanStack Router and create routes:
+- /
+- /dashboard
+- /transactions
+- /transfers
+- /mobile-money
+- /government-collections
+- /institutions
+- /settlement
+- /risk-compliance
+- /api-gateway
+- /simulator
+- /operations
+- /reports
+- /settings
+
+Layout:
+Create:
+- AppShell
+- Sidebar
+- Topbar
+- DashboardLayout
+- PageHeader
+- MetricCard
+- StatusBadge
+- DataTable
+- FilterBar
+- ProcessFlow
+- TransactionTimeline
+- InstitutionHealthCard
+- SettlementCard
+- RiskAlertCard
+- ApiProductCard
+- LiveLogPanel
+
+Design requirements:
+- Dark/light mode toggle
+- Premium fintech color palette
+- Clean government-style branding
+- Beautiful cards
+- Animated charts
+- Smooth page transitions
+- Responsive design
+- Sidebar collapse support
+- Sticky topbar
+- Search bar
+- Notification bell
+- User profile dropdown
+- Status indicators
+- Professional spacing and typography
+
+Mock data:
+Create mock data files for:
+- institutions.ts
+- transactions.ts
+- settlements.ts
+- governmentAgencies.ts
+- riskAlerts.ts
+- apiProducts.ts
+- systemHealth.ts
+- logs.ts
+- reconciliation.ts
+
+Mock API layer:
+Create services:
+- transactionService.ts
+- institutionService.ts
+- settlementService.ts
+- riskService.ts
+- governmentCollectionService.ts
+- apiGatewayService.ts
+- monitoringService.ts
+
+Use async functions with artificial delays to simulate real API calls.
+
+Important:
+This is a demo UI only.
+All data must be mocked.
+All workflows must be stubbed.
+No real payment processing.
+No real bank integration.
+No real government API integration.
+No real identity verification.
+No real settlement.
+
+Demo storytelling:
+The app should clearly demonstrate how Uganda could operate a national payment switch for:
+- Real-time interbank transfers
+- Mobile money interoperability
+- Government collections
+- Agency reconciliation
+- Settlement
+- Risk monitoring
+- API access for PSPs and banks
+
+Visual process flows:
+Use animated diagrams to show:
+1. Interbank instant transfer flow
+2. Government tax payment flow
+3. Mobile money interoperability flow
+4. Settlement and reconciliation flow
+5. Fraud/risk screening flow
+6. API gateway request flow
+
+Sample transaction statuses:
+- INITIATED
+- VALIDATING
+- RISK_CHECK
+- ROUTING
+- PROCESSING
+- SETTLED
+- FAILED
+- REVERSED
+
+Sample institution statuses:
+- ACTIVE
+- DEGRADED
+- OFFLINE
+- SUSPENDED
+- PENDING_ONBOARDING
+
+Sample settlement statuses:
+- OPEN
+- PROCESSING
+- APPROVED
+- SETTLED
+- EXCEPTION
+
+Deliverables:
+- Complete React + Vite project
+- Well-structured folders
+- TypeScript types
+- Reusable components
+- Mock services
+- Responsive UI
+- Beautiful dashboard
+- Animated process flows
+- Stubbed forms
+- Working navigation
+- Clean code
+- No backend dependency
+
+Suggested folder structure:
+
+src/
+  app/
+    router.tsx
+    routes/
+  components/
+    layout/
+    dashboard/
+    tables/
+    charts/
+    flows/
+    cards/
+    common/
+  data/
+  services/
+  types/
+  hooks/
+  utils/
+  styles/
+  main.tsx
+
+Make the app impressive enough for a government fintech innovation demo.
+Focus on visual quality, enterprise UX, process clarity, and believable mock data.

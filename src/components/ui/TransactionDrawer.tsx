@@ -1,6 +1,6 @@
 import { Drawer } from './Drawer'
 import { Badge, statusVariant } from './Badge'
-import { Timeline } from './Timeline'
+import { Timeline, type TimelineItem } from './Timeline'
 import { formatUGX, formatDateTime } from '../../utils/format'
 import type { Transaction } from '../../types'
 
@@ -9,8 +9,8 @@ interface Props {
   onClose: () => void
 }
 
-function buildTimeline(tx: Transaction) {
-  const base = [
+function buildTimeline(tx: Transaction): TimelineItem[] {
+  const base: TimelineItem[] = [
     { label: 'Payment Initiated', timestamp: formatDateTime(tx.timestamp), status: 'done' as const, description: `${tx.payer} via ${tx.channel}` },
     { label: 'Validation', timestamp: formatDateTime(new Date(new Date(tx.timestamp).getTime() + 50).toISOString()), status: 'done' as const, description: 'PRN validated, amount confirmed' },
     { label: 'Routing', timestamp: formatDateTime(new Date(new Date(tx.timestamp).getTime() + 80).toISOString()), status: 'done' as const, description: `Routed via ${tx.channel}` },
