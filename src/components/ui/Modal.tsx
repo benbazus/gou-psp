@@ -19,14 +19,14 @@ export function Modal({ open, onClose, title, children, maxWidth = 'max-w-lg', f
         <AnimatePresence>
           {open && (
             <>
-              <Dialog.Overlay asChild>
+              <Dialog.Overlay asChild forceMount>
                 <motion.div
                   className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
                   variants={overlayVariants}
                   initial="hidden" animate="visible" exit="exit"
                 />
               </Dialog.Overlay>
-              <Dialog.Content asChild>
+              <Dialog.Content asChild forceMount>
                 <motion.div
                   className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full ${maxWidth} bg-card rounded-xl shadow-modal z-50 overflow-hidden`}
                   variants={scaleIn}

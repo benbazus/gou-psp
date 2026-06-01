@@ -1,4 +1,5 @@
 import { ResponsiveContainer, AreaChart as ReAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
+import { useId } from 'react'
 
 interface AreaConfig {
   key: string
@@ -14,12 +15,13 @@ interface Props {
 }
 
 export function AreaChart({ data, xKey, areas, height = 200 }: Props) {
+  const uid = useId()
   return (
     <ResponsiveContainer width="100%" height={height}>
       <ReAreaChart data={data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
         <defs>
           {areas.map((a) => (
-            <linearGradient key={a.key} id={`grad-${a.key}`} x1="0" y1="0" x2="0" y2="1">
+            <linearGradient key={a.key} id={`grad-${uid}-${a.key}`} x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor={a.color} stopOpacity={0.3} />
               <stop offset="95%" stopColor={a.color} stopOpacity={0} />
             </linearGradient>
@@ -36,7 +38,7 @@ export function AreaChart({ data, xKey, areas, height = 200 }: Props) {
             dataKey={a.key}
             name={a.name ?? a.key}
             stroke={a.color}
-            fill={`url(#grad-${a.key})`}
+            fill={`url(#grad-${uid}-${a.key})`}
             strokeWidth={2}
           />
         ))}
