@@ -1,10 +1,14 @@
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAppStore } from '../../store/appStore'
 import { Badge, statusVariant } from '../../components/ui/Badge'
 import { formatUGX, timeAgo } from '../../utils/format'
+import { TransactionDrawer } from '../../components/ui/TransactionDrawer'
+import type { Transaction } from '../../types'
 
 export function TransactionFeed() {
   const transactions = useAppStore((s) => s.liveTransactions)
+  const [selected, setSelected] = useState<Transaction | null>(null)
 
   return (
     <div className="bg-card rounded-card shadow-card overflow-hidden h-full">
@@ -24,7 +28,8 @@ export function TransactionFeed() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="flex items-center justify-between px-4 py-2.5"
+              onClick={() => setSelected(tx)}
+              className="flex items-center justify-between px-4 py-2.5 cursor-pointer hover:bg-primary-50 transition-colors"
             >
               <div className="min-w-0">
                 <div className="text-xs font-medium text-slate-700 truncate">{tx.id}</div>
@@ -39,6 +44,7 @@ export function TransactionFeed() {
           ))}
         </AnimatePresence>
       </div>
+      <TransactionDrawer transaction={selected} onClose={() => setSelected(null)} />
     </div>
   )
 }

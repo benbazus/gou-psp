@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { PageHeader } from '../../components/ui/PageHeader'
 import { AreaChart } from '../../components/charts/AreaChart'
 import { Badge } from '../../components/ui/Badge'
@@ -6,6 +7,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { timeAgo } from '../../utils/format'
 import { Wifi, WifiOff, AlertTriangle } from 'lucide-react'
 import clsx from 'clsx'
+import { TransactionDrawer } from '../../components/ui/TransactionDrawer'
+import type { Transaction } from '../../types'
 
 const SYSTEM_COMPONENTS = [
   { name: 'Payment Gateway',    status: 'healthy',  latency: 42  },
@@ -60,6 +63,7 @@ export default function OperationsPage() {
   const liveTransactions = useAppStore((s) => s.liveTransactions)
   const healthyCnt = SYSTEM_COMPONENTS.filter((c) => c.status === 'healthy').length
   const degradedCnt = SYSTEM_COMPONENTS.filter((c) => c.status === 'degraded').length
+  const [selectedTx, setSelectedTx] = useState<Transaction | null>(null)
 
   return (
     <div>
@@ -148,7 +152,8 @@ export default function OperationsPage() {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0 }}
-                  className="flex items-center justify-between text-xs py-1 border-b border-border"
+                  onClick={() => setSelectedTx(tx)}
+                  className="flex items-center justify-between text-xs py-1 border-b border-border cursor-pointer hover:bg-primary-50 transition-colors"
                 >
                   <div className="flex items-center gap-2 min-w-0">
                     <div className={clsx(
@@ -220,6 +225,7 @@ export default function OperationsPage() {
           height={180}
         />
       </div>
+      <TransactionDrawer transaction={selectedTx} onClose={() => setSelectedTx(null)} />
     </div>
   )
 }
