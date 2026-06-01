@@ -16,7 +16,7 @@ import { fadeInUp, staggerContainer } from '../../utils/animations'
 import { formatUGX, formatPercent } from '../../utils/format'
 
 export default function DashboardPage() {
-  const { data: stats, isLoading } = useQuery({
+  const { data: stats, isLoading, isError } = useQuery({
     queryKey: ['dashboard-stats'],
     queryFn: transactionsApi.todayStats,
     refetchInterval: 30_000,
@@ -57,31 +57,37 @@ export default function DashboardPage() {
       >
         {isLoading
           ? Array.from({ length: 8 }).map((_, i) => <KPICardSkeleton key={i} />)
+          : isError || !stats
+          ? (
+            <div className="col-span-4 py-8 text-center text-muted text-sm">
+              Unable to load dashboard statistics. Please refresh.
+            </div>
+          )
           : (
             <>
               <motion.div variants={fadeInUp}>
-                <KPICard title="Transactions Today" value={stats!.count} subtitle="Payments processed" icon={<Activity size={16} />} accent="primary" />
+                <KPICard title="Transactions Today" value={stats.count} subtitle="Payments processed" icon={<Activity size={16} />} accent="primary" />
               </motion.div>
               <motion.div variants={fadeInUp}>
-                <KPICard title="Total Value" value={formatUGX(stats!.totalValue)} subtitle="UGX processed today" icon={<DollarSign size={16} />} accent="accent" animate={false} />
+                <KPICard title="Total Value" value={formatUGX(stats.totalValue)} subtitle="UGX processed today" icon={<DollarSign size={16} />} accent="accent" animate={false} />
               </motion.div>
               <motion.div variants={fadeInUp}>
-                <KPICard title="Success Rate" value={formatPercent(stats!.successRate)} subtitle="Completed transactions" icon={<CheckCircle size={16} />} accent="success" animate={false} />
+                <KPICard title="Success Rate" value={formatPercent(stats.successRate)} subtitle="Completed transactions" icon={<CheckCircle size={16} />} accent="success" animate={false} />
               </motion.div>
               <motion.div variants={fadeInUp}>
-                <KPICard title="Failed Transactions" value={stats!.failedCount} subtitle="Require attention" icon={<AlertCircle size={16} />} accent="danger" />
+                <KPICard title="Failed Transactions" value={stats.failedCount} subtitle="Require attention" icon={<AlertCircle size={16} />} accent="danger" />
               </motion.div>
               <motion.div variants={fadeInUp}>
-                <KPICard title="Pending Settlements" value={stats!.pendingSettlements} subtitle="Awaiting approval" icon={<Clock size={16} />} accent="warning" />
+                <KPICard title="Pending Settlements" value={stats.pendingSettlements} subtitle="Awaiting approval" icon={<Clock size={16} />} accent="warning" />
               </motion.div>
               <motion.div variants={fadeInUp}>
-                <KPICard title="Active Participants" value={stats!.activeParticipants} subtitle="Banks, MNOs & agencies" icon={<Users size={16} />} accent="primary" />
+                <KPICard title="Active Participants" value={stats.activeParticipants} subtitle="Banks, MNOs & agencies" icon={<Users size={16} />} accent="primary" />
               </motion.div>
               <motion.div variants={fadeInUp}>
-                <KPICard title="System Uptime" value={`${stats!.uptime}%`} subtitle="Last 30 days" icon={<TrendingUp size={16} />} accent="success" animate={false} />
+                <KPICard title="System Uptime" value={`${stats.uptime}%`} subtitle="Last 30 days" icon={<TrendingUp size={16} />} accent="success" animate={false} />
               </motion.div>
               <motion.div variants={fadeInUp}>
-                <KPICard title="Avg Processing" value={`${stats!.avgProcessingTime}ms`} subtitle="End-to-end latency" icon={<Zap size={16} />} accent="primary" animate={false} />
+                <KPICard title="Avg Processing" value={`${stats.avgProcessingTime}ms`} subtitle="End-to-end latency" icon={<Zap size={16} />} accent="primary" animate={false} />
               </motion.div>
             </>
           )}
