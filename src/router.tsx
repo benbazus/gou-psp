@@ -1,4 +1,4 @@
-import { createRouter, createRootRoute, createRoute, Outlet, Navigate } from '@tanstack/react-router'
+import { createRouter, createRootRoute, createRoute, Outlet, redirect } from '@tanstack/react-router'
 import LoginPage from './routes/login'
 import DashboardPage from './routes/app/dashboard'
 import SimulatorPage from './routes/app/simulator'
@@ -14,12 +14,22 @@ import OperationsPage from './routes/app/operations'
 import ReportsPage from './routes/app/reports'
 import AdminPage from './routes/app/admin'
 
-const rootRoute = createRootRoute({ component: Outlet })
+const rootRoute = createRootRoute({
+  component: Outlet,
+  notFoundComponent: () => (
+    <div className="min-h-screen bg-surface flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-primary mb-2">Page Not Found</h1>
+        <p className="text-muted text-sm">This route does not exist in Uganda GovPay Switch.</p>
+      </div>
+    </div>
+  ),
+})
 
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: () => <Navigate to="/login" />,
+  beforeLoad: () => { throw redirect({ to: '/login' }) },
 })
 
 const loginRoute = createRoute({
