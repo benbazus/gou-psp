@@ -3,6 +3,7 @@ import { useRouterState } from '@tanstack/react-router'
 import { Search, Bell } from 'lucide-react'
 import { useAppStore } from '../../store/appStore'
 import { CommandPalette } from './CommandPalette'
+import { NotificationPanel } from './NotificationPanel'
 
 const BREADCRUMB_MAP: Record<string, string> = {
   '/app/dashboard':      'Dashboard',
@@ -22,6 +23,7 @@ const BREADCRUMB_MAP: Record<string, string> = {
 
 export function Topbar() {
   const [cmdOpen, setCmdOpen] = useState(false)
+  const [notifOpen, setNotifOpen] = useState(false)
   const pathname = useRouterState({ select: (s) => s.location.pathname })
 
   useEffect(() => {
@@ -35,6 +37,8 @@ export function Topbar() {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
   const role = useAppStore((s) => s.activeRole)
+  const notificationsRead = useAppStore((s) => s.notificationsRead)
+  const liveTransactions = useAppStore((s) => s.liveTransactions)
   const pageTitle = BREADCRUMB_MAP[pathname] ?? 'GovPay Switch'
 
   return (
@@ -56,9 +60,15 @@ export function Topbar() {
             <kbd className="text-xs bg-card border border-border rounded px-1">⌘K</kbd>
           </button>
 
-          <button className="relative p-2 text-muted hover:text-slate-800 transition-colors">
+          <button
+            onClick={() => setNotifOpen(true)}
+            className="relative p-2 text-muted hover:text-slate-800 transition-colors"
+            aria-label="Open notifications"
+          >
             <Bell size={18} />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-danger rounded-full" />
+            {!notificationsRead && liveTransactions.length > 0 && (
+              <span className="absolute top-1 right-1 w-2 h-2 bg-danger rounded-full animate-pulse" />
+            )}
           </button>
 
           <div className="flex items-center gap-2 pl-3 border-l border-border">
@@ -70,6 +80,7 @@ export function Topbar() {
         </div>
       </header>
       <CommandPalette open={cmdOpen} onClose={() => setCmdOpen(false)} />
+      <NotificationPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
     </>
   )
 }

@@ -18,6 +18,10 @@ interface AppState {
   // Live transactions (rolling buffer, max 50)
   liveTransactions: Transaction[]
   pushTransaction: (tx: Transaction) => void
+
+  // Notifications
+  notificationsRead: boolean
+  markNotificationsRead: () => void
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -45,5 +49,9 @@ export const useAppStore = create<AppState>((set) => ({
   pushTransaction: (tx) =>
     set((s) => ({
       liveTransactions: [tx, ...s.liveTransactions].slice(0, 50),
+      notificationsRead: false,
     })),
+
+  notificationsRead: false,
+  markNotificationsRead: () => set({ notificationsRead: true }),
 }))
