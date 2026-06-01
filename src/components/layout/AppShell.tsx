@@ -4,9 +4,11 @@ import { Topbar } from './Topbar'
 import { useAppStore } from '../../store/appStore'
 import { motion } from 'framer-motion'
 import { ToastStack } from '../ui/ToastStack'
+import { useLiveUpdates } from '../../hooks/useLiveUpdates'
 
 export function AppShell() {
   const collapsed = useAppStore((s) => s.sidebarCollapsed)
+  useLiveUpdates()
 
   return (
     <div className="flex h-screen overflow-hidden bg-surface">
