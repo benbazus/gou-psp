@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 import { ROUTE_ROLES } from "../../router";
-import type { Role } from "../../types";
+import type { Role, NavSection } from "../../types";
 import clsx from "clsx";
 
 function UgandaFlag({ className }: { className?: string }) {
@@ -35,18 +35,6 @@ function UgandaFlag({ className }: { className?: string }) {
       <line x1="14.6" y1="17.3" x2="15.1" y2="19.0" stroke="#555" strokeWidth="0.75" strokeLinecap="round" />
     </svg>
   );
-}
-
-interface NavItem {
-  path: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  label: string;
-}
-
-interface NavSection {
-  header: string;
-  accent?: "amber";
-  items: NavItem[];
 }
 
 const NAV_SECTIONS: NavSection[] = [
@@ -87,7 +75,14 @@ const NAV_SECTIONS: NavSection[] = [
   },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  navSections?: NavSection[]
+  portalType?: string
+  tenantName?: string
+}
+
+export function Sidebar({ navSections: navSectionsProp, tenantName }: SidebarProps = {}) {
+  const navSections = navSectionsProp ?? NAV_SECTIONS
   const collapsed     = useAppStore((s) => s.sidebarCollapsed);
   const toggleSidebar = useAppStore((s) => s.toggleSidebar);
   const activeRole    = useAppStore((s) => s.activeRole);
@@ -184,7 +179,7 @@ export function Sidebar() {
               <motion.div key="logo-text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex items-center gap-2 min-w-0">
                 <UgandaFlag className="w-7 h-7 flex-shrink-0 rounded-md overflow-hidden" />
                 <div className="min-w-0">
-                  <div className="text-white font-bold text-xs leading-tight truncate">Uganda GovPay</div>
+                  <div className="text-white font-bold text-xs leading-tight truncate">{tenantName ?? 'Uganda GovPay'}</div>
                   <div className="text-accent text-[10px] truncate">National Payment Infrastructure</div>
                 </div>
               </motion.div>
@@ -202,7 +197,7 @@ export function Sidebar() {
 
         {/* Sections */}
         <nav className="flex-1 py-2 overflow-y-auto overflow-x-hidden">
-          {NAV_SECTIONS.map((section, sIdx) => (
+          {navSections.map((section, sIdx) => (
             <div key={section.header}>
               {sIdx > 0 && <div className="mx-3 my-2 border-t border-white/10" />}
               <AnimatePresence>
