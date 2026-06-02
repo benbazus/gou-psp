@@ -1,0 +1,60 @@
+import type { LiquidityPosition } from '../types/rtgs'
+
+export const mockLiquidityPositions: LiquidityPosition[] = [
+  {
+    bankId: 'stanbic', bankName: 'Stanbic Bank Uganda', bankShort: 'Stanbic',
+    openingBalance: 24_000_000_000, availableLiquidity: 18_400_000_000,
+    intradayLiquidity: 6_000_000_000, pledgedCollateral: 4_800_000_000,
+    queuedOutgoing: 3_200_000_000, settledOutgoing: 12_400_000_000,
+    settledIncoming: 8_700_000_000, utilizationPct: 51.7,
+    riskLevel: 'low', warningThreshold: 75, onWatchlist: false,
+  },
+  {
+    bankId: 'centenary', bankName: 'Centenary Bank', bankShort: 'Centenary',
+    openingBalance: 18_500_000_000, availableLiquidity: 11_200_000_000,
+    intradayLiquidity: 3_000_000_000, pledgedCollateral: 2_400_000_000,
+    queuedOutgoing: 5_800_000_000, settledOutgoing: 8_900_000_000,
+    settledIncoming: 5_200_000_000, utilizationPct: 64.3,
+    riskLevel: 'medium', warningThreshold: 70, onWatchlist: false,
+  },
+  {
+    bankId: 'dfcu', bankName: 'DFCU Bank', bankShort: 'DFCU',
+    openingBalance: 12_000_000_000, availableLiquidity: 2_100_000_000,
+    intradayLiquidity: 5_000_000_000, pledgedCollateral: 1_800_000_000,
+    queuedOutgoing: 4_200_000_000, settledOutgoing: 6_200_000_000,
+    settledIncoming: 3_100_000_000, utilizationPct: 82.5,
+    riskLevel: 'high', warningThreshold: 80, onWatchlist: true,
+  },
+  {
+    bankId: 'equity', bankName: 'Equity Bank Uganda', bankShort: 'Equity',
+    openingBalance: 14_200_000_000, availableLiquidity: 9_800_000_000,
+    intradayLiquidity: 2_500_000_000, pledgedCollateral: 2_000_000_000,
+    queuedOutgoing: 1_900_000_000, settledOutgoing: 5_800_000_000,
+    settledIncoming: 4_100_000_000, utilizationPct: 55.6,
+    riskLevel: 'low', warningThreshold: 75, onWatchlist: false,
+  },
+  {
+    bankId: 'absa', bankName: 'Absa Bank Uganda', bankShort: 'Absa',
+    openingBalance: 10_500_000_000, availableLiquidity: 7_300_000_000,
+    intradayLiquidity: 2_000_000_000, pledgedCollateral: 1_500_000_000,
+    queuedOutgoing: 1_200_000_000, settledOutgoing: 4_100_000_000,
+    settledIncoming: 3_200_000_000, utilizationPct: 50.5,
+    riskLevel: 'low', warningThreshold: 75, onWatchlist: false,
+  },
+  {
+    bankId: 'boa', bankName: 'Bank of Africa Uganda', bankShort: 'BOA',
+    openingBalance: 7_800_000_000, availableLiquidity: 1_800_000_000,
+    intradayLiquidity: 1_500_000_000, pledgedCollateral: 1_000_000_000,
+    queuedOutgoing: 2_800_000_000, settledOutgoing: 2_900_000_000,
+    settledIncoming: 1_400_000_000, utilizationPct: 89.7,
+    riskLevel: 'critical', warningThreshold: 80, onWatchlist: true,
+  },
+  {
+    bankId: 'hfb', bankName: 'Housing Finance Bank', bankShort: 'HFB',
+    openingBalance: 5_200_000_000, availableLiquidity: 3_900_000_000,
+    intradayLiquidity: 800_000_000, pledgedCollateral: 700_000_000,
+    queuedOutgoing: 600_000_000, settledOutgoing: 1_800_000_000,
+    settledIncoming: 1_200_000_000, utilizationPct: 42.3,
+    riskLevel: 'low', warningThreshold: 75, onWatchlist: false,
+  },
+]
