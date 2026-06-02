@@ -8,6 +8,12 @@ export type Role =
   | 'Settlement Officer'
   | 'Support Officer'
   | 'Developer'
+  | 'RTGS Super Admin'
+  | 'Central Bank Settlement Operator'
+  | 'Treasury Settlement Officer'
+  | 'Bank RTGS Operator'
+  | 'Liquidity Manager'
+  | 'RTGS Auditor'
 
 // ─── Shared ──────────────────────────────────────────────
 export type Status = 'completed' | 'pending' | 'failed' | 'processing' | 'cancelled' | 'reversed'

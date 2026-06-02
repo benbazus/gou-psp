@@ -15,6 +15,16 @@ import OperationsPage from './routes/app/operations'
 import ReportsPage from './routes/app/reports'
 import AdminPage from './routes/app/admin'
 import ArchitecturePage from './routes/app/architecture'
+import RTGSDashboardPage    from './routes/app/rtgs/index'
+import RTGSSimulatorPage    from './routes/app/rtgs/simulator'
+import RTGSQueuePage        from './routes/app/rtgs/queue'
+import RTGSLiquidityPage    from './routes/app/rtgs/liquidity'
+import RTGSInterbankPage    from './routes/app/rtgs/interbank'
+import RTGSTreasuryPage     from './routes/app/rtgs/treasury'
+import RTGSParticipantsPage from './routes/app/rtgs/participants'
+import RTGSExceptionsPage   from './routes/app/rtgs/exceptions'
+import RTGSReportsPage      from './routes/app/rtgs/reports'
+import RTGSAdminPage        from './routes/app/rtgs/admin'
 import type { Role } from './types'
 import { Lock } from 'lucide-react'
 
@@ -23,6 +33,11 @@ const ALL: Role[] = [
   'Super Admin', 'Bank of Uganda Operator', 'Treasury Officer', 'Agency Officer',
   'Compliance Officer', 'Settlement Officer', 'Support Officer', 'Developer',
 ]
+const RTGS_ALL: Role[] = [
+  'RTGS Super Admin', 'Central Bank Settlement Operator', 'Treasury Settlement Officer',
+  'Bank RTGS Operator', 'Liquidity Manager', 'RTGS Auditor',
+]
+const RTGS_AND_SUPER: Role[] = ['Super Admin', ...RTGS_ALL]
 
 export const ROUTE_ROLES: Record<string, Role[]> = {
   '/app/dashboard':      ALL,
@@ -39,6 +54,16 @@ export const ROUTE_ROLES: Record<string, Role[]> = {
   '/app/reports':        ALL,
   '/app/admin':          ['Super Admin'],
   '/app/architecture':   ALL,
+  '/app/rtgs':              RTGS_AND_SUPER,
+  '/app/rtgs/simulator':    ['RTGS Super Admin', 'Central Bank Settlement Operator', 'Super Admin'],
+  '/app/rtgs/queue':        ['RTGS Super Admin', 'Central Bank Settlement Operator', 'Treasury Settlement Officer', 'Super Admin'],
+  '/app/rtgs/liquidity':    ['RTGS Super Admin', 'Liquidity Manager', 'Central Bank Settlement Operator', 'Super Admin'],
+  '/app/rtgs/interbank':    ['RTGS Super Admin', 'Central Bank Settlement Operator', 'Bank RTGS Operator', 'Super Admin'],
+  '/app/rtgs/treasury':     ['RTGS Super Admin', 'Treasury Settlement Officer', 'Super Admin'],
+  '/app/rtgs/participants': ['RTGS Super Admin', 'Central Bank Settlement Operator', 'Super Admin'],
+  '/app/rtgs/exceptions':   ['RTGS Super Admin', 'Central Bank Settlement Operator', 'Treasury Settlement Officer', 'Super Admin'],
+  '/app/rtgs/reports':      RTGS_AND_SUPER,
+  '/app/rtgs/admin':        ['RTGS Super Admin', 'Super Admin'],
 }
 
 function canAccess(path: string, role: Role | null): boolean {
@@ -131,6 +156,17 @@ const reportsRoute        = createRoute({ getParentRoute: () => appRoute, path: 
 const adminRoute          = createRoute({ getParentRoute: () => appRoute, path: '/admin',          component: guardedRoute('/app/admin',          AdminPage) })
 const architectureRoute   = createRoute({ getParentRoute: () => appRoute, path: '/architecture',   component: guardedRoute('/app/architecture',   ArchitecturePage) })
 
+const rtgsDashboardRoute    = createRoute({ getParentRoute: () => appRoute, path: '/rtgs',              component: guardedRoute('/app/rtgs',              RTGSDashboardPage) })
+const rtgsSimulatorRoute    = createRoute({ getParentRoute: () => appRoute, path: '/rtgs/simulator',    component: guardedRoute('/app/rtgs/simulator',    RTGSSimulatorPage) })
+const rtgsQueueRoute        = createRoute({ getParentRoute: () => appRoute, path: '/rtgs/queue',        component: guardedRoute('/app/rtgs/queue',        RTGSQueuePage) })
+const rtgsLiquidityRoute    = createRoute({ getParentRoute: () => appRoute, path: '/rtgs/liquidity',    component: guardedRoute('/app/rtgs/liquidity',    RTGSLiquidityPage) })
+const rtgsInterbankRoute    = createRoute({ getParentRoute: () => appRoute, path: '/rtgs/interbank',    component: guardedRoute('/app/rtgs/interbank',    RTGSInterbankPage) })
+const rtgsTreasuryRoute     = createRoute({ getParentRoute: () => appRoute, path: '/rtgs/treasury',     component: guardedRoute('/app/rtgs/treasury',     RTGSTreasuryPage) })
+const rtgsParticipantsRoute = createRoute({ getParentRoute: () => appRoute, path: '/rtgs/participants', component: guardedRoute('/app/rtgs/participants', RTGSParticipantsPage) })
+const rtgsExceptionsRoute   = createRoute({ getParentRoute: () => appRoute, path: '/rtgs/exceptions',   component: guardedRoute('/app/rtgs/exceptions',   RTGSExceptionsPage) })
+const rtgsReportsRoute      = createRoute({ getParentRoute: () => appRoute, path: '/rtgs/reports',      component: guardedRoute('/app/rtgs/reports',      RTGSReportsPage) })
+const rtgsAdminRoute        = createRoute({ getParentRoute: () => appRoute, path: '/rtgs/admin',        component: guardedRoute('/app/rtgs/admin',        RTGSAdminPage) })
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   loginRoute,
@@ -138,6 +174,9 @@ const routeTree = rootRoute.addChildren([
     dashboardRoute, simulatorRoute, collectionsRoute, routingRoute,
     participantsRoute, settlementRoute, reconciliationRoute, complianceRoute,
     disputesRoute, apiPlatformRoute, operationsRoute, reportsRoute, adminRoute, architectureRoute,
+    rtgsDashboardRoute, rtgsSimulatorRoute, rtgsQueueRoute, rtgsLiquidityRoute,
+    rtgsInterbankRoute, rtgsTreasuryRoute, rtgsParticipantsRoute,
+    rtgsExceptionsRoute, rtgsReportsRoute, rtgsAdminRoute,
   ]),
 ])
 

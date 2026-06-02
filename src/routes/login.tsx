@@ -31,6 +31,12 @@ const ROLES: { role: Role; icon: React.ElementType; description: string }[] = [
   { role: "Settlement Officer",      icon: Banknote,     description: "Batch settlement operations" },
   { role: "Support Officer",         icon: Headset,      description: "Dispute resolution and support" },
   { role: "Developer",               icon: Code2,        description: "API integration and sandbox access" },
+  { role: "RTGS Super Admin",                icon: Landmark,     description: "Full RTGS system access and configuration" },
+  { role: "Central Bank Settlement Operator", icon: Banknote,    description: "Central bank RTGS settlement operations" },
+  { role: "Treasury Settlement Officer",      icon: Receipt,     description: "Treasury and settlement management" },
+  { role: "Bank RTGS Operator",               icon: Building2,   description: "Bank-level RTGS transaction operations" },
+  { role: "Liquidity Manager",                icon: Smartphone,  description: "Liquidity monitoring and management" },
+  { role: "RTGS Auditor",                     icon: ShieldAlert, description: "RTGS audit and compliance functions" },
 ];
 
 type Step = "role" | "mfa";
