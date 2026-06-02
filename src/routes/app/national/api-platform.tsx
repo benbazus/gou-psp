@@ -1,8 +1,8 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { motion } from 'framer-motion'
 import * as Tabs from '@radix-ui/react-tabs'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { useAppStore } from '../../store/appStore'
+import { PageHeader } from '../../../components/ui/PageHeader'
+import { useAppStore } from '../../../store/appStore'
 import {
   CheckCircle2, Copy, Eye, EyeOff, RefreshCw, ShieldCheck,
   Zap, FileText, Key, Webhook, Globe, AlertTriangle,
@@ -10,7 +10,7 @@ import {
 } from 'lucide-react'
 import clsx from 'clsx'
 
-// ─── API catalogue ────────────────────────────────────────────────────────────
+// â”€â”€â”€ API catalogue â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const APIS = [
   {
     id: 'create-invoice',
@@ -60,7 +60,7 @@ const APIS = [
   },
   "meta": { "request_id": "req_abc123", "version": "v1" }
 }`,
-    errors: ['400 — Missing required field', '409 — Duplicate idempotency key', '422 — Invalid agency or service ID'],
+    errors: ['400 â€” Missing required field', '409 â€” Duplicate idempotency key', '422 â€” Invalid agency or service ID'],
   },
   {
     id: 'validate-payment',
@@ -91,7 +91,7 @@ const APIS = [
     "payment_channels": ["MTN Mobile Money", "Airtel Money", "Bank Transfer"]
   }
 }`,
-    errors: ['404 — PRN not found', '410 — PRN expired', '422 — PRN already paid'],
+    errors: ['404 â€” PRN not found', '410 â€” PRN expired', '422 â€” PRN already paid'],
   },
   {
     id: 'initiate-payment',
@@ -129,7 +129,7 @@ const APIS = [
     "webhook_event": "payment.completed or payment.failed"
   }
 }`,
-    errors: ['400 — Invalid channel', '409 — PRN already processing', '422 — Amount mismatch'],
+    errors: ['400 â€” Invalid channel', '409 â€” PRN already processing', '422 â€” Amount mismatch'],
   },
   {
     id: 'confirm-payment',
@@ -160,7 +160,7 @@ const APIS = [
   "transaction_id": "TXN-2026-100512",
   "final_status": "completed"
 }`,
-    errors: ['401 — Invalid signature', '404 — Transaction not found', '409 — Already confirmed'],
+    errors: ['401 â€” Invalid signature', '404 â€” Transaction not found', '409 â€” Already confirmed'],
   },
   {
     id: 'query-transaction',
@@ -191,7 +191,7 @@ const APIS = [
     "receipt_url": "https://receipts.govpay.go.ug/TXN-2026-100512"
   }
 }`,
-    errors: ['404 — Transaction not found', '403 — Not authorized for this transaction'],
+    errors: ['404 â€” Transaction not found', '403 â€” Not authorized for this transaction'],
   },
   {
     id: 'settlement-report',
@@ -230,7 +230,7 @@ const APIS = [
     ]
   }
 }`,
-    errors: ['400 — Invalid date format', '404 — No settlement for date', '403 — Access denied'],
+    errors: ['400 â€” Invalid date format', '404 â€” No settlement for date', '403 â€” Access denied'],
   },
   {
     id: 'reconciliation',
@@ -262,7 +262,7 @@ const APIS = [
     "exceptions_total": 1279
   }
 }`,
-    errors: ['404 — No reconciliation run found', '403 — Access denied'],
+    errors: ['404 â€” No reconciliation run found', '403 â€” Access denied'],
   },
   {
     id: 'webhook-events',
@@ -300,11 +300,11 @@ const APIS = [
     "created_at": "2026-06-01T09:00:00Z"
   }
 }`,
-    errors: ['400 — Invalid URL or event type', '422 — URL not reachable (must return 200 on POST)'],
+    errors: ['400 â€” Invalid URL or event type', '422 â€” URL not reachable (must return 200 on POST)'],
   },
 ]
 
-// ─── Webhook log entries ──────────────────────────────────────────────────────
+// â”€â”€â”€ Webhook log entries â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const WEBHOOK_LOGS = [
   { id: 'WL-001', event: 'payment.completed',        url: 'https://ura.go.ug/webhooks',   status: 'delivered', code: 200, ms: 142, ts: '09:24:15', retries: 0, size: '1.2 KB' },
   { id: 'WL-002', event: 'settlement.done',           url: 'https://mow.go.ug/webhooks',   status: 'delivered', code: 200, ms: 318, ts: '22:05:01', retries: 0, size: '8.4 KB' },
@@ -314,7 +314,7 @@ const WEBHOOK_LOGS = [
   { id: 'WL-006', event: 'payment.completed',         url: 'https://kcca.go.ug/webhooks',  status: 'retrying',  code: 0,   ms: 0,   ts: '10:12:44', retries: 1, size: '1.1 KB' },
 ]
 
-// ─── Sandbox components ───────────────────────────────────────────────────────
+// â”€â”€â”€ Sandbox components â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SANDBOX_COMPONENTS = [
   { name: 'API Gateway (Sandbox)',     status: 'operational', latency: '34ms', uptime: '100%' },
   { name: 'MTN Mobile Money (Test)',   status: 'operational', latency: '45ms', uptime: '100%' },
@@ -338,7 +338,7 @@ const GROUP_ICON: Record<string, React.ElementType> = {
   Webhooks:    Webhook,
 }
 
-// ─── API Reference panel ──────────────────────────────────────────────────────
+// â”€â”€â”€ API Reference panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ApiReference() {
   const addToast = useAppStore((s) => s.addToast)
   const [selectedId, setSelectedId] = useState(APIS[0].id)
@@ -372,7 +372,7 @@ function ApiReference() {
       <div className="w-52 flex-shrink-0 bg-surface border-r border-border">
         <div className="px-3 py-3 border-b border-border">
           <p className="text-[10px] font-bold text-muted uppercase tracking-wider">API Reference</p>
-          <p className="text-[10px] text-muted mt-0.5">v1 — Stable</p>
+          <p className="text-[10px] text-muted mt-0.5">v1 â€” Stable</p>
         </div>
         <nav className="py-2">
           {groups.map((group) => {
@@ -435,7 +435,7 @@ function ApiReference() {
               <button key={t} onClick={() => { setDocTab(t); setResponse(null) }}
                 className={clsx('px-4 py-1.5 text-xs rounded-lg font-medium transition-all capitalize',
                   docTab === t ? 'bg-card text-slate-800 shadow-sm' : 'text-muted hover:text-slate-700')}>
-                {t === 'try' ? '▶ Try It' : '📄 Docs'}
+                {t === 'try' ? 'â–¶ Try It' : 'ðŸ“„ Docs'}
               </button>
             ))}
           </div>
@@ -474,7 +474,7 @@ function ApiReference() {
                               : <span className="text-muted text-[10px]">Optional</span>
                             }
                           </td>
-                          <td className="px-3 py-2 text-muted text-[11px]">{'note' in hdr ? hdr.note : '—'}</td>
+                          <td className="px-3 py-2 text-muted text-[11px]">{'note' in hdr ? hdr.note : 'â€”'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -552,15 +552,15 @@ function ApiReference() {
                   {api.errors.map((e) => (
                     <div key={e} className="flex items-center gap-2 text-xs bg-surface border border-border rounded-lg px-3 py-2">
                       <AlertTriangle size={11} className="text-warning flex-shrink-0" />
-                      <span className="font-mono text-danger font-semibold">{e.split(' — ')[0]}</span>
-                      <span className="text-muted">— {e.split(' — ')[1]}</span>
+                      <span className="font-mono text-danger font-semibold">{e.split(' â€” ')[0]}</span>
+                      <span className="text-muted">â€” {e.split(' â€” ')[1]}</span>
                     </div>
                   ))}
                 </div>
               </section>
             </div>
           ) : (
-            /* ── Try It panel ── */
+            /* â”€â”€ Try It panel â”€â”€ */
             <div className="space-y-4">
               <div className="bg-surface border border-border rounded-xl p-4">
                 <p className="text-xs font-semibold text-slate-800 mb-3">Request Parameters</p>
@@ -594,7 +594,7 @@ function ApiReference() {
                 className="flex items-center justify-center gap-2 w-full py-3 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary-light transition-colors disabled:opacity-60"
               >
                 {sending
-                  ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />Sending…</>
+                  ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />Sendingâ€¦</>
                   : <><Play size={14} />Send Request</>
                 }
               </button>
@@ -625,7 +625,7 @@ function ApiReference() {
   )
 }
 
-// ─── API Keys tab ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ API Keys tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ApiKeysTab() {
   const addToast = useAppStore((s) => s.addToast)
   const [showLive, setShowLive] = useState(false)
@@ -646,7 +646,7 @@ function ApiKeysTab() {
     <div className="p-6 max-w-2xl space-y-6">
       <div>
         <h2 className="text-base font-bold text-slate-800 mb-1">API Key Management</h2>
-        <p className="text-xs text-muted">Keys grant access to the GovPay Switch API. Keep them secret — never commit to source code.</p>
+        <p className="text-xs text-muted">Keys grant access to the GovPay Switch API. Keep them secret â€” never commit to source code.</p>
       </div>
 
       {[
@@ -664,7 +664,7 @@ function ApiKeysTab() {
           </div>
 
           <div className="bg-slate-900 rounded-xl px-4 py-3 font-mono text-[12px] text-green-400 mb-3 break-all">
-            {show ? key : `gps_${env === 'Production' ? 'live' : 'test'}_sk_${'•'.repeat(42)}`}
+            {show ? key : `gps_${env === 'Production' ? 'live' : 'test'}_sk_${'â€¢'.repeat(42)}`}
           </div>
 
           <div className="flex gap-2">
@@ -678,7 +678,7 @@ function ApiKeysTab() {
               {copied === copyKey ? <CheckCircle2 size={12} className="text-green-500" /> : <Copy size={12} />}
               {copied === copyKey ? 'Copied' : 'Copy'}
             </button>
-            <button onClick={() => addToast(`${label} regenerated — old key invalidated`, 'warning')}
+            <button onClick={() => addToast(`${label} regenerated â€” old key invalidated`, 'warning')}
               className="flex items-center gap-1.5 text-xs text-warning border border-yellow-200 rounded-lg px-3 py-1.5 hover:bg-yellow-50 transition-colors ml-auto">
               <RefreshCw size={12} /> Regenerate
             </button>
@@ -717,7 +717,7 @@ function ApiKeysTab() {
   )
 }
 
-// ─── Webhooks tab ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ Webhooks tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function WebhooksTab() {
   const addToast = useAppStore((s) => s.addToast)
 
@@ -782,9 +782,9 @@ function WebhooksTab() {
                   </td>
                   <td className={clsx('px-3 py-2.5 font-mono font-bold text-[11px]',
                     log.code === 200 ? 'text-green-700' : log.code === 0 ? 'text-muted' : 'text-danger')}>
-                    {log.code || '—'}
+                    {log.code || 'â€”'}
                   </td>
-                  <td className="px-3 py-2.5 font-mono text-[11px] text-muted">{log.ms > 0 ? `${log.ms}ms` : '—'}</td>
+                  <td className="px-3 py-2.5 font-mono text-[11px] text-muted">{log.ms > 0 ? `${log.ms}ms` : 'â€”'}</td>
                   <td className="px-3 py-2.5 text-[11px] text-muted">{log.retries}</td>
                   <td className="px-3 py-2.5 font-mono text-[11px] text-muted">{log.ts}</td>
                   <td className="px-3 py-2.5">
@@ -803,7 +803,7 @@ function WebhooksTab() {
   )
 }
 
-// ─── Sandbox tab ──────────────────────────────────────────────────────────────
+// â”€â”€â”€ Sandbox tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function SandboxTab() {
   const addToast = useAppStore((s) => s.addToast)
 
@@ -823,7 +823,7 @@ function SandboxTab() {
               c.status === 'operational' ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200')}>
               <div>
                 <div className="text-xs font-semibold text-slate-800">{c.name}</div>
-                <div className="text-[10px] text-muted mt-0.5">{c.uptime} uptime · {c.latency} avg</div>
+                <div className="text-[10px] text-muted mt-0.5">{c.uptime} uptime Â· {c.latency} avg</div>
               </div>
               <span className={clsx('w-2.5 h-2.5 rounded-full flex-shrink-0',
                 c.status === 'operational' ? 'bg-green-500' : 'bg-yellow-400 animate-pulse')} />
@@ -859,7 +859,7 @@ function SandboxTab() {
           className="flex items-center gap-2 px-4 py-2 border border-border text-muted rounded-xl text-sm hover:text-slate-800 transition-colors">
           <RefreshCw size={13} /> Reset Sandbox Data
         </button>
-        <button onClick={() => addToast('Sandbox cleared — all test transactions purged', 'warning')}
+        <button onClick={() => addToast('Sandbox cleared â€” all test transactions purged', 'warning')}
           className="flex items-center gap-2 px-4 py-2 border border-warning text-warning rounded-xl text-sm hover:bg-yellow-50 transition-colors">
           <AlertTriangle size={13} /> Clear All Test Transactions
         </button>
@@ -868,7 +868,7 @@ function SandboxTab() {
   )
 }
 
-// ─── Overview tab ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ Overview tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function OverviewTab() {
   return (
     <div className="p-6 max-w-3xl space-y-6">
@@ -880,7 +880,7 @@ function OverviewTab() {
           <span className="text-[10px] bg-white/20 text-white border border-white/30 rounded-full px-2 py-0.5 font-bold ml-1">v1</span>
         </div>
         <p className="text-white/80 text-sm leading-relaxed mb-4">
-          The GovPay Switch API enables banks, fintechs, and government portals to integrate with Uganda's national payment infrastructure — accepting tax payments, government fees, and service charges across all payment channels.
+          The GovPay Switch API enables banks, fintechs, and government portals to integrate with Uganda's national payment infrastructure â€” accepting tax payments, government fees, and service charges across all payment channels.
         </p>
         <div className="flex gap-3 text-xs">
           <div className="bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-center">
@@ -897,12 +897,12 @@ function OverviewTab() {
 
       {/* Quick start */}
       <div>
-        <h3 className="text-sm font-bold text-slate-800 mb-3">Quick Start — 3 Steps</h3>
+        <h3 className="text-sm font-bold text-slate-800 mb-3">Quick Start â€” 3 Steps</h3>
         <div className="space-y-3">
           {[
             { step: '1', title: 'Get your API key', desc: 'Generate a sandbox API key from the API Keys tab. Use gps_test_ keys for development.', code: 'Authorization: Bearer gps_test_sk_...' },
-            { step: '2', title: 'Create an invoice', desc: 'POST /api/v1/invoices to generate a PRN for the government service you want to collect.', code: 'POST /api/v1/invoices → { "prn": "PRN..." }' },
-            { step: '3', title: 'Initiate payment', desc: 'POST /api/v1/payments with the PRN and channel. Listen for the webhook to confirm.', code: 'POST /api/v1/payments → { "transaction_id": "TXN-..." }' },
+            { step: '2', title: 'Create an invoice', desc: 'POST /api/v1/invoices to generate a PRN for the government service you want to collect.', code: 'POST /api/v1/invoices â†’ { "prn": "PRN..." }' },
+            { step: '3', title: 'Initiate payment', desc: 'POST /api/v1/payments with the PRN and channel. Listen for the webhook to confirm.', code: 'POST /api/v1/payments â†’ { "transaction_id": "TXN-..." }' },
           ].map(({ step, title, desc, code }) => (
             <div key={step} className="flex gap-4 bg-card border border-border rounded-xl p-4">
               <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-black flex-shrink-0">{step}</div>
@@ -948,13 +948,13 @@ function OverviewTab() {
   )
 }
 
-// ─── Main page ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function ApiPlatformPage() {
   return (
     <div>
       <PageHeader
         title="API Platform"
-        subtitle="Developer portal — GovPay Switch payment integration APIs"
+        subtitle="Developer portal â€” GovPay Switch payment integration APIs"
         actions={
           <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-200 text-green-700 rounded-full text-xs font-semibold">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />

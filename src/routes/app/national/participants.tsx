@@ -1,12 +1,12 @@
-import { useQuery } from '@tanstack/react-query'
+﻿import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { Modal } from '../../components/ui/Modal'
-import { ParticipantDrawer } from '../../features/participants/ParticipantDrawer'
-import { participantsApi } from '../../services/mockApi'
-import { formatUGX } from '../../utils/format'
-import { useAppStore } from '../../store/appStore'
+import { PageHeader } from '../../../components/ui/PageHeader'
+import { Modal } from '../../../components/ui/Modal'
+import { ParticipantDrawer } from '../../../features/participants/ParticipantDrawer'
+import { participantsApi } from '../../../services/mockApi'
+import { formatUGX } from '../../../utils/format'
+import { useAppStore } from '../../../store/appStore'
 import {
   Wifi, WifiOff, Users, Activity,
   Building2, Landmark, CreditCard, Smartphone,
@@ -14,10 +14,10 @@ import {
   CheckCircle2, ChevronLeft, ChevronRight as ChevronRightIcon,
   Globe, Lock, Banknote, FileText, UserPlus,
 } from 'lucide-react'
-import type { Participant, ParticipantType } from '../../types'
+import type { Participant, ParticipantType } from '../../../types'
 import clsx from 'clsx'
 
-// ─── Type metadata ────────────────────────────────────────────────────────────
+// â”€â”€â”€ Type metadata â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const TYPE_META: Record<ParticipantType | 'All', { icon: React.ElementType; color: string; bg: string }> = {
   'All':                    { icon: Users,      color: 'text-slate-700',  bg: 'bg-slate-100 border-slate-200' },
   'Bank':                   { icon: Building2,  color: 'text-blue-700',   bg: 'bg-blue-50 border-blue-200' },
@@ -27,7 +27,7 @@ const TYPE_META: Record<ParticipantType | 'All', { icon: React.ElementType; colo
   'Treasury':               { icon: Landmark,   color: 'text-primary',    bg: 'bg-primary/10 border-primary/20' },
 }
 
-// ─── Status helpers ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Status helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const STATUS_DOT: Record<string, string> = {
   active:     'bg-green-500',
   suspended:  'bg-danger animate-pulse',
@@ -54,7 +54,7 @@ const RISK_BADGE: Record<string, string> = {
   high:   'bg-red-100 text-red-700 border-red-200',
 }
 
-// ─── KPI summary strip ────────────────────────────────────────────────────────
+// â”€â”€â”€ KPI summary strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function KpiStrip({ data }: { data: Participant[] }) {
   const active     = data.filter((p) => p.status === 'active').length
   const suspended  = data.filter((p) => p.status === 'suspended').length
@@ -88,7 +88,7 @@ function KpiStrip({ data }: { data: Participant[] }) {
   )
 }
 
-// ─── Participant row ──────────────────────────────────────────────────────────
+// â”€â”€â”€ Participant row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ParticipantRow({ p, onClick }: { p: Participant; onClick: () => void }) {
   const tm = TYPE_META[p.type] ?? TYPE_META['Government Agency']
 
@@ -159,7 +159,7 @@ function ParticipantRow({ p, onClick }: { p: Participant; onClick: () => void })
       {/* Daily volume */}
       <td className="px-4 py-3">
         <span className="text-sm font-semibold text-primary">
-          {p.dailyVolume > 0 ? formatUGX(p.dailyVolume) : '—'}
+          {p.dailyVolume > 0 ? formatUGX(p.dailyVolume) : 'â€”'}
         </span>
         {p.dailyCount > 0 && (
           <div className="text-[10px] text-muted">{p.dailyCount.toLocaleString()} txns</div>
@@ -188,7 +188,7 @@ function ParticipantRow({ p, onClick }: { p: Participant; onClick: () => void })
   )
 }
 
-// ─── Onboarding wizard ───────────────────────────────────────────────────────
+// â”€â”€â”€ Onboarding wizard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const ONBOARD_STEPS = [
   { label: 'Basic Info',    icon: UserPlus,  desc: 'Name, type, contact' },
   { label: 'API Config',    icon: Globe,     desc: 'Endpoints & keys' },
@@ -268,7 +268,7 @@ function OnboardModal({ open, onClose }: { open: boolean; onClose: () => void })
     await new Promise<void>((r) => setTimeout(r, 1400))
     setSubmitting(false)
     setSubmitted(true)
-    addToast(`${form.name} onboarded — status: onboarding`, 'success')
+    addToast(`${form.name} onboarded â€” status: onboarding`, 'success')
     pushSecurityEvent('CONFIG_CHANGED', `New participant onboarded: ${form.name}`, form.shortName)
   }
 
@@ -282,7 +282,7 @@ function OnboardModal({ open, onClose }: { open: boolean; onClose: () => void })
     <Modal
       open={open}
       onClose={handleClose}
-      title={submitted ? 'Participant Onboarded' : `Onboard New Participant — Step ${step + 1} of 4`}
+      title={submitted ? 'Participant Onboarded' : `Onboard New Participant â€” Step ${step + 1} of 4`}
       footer={
         submitted ? (
           <button onClick={handleClose}
@@ -310,7 +310,7 @@ function OnboardModal({ open, onClose }: { open: boolean; onClose: () => void })
               <button onClick={submit} disabled={submitting}
                 className="ml-auto flex items-center gap-2 px-5 py-2.5 bg-success text-white rounded-xl text-sm font-semibold hover:bg-green-700 transition-colors disabled:opacity-60">
                 {submitting
-                  ? <><span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />Submitting…</>
+                  ? <><span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />Submittingâ€¦</>
                   : <><CheckCircle2 size={14} />Submit Onboarding</>
                 }
               </button>
@@ -376,7 +376,7 @@ function OnboardModal({ open, onClose }: { open: boolean; onClose: () => void })
           </div>
 
           <AnimatePresence mode="wait">
-            {/* ── Step 0: Basic Info ── */}
+            {/* â”€â”€ Step 0: Basic Info â”€â”€ */}
             {step === 0 && (
               <motion.div key="s0" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}
                 className="space-y-3">
@@ -413,7 +413,7 @@ function OnboardModal({ open, onClose }: { open: boolean; onClose: () => void })
               </motion.div>
             )}
 
-            {/* ── Step 1: API Config ── */}
+            {/* â”€â”€ Step 1: API Config â”€â”€ */}
             {step === 1 && (
               <motion.div key="s1" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}
                 className="space-y-3">
@@ -444,8 +444,8 @@ function OnboardModal({ open, onClose }: { open: boolean; onClose: () => void })
                 <div className="bg-surface border border-border rounded-xl p-3 text-xs text-muted">
                   <p className="font-semibold text-slate-700 mb-1">API credentials will be generated after submission:</p>
                   <ul className="space-y-0.5 list-disc list-inside">
-                    <li>Live API key (gps_live_…)</li>
-                    <li>Sandbox API key (gps_test_…)</li>
+                    <li>Live API key (gps_live_â€¦)</li>
+                    <li>Sandbox API key (gps_test_â€¦)</li>
                     <li>mTLS client certificate pair</li>
                     <li>Webhook signing secret</li>
                   </ul>
@@ -453,7 +453,7 @@ function OnboardModal({ open, onClose }: { open: boolean; onClose: () => void })
               </motion.div>
             )}
 
-            {/* ── Step 2: Settlement ── */}
+            {/* â”€â”€ Step 2: Settlement â”€â”€ */}
             {step === 2 && (
               <motion.div key="s2" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}
                 className="space-y-3">
@@ -487,7 +487,7 @@ function OnboardModal({ open, onClose }: { open: boolean; onClose: () => void })
               </motion.div>
             )}
 
-            {/* ── Step 3: Review ── */}
+            {/* â”€â”€ Step 3: Review â”€â”€ */}
             {step === 3 && (
               <motion.div key="s3" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}
                 className="space-y-3">
@@ -497,24 +497,24 @@ function OnboardModal({ open, onClose }: { open: boolean; onClose: () => void })
 
                 {[
                   { section: 'Basic Information', rows: [
-                    { label: 'Name',    value: form.name || '—' },
-                    { label: 'Short Name', value: form.shortName || '—' },
+                    { label: 'Name',    value: form.name || 'â€”' },
+                    { label: 'Short Name', value: form.shortName || 'â€”' },
                     { label: 'Type',    value: form.type },
-                    { label: 'Email',   value: form.email || '—' },
-                    { label: 'Phone',   value: form.phone || '—' },
+                    { label: 'Email',   value: form.email || 'â€”' },
+                    { label: 'Phone',   value: form.phone || 'â€”' },
                   ]},
                   { section: 'API Configuration', rows: [
-                    { label: 'Endpoint',    value: form.apiEndpoint || '—' },
+                    { label: 'Endpoint',    value: form.apiEndpoint || 'â€”' },
                     { label: 'Health URL',  value: form.healthCheckUrl || '/health' },
-                    { label: 'Webhook',     value: form.webhookUrl || '—' },
+                    { label: 'Webhook',     value: form.webhookUrl || 'â€”' },
                     { label: 'API Version', value: form.apiVersion },
                   ]},
                   { section: 'Settlement', rows: [
                     { label: 'Settlement Bank',    value: form.settlementBank },
-                    { label: 'Account Number',     value: form.settlementAccount || '—' },
+                    { label: 'Account Number',     value: form.settlementAccount || 'â€”' },
                     { label: 'Netting Type',       value: form.nettingType },
                     { label: 'Cutoff Time',        value: form.cutoffTime + ' EAT' },
-                    { label: 'Min Settlement',     value: form.minSettlement ? `UGX ${Number(form.minSettlement).toLocaleString()}` : '—' },
+                    { label: 'Min Settlement',     value: form.minSettlement ? `UGX ${Number(form.minSettlement).toLocaleString()}` : 'â€”' },
                   ]},
                 ].map(({ section, rows }) => (
                   <div key={section} className="bg-surface rounded-xl border border-border overflow-hidden">
@@ -557,7 +557,7 @@ function inputCls(hasError: boolean) {
   )
 }
 
-// ─── Main page ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type FilterType = ParticipantType | 'All'
 
 const TYPE_TABS: FilterType[] = [
@@ -618,7 +618,7 @@ export default function ParticipantsPage() {
 
       <KpiStrip data={data} />
 
-      {/* ── Type filter tabs ─────────────────────────────────── */}
+      {/* â”€â”€ Type filter tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="flex items-center gap-2 mb-4 flex-wrap">
         <div className="flex gap-1 bg-surface p-1 rounded-xl border border-border flex-wrap">
           {TYPE_TABS.map((t) => {
@@ -666,11 +666,11 @@ export default function ParticipantsPage() {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name or ID…"
+            placeholder="Search by name or IDâ€¦"
             className="text-xs outline-none bg-transparent w-40 placeholder:text-muted"
           />
           {search && (
-            <button onClick={() => setSearch('')} className="text-muted hover:text-slate-800 text-[10px]">✕</button>
+            <button onClick={() => setSearch('')} className="text-muted hover:text-slate-800 text-[10px]">âœ•</button>
           )}
         </div>
 
@@ -680,10 +680,10 @@ export default function ParticipantsPage() {
         </div>
       </div>
 
-      {/* ── Participants table ───────────────────────────────── */}
+      {/* â”€â”€ Participants table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="bg-card rounded-card shadow-card overflow-hidden">
         {isLoading ? (
-          <div className="p-8 text-center text-sm text-muted">Loading participants…</div>
+          <div className="p-8 text-center text-sm text-muted">Loading participantsâ€¦</div>
         ) : filtered.length === 0 ? (
           <div className="p-8 text-center">
             <Users size={32} className="text-muted/30 mx-auto mb-2" />
@@ -716,7 +716,7 @@ export default function ParticipantsPage() {
         {data.some((p) => p.status === 'suspended') && (
           <div className="px-4 py-2.5 bg-red-50 border-t border-red-100 flex items-center gap-2 text-xs text-red-700">
             <AlertTriangle size={13} />
-            {data.filter((p) => p.status === 'suspended').length} participant(s) currently suspended —
+            {data.filter((p) => p.status === 'suspended').length} participant(s) currently suspended â€”
             all transactions blocked until reactivated
           </div>
         )}
@@ -725,7 +725,7 @@ export default function ParticipantsPage() {
         {data.some((p) => p.status === 'onboarding') && (
           <div className="px-4 py-2.5 bg-yellow-50 border-t border-yellow-100 flex items-center gap-2 text-xs text-yellow-700">
             <Activity size={13} />
-            {data.filter((p) => p.status === 'onboarding').length} participant(s) in onboarding —
+            {data.filter((p) => p.status === 'onboarding').length} participant(s) in onboarding â€”
             API integration testing in progress
           </div>
         )}

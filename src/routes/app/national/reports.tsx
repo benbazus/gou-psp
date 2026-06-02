@@ -1,14 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
+﻿import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { BarChart } from '../../components/charts/BarChart'
-import { PieChart } from '../../components/charts/PieChart'
-import { AreaChart } from '../../components/charts/AreaChart'
-import { LineChart } from '../../components/charts/LineChart'
-import { reportsApi } from '../../services/mockApi'
-import { agencyRevenue, channelBreakdown, regionalActivity, failureReasons } from '../../data/mockReports'
-import { useAppStore } from '../../store/appStore'
-import { formatUGX, formatNumber } from '../../utils/format'
+import { PageHeader } from '../../../components/ui/PageHeader'
+import { BarChart } from '../../../components/charts/BarChart'
+import { PieChart } from '../../../components/charts/PieChart'
+import { AreaChart } from '../../../components/charts/AreaChart'
+import { LineChart } from '../../../components/charts/LineChart'
+import { reportsApi } from '../../../services/mockApi'
+import { agencyRevenue, channelBreakdown, regionalActivity, failureReasons } from '../../../data/mockReports'
+import { useAppStore } from '../../../store/appStore'
+import { formatUGX, formatNumber } from '../../../utils/format'
 import { Download, FileSpreadsheet, FileText, TrendingUp, AlertTriangle, MapPin, Building2 } from 'lucide-react'
 
 const RECON_EXCEPTIONS = Array.from({ length: 14 }, (_, i) => ({
@@ -18,9 +18,9 @@ const RECON_EXCEPTIONS = Array.from({ length: 14 }, (_, i) => ({
 
 const CHANNEL_COLORS = ['#1B3A6B', '#F4B000', '#16A34A', '#D62828', '#64748B']
 
-// ─── Export helpers ────────────────────────────────────────
+// â”€â”€â”€ Export helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // A single source of truth for the export payload so CSV / Excel / PDF all
-// stay in sync — each exporter just re-serialises the same row matrix.
+// stay in sync â€” each exporter just re-serialises the same row matrix.
 function buildReportMatrix(): { title: string; headers: string[]; rows: (string | number)[][] }[] {
   return [
     {
@@ -48,7 +48,7 @@ function buildReportMatrix(): { title: string; headers: string[]; rows: (string 
 
 function exportCSV() {
   const sections = buildReportMatrix()
-  const lines: string[] = ['Uganda GovPay Switch — Analytics Export', new Date().toISOString(), '']
+  const lines: string[] = ['Uganda GovPay Switch â€” Analytics Export', new Date().toISOString(), '']
   for (const s of sections) {
     lines.push(s.title)
     lines.push(s.headers.join(','))
@@ -59,9 +59,9 @@ function exportCSV() {
 }
 
 function exportExcel() {
-  // Excel opens tab-separated .xls files natively — no library needed for a demo.
+  // Excel opens tab-separated .xls files natively â€” no library needed for a demo.
   const sections = buildReportMatrix()
-  const lines: string[] = ['Uganda GovPay Switch — Analytics Export', new Date().toISOString(), '']
+  const lines: string[] = ['Uganda GovPay Switch â€” Analytics Export', new Date().toISOString(), '']
   for (const s of sections) {
     lines.push(s.title)
     lines.push(s.headers.join('\t'))
@@ -84,7 +84,7 @@ function exportPDF() {
       td{border-bottom:1px solid #e2e8f0;padding:6px 8px}
       .meta{color:#64748b;font-size:11px}
     </style></head><body>
-    <h1>🇺🇬 Uganda GovPay Switch — Analytics Report</h1>
+    <h1>ðŸ‡ºðŸ‡¬ Uganda GovPay Switch â€” Analytics Report</h1>
     <p class="meta">Generated ${new Date().toLocaleString()}</p>
     ${sections.map((s) => `
       <h2>${s.title}</h2>
@@ -110,7 +110,7 @@ function triggerDownload(content: string, filename: string, mime: string) {
   URL.revokeObjectURL(url)
 }
 
-// ─── KPI summary strip ─────────────────────────────────────
+// â”€â”€â”€ KPI summary strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function KpiStrip() {
   const totalRevenue = agencyRevenue.reduce((s, a) => s + a.revenue, 0)
   const totalTxns = agencyRevenue.reduce((s, a) => s + a.count, 0)
@@ -280,7 +280,7 @@ export default function ReportsPage() {
               <div key={f.reason}>
                 <div className="flex justify-between text-xs mb-1">
                   <span className="text-slate-700">{f.reason}</span>
-                  <span className="text-muted">{formatNumber(f.count)} · {f.pct}%</span>
+                  <span className="text-muted">{formatNumber(f.count)} Â· {f.pct}%</span>
                 </div>
                 <div className="h-2 bg-surface rounded-full overflow-hidden">
                   <div className="h-full bg-danger rounded-full" style={{ width: `${f.pct}%` }} />

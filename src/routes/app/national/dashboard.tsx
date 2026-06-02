@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+﻿import { useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
@@ -7,22 +7,22 @@ import {
   Banknote, Shield, Wifi, Database, Server, RefreshCw,
   Timer,
 } from 'lucide-react'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { KPICard, KPICardSkeleton } from '../../components/ui/KPICard'
-import { ErrorState } from '../../components/ui/ErrorState'
-import { BarChart } from '../../components/charts/BarChart'
-import { PieChart } from '../../components/charts/PieChart'
-import { TransactionFeed } from '../../features/dashboard/TransactionFeed'
-import { AlertStrip } from '../../features/dashboard/AlertStrip'
-import { transactionsApi } from '../../services/mockApi'
-import { agencyRevenue, channelBreakdown } from '../../data/mockReports'
-import { mockSettlementBatches, mockSettlementAccounts } from '../../data/mockSettlements'
-import { fadeInUp, staggerContainer } from '../../utils/animations'
-import { formatUGX } from '../../utils/format'
-import { useAppStore } from '../../store/appStore'
+import { PageHeader } from '../../../components/ui/PageHeader'
+import { KPICard, KPICardSkeleton } from '../../../components/ui/KPICard'
+import { ErrorState } from '../../../components/ui/ErrorState'
+import { BarChart } from '../../../components/charts/BarChart'
+import { PieChart } from '../../../components/charts/PieChart'
+import { TransactionFeed } from '../../../features/dashboard/TransactionFeed'
+import { AlertStrip } from '../../../features/dashboard/AlertStrip'
+import { transactionsApi } from '../../../services/mockApi'
+import { agencyRevenue, channelBreakdown } from '../../../data/mockReports'
+import { mockSettlementBatches, mockSettlementAccounts } from '../../../data/mockSettlements'
+import { fadeInUp, staggerContainer } from '../../../utils/animations'
+import { formatUGX } from '../../../utils/format'
+import { useAppStore } from '../../../store/appStore'
 import clsx from 'clsx'
 
-// ─── Settlement countdown ─────────────────────────────────────────────────────
+// â”€â”€â”€ Settlement countdown â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function useSettlementCountdown() {
   const [secondsLeft, setSecondsLeft] = useState(0)
 
@@ -45,7 +45,7 @@ function useSettlementCountdown() {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
-// ─── System component health ──────────────────────────────────────────────────
+// â”€â”€â”€ System component health â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const COMPONENTS = [
   { name: 'API Gateway',         status: 'operational' as const, latency: '12ms',  icon: Wifi },
   { name: 'Transaction Switch',  status: 'operational' as const, latency: '8ms',   icon: RefreshCw },
@@ -85,7 +85,7 @@ function SystemHealth() {
   )
 }
 
-// ─── Treasury settlement status ───────────────────────────────────────────────
+// â”€â”€â”€ Treasury settlement status â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function TreasuryStatus() {
   const countdown = useSettlementCountdown()
 
@@ -107,7 +107,7 @@ function TreasuryStatus() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-sm font-semibold text-slate-800">Treasury Settlement Status</h3>
-          <p className="text-xs text-muted">End-of-day settlement window — 23:00 EAT cutoff</p>
+          <p className="text-xs text-muted">End-of-day settlement window â€” 23:00 EAT cutoff</p>
         </div>
         <div className="flex items-center gap-2 bg-primary/5 border border-primary/20 rounded-xl px-3 py-2">
           <Timer size={14} className="text-primary" />
@@ -193,7 +193,7 @@ function TreasuryStatus() {
   )
 }
 
-// ─── Live ticker row (increments with store) ──────────────────────────────────
+// â”€â”€â”€ Live ticker row (increments with store) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function LiveKpiRow({ stats }: { stats: { count: number; totalValue: number; successRate: number; failedCount: number; pendingSettlements: number; activeParticipants: number; uptime: number; avgProcessingTime: number } }) {
   const liveTransactions = useAppStore((s) => s.liveTransactions)
   const [baseCount]      = useState(stats.count)
@@ -257,7 +257,7 @@ function LiveKpiRow({ stats }: { stats: { count: number; totalValue: number; suc
   )
 }
 
-// ─── Main dashboard ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Main dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function DashboardPage() {
   const { data: stats, isLoading, isError } = useQuery({
     queryKey: ['dashboard-stats'],
@@ -291,7 +291,7 @@ export default function DashboardPage() {
 
       <AlertStrip />
 
-      {/* ── KPI row ─────────────────────────────────────────── */}
+      {/* â”€â”€ KPI row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <motion.div
         className="grid grid-cols-2 md:grid-cols-4 gap-4"
         variants={staggerContainer}
@@ -310,7 +310,7 @@ export default function DashboardPage() {
         }
       </motion.div>
 
-      {/* ── Charts + feed row ───────────────────────────────── */}
+      {/* â”€â”€ Charts + feed row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="grid grid-cols-3 gap-4">
         <TransactionFeed />
 
@@ -341,7 +341,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* ── Treasury settlement + system health ─────────────── */}
+      {/* â”€â”€ Treasury settlement + system health â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-2">
           <TreasuryStatus />

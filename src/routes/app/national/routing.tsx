@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
+﻿import { useQuery } from '@tanstack/react-query'
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as Tabs from '@radix-ui/react-tabs'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { routingApi } from '../../services/mockApi'
-import { useAppStore } from '../../store/appStore'
-import { formatUGX } from '../../utils/format'
+import { PageHeader } from '../../../components/ui/PageHeader'
+import { routingApi } from '../../../services/mockApi'
+import { useAppStore } from '../../../store/appStore'
+import { formatUGX } from '../../../utils/format'
 import {
   WifiOff, Play, RotateCcw,
   CheckCircle2, XCircle, ChevronDown, ArrowRight,
@@ -14,11 +14,11 @@ import {
 import {
   channelDailyVolume,
   txnPriorityLevels, fallbackConfig,
-} from '../../data/mockRouting'
+} from '../../../data/mockRouting'
 import clsx from 'clsx'
-import type { ChannelHealth } from '../../types'
+import type { ChannelHealth } from '../../../types'
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type ChannelRouteState = 'idle' | 'evaluating' | 'selected' | 'success' | 'failed' | 'skipped'
 type Scenario = 'primary_success' | 'fallback' | 'all_failed' | 'reroute'
 
@@ -32,11 +32,11 @@ interface RouteChannel {
   note?: string
 }
 
-// ─── Scenario definitions ─────────────────────────────────────────────────────
+// â”€â”€â”€ Scenario definitions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SCENARIOS: { id: Scenario; label: string; desc: string; color: string }[] = [
   { id: 'primary_success', label: 'Primary Success',  desc: 'Payment routed via primary channel',          color: 'text-green-700 bg-green-50 border-green-200' },
-  { id: 'fallback',        label: 'Fallback',         desc: 'Primary fails — routed via backup',           color: 'text-yellow-700 bg-yellow-50 border-yellow-200' },
-  { id: 'all_failed',      label: 'All Failed',       desc: 'All channels fail — payment abandoned',        color: 'text-danger bg-red-50 border-red-200' },
+  { id: 'fallback',        label: 'Fallback',         desc: 'Primary fails â€” routed via backup',           color: 'text-yellow-700 bg-yellow-50 border-yellow-200' },
+  { id: 'all_failed',      label: 'All Failed',       desc: 'All channels fail â€” payment abandoned',        color: 'text-danger bg-red-50 border-red-200' },
   { id: 'reroute',         label: 'Reroute',          desc: 'Degraded channel detected and skipped',        color: 'text-purple-700 bg-purple-50 border-purple-200' },
 ]
 
@@ -50,10 +50,10 @@ function blankChannels(): RouteChannel[] {
   return BASE_CHANNELS.map((c) => ({ ...c, state: 'idle' }))
 }
 
-// ─── Animated Routing Diagram ─────────────────────────────────────────────────
+// â”€â”€â”€ Animated Routing Diagram â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const STATE_NODE: Record<ChannelRouteState, { ring: string; label: string; icon?: React.ElementType }> = {
   idle:       { ring: 'border-border bg-surface text-muted',                         label: 'Idle' },
-  evaluating: { ring: 'border-primary bg-primary/5 text-primary',                    label: 'Evaluating…' },
+  evaluating: { ring: 'border-primary bg-primary/5 text-primary',                    label: 'Evaluatingâ€¦' },
   selected:   { ring: 'border-primary bg-primary text-white shadow-lg shadow-primary/30', label: 'Selected' },
   success:    { ring: 'border-green-500 bg-green-500 text-white shadow-green-200',   label: 'Success', icon: CheckCircle2 },
   failed:     { ring: 'border-danger bg-danger text-white shadow-red-200',           label: 'Failed', icon: XCircle },
@@ -86,7 +86,7 @@ function RoutingDiagram({
         <div className="text-[10px] text-muted">Initiates payment</div>
       </div>
 
-      {/* Connector payer → switch */}
+      {/* Connector payer â†’ switch */}
       <AnimatedConnector active={switchState !== 'idle'} state={switchState !== 'idle' ? (outcome === 'success' ? 'success' : 'selected') : 'idle'} />
 
       {/* GovPay Switch */}
@@ -255,7 +255,7 @@ function AnimatedConnector({ active, state }: { active: boolean; state: ChannelR
   )
 }
 
-// ─── Channel Health Grid ──────────────────────────────────────────────────────
+// â”€â”€â”€ Channel Health Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function HealthGrid() {
   const { data: health = [] } = useQuery({
     queryKey: ['channel-health'],
@@ -344,39 +344,39 @@ function HealthGrid() {
   )
 }
 
-// ─── Routing animation controller ────────────────────────────────────────────
+// â”€â”€â”€ Routing animation controller â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SCENARIO_FRAMES: Record<Scenario, { channels: Partial<RouteChannel>[]; delay: number }[]> = {
   primary_success: [
-    { channels: [{ id: 'mtn', state: 'evaluating', note: 'Evaluating…' }], delay: 600 },
-    { channels: [{ id: 'mtn', state: 'selected',   note: 'Selected — priority 1' }], delay: 700 },
-    { channels: [{ id: 'mtn', state: 'success',    note: 'Confirmed ✓' }], delay: 0 },
+    { channels: [{ id: 'mtn', state: 'evaluating', note: 'Evaluatingâ€¦' }], delay: 600 },
+    { channels: [{ id: 'mtn', state: 'selected',   note: 'Selected â€” priority 1' }], delay: 700 },
+    { channels: [{ id: 'mtn', state: 'success',    note: 'Confirmed âœ“' }], delay: 0 },
   ],
   fallback: [
-    { channels: [{ id: 'mtn',    state: 'evaluating', note: 'Evaluating…' }], delay: 600 },
-    { channels: [{ id: 'mtn',    state: 'selected',   note: 'Attempting…' }], delay: 700 },
+    { channels: [{ id: 'mtn',    state: 'evaluating', note: 'Evaluatingâ€¦' }], delay: 600 },
+    { channels: [{ id: 'mtn',    state: 'selected',   note: 'Attemptingâ€¦' }], delay: 700 },
     { channels: [{ id: 'mtn',    state: 'failed',     note: 'API timeout 5s' }], delay: 500 },
     { channels: [{ id: 'airtel', state: 'evaluating', note: 'Fallback selected' }], delay: 600 },
-    { channels: [{ id: 'airtel', state: 'selected',   note: 'Attempting…' }], delay: 700 },
-    { channels: [{ id: 'airtel', state: 'success',    note: 'Confirmed ✓' }], delay: 0 },
+    { channels: [{ id: 'airtel', state: 'selected',   note: 'Attemptingâ€¦' }], delay: 700 },
+    { channels: [{ id: 'airtel', state: 'success',    note: 'Confirmed âœ“' }], delay: 0 },
   ],
   all_failed: [
-    { channels: [{ id: 'mtn',     state: 'evaluating', note: 'Evaluating…' }], delay: 500 },
+    { channels: [{ id: 'mtn',     state: 'evaluating', note: 'Evaluatingâ€¦' }], delay: 500 },
     { channels: [{ id: 'mtn',     state: 'failed',     note: 'Timeout' }], delay: 400 },
-    { channels: [{ id: 'airtel',  state: 'evaluating', note: 'Fallback…' }], delay: 500 },
+    { channels: [{ id: 'airtel',  state: 'evaluating', note: 'Fallbackâ€¦' }], delay: 500 },
     { channels: [{ id: 'airtel',  state: 'failed',     note: 'Error 503' }], delay: 400 },
-    { channels: [{ id: 'stanbic', state: 'evaluating', note: 'Last resort…' }], delay: 500 },
+    { channels: [{ id: 'stanbic', state: 'evaluating', note: 'Last resortâ€¦' }], delay: 500 },
     { channels: [{ id: 'stanbic', state: 'failed',     note: 'No response' }], delay: 0 },
   ],
   reroute: [
-    { channels: [{ id: 'mtn',    state: 'evaluating', note: 'Checking health…' }], delay: 600 },
-    { channels: [{ id: 'mtn',    state: 'skipped',    note: 'DEGRADED — skipped' }], delay: 400 },
-    { channels: [{ id: 'airtel', state: 'evaluating', note: 'Rerouting…' }], delay: 600 },
-    { channels: [{ id: 'airtel', state: 'selected',   note: 'Healthy — selected' }], delay: 700 },
-    { channels: [{ id: 'airtel', state: 'success',    note: 'Confirmed ✓' }], delay: 0 },
+    { channels: [{ id: 'mtn',    state: 'evaluating', note: 'Checking healthâ€¦' }], delay: 600 },
+    { channels: [{ id: 'mtn',    state: 'skipped',    note: 'DEGRADED â€” skipped' }], delay: 400 },
+    { channels: [{ id: 'airtel', state: 'evaluating', note: 'Reroutingâ€¦' }], delay: 600 },
+    { channels: [{ id: 'airtel', state: 'selected',   note: 'Healthy â€” selected' }], delay: 700 },
+    { channels: [{ id: 'airtel', state: 'success',    note: 'Confirmed âœ“' }], delay: 0 },
   ],
 }
 
-// ─── Main page ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function RoutingPage() {
   const addToast = useAppStore((s) => s.addToast)
 
@@ -428,10 +428,10 @@ export default function RoutingPage() {
     setSwitchState('done')
 
     const messages = {
-      primary_success: 'Routed via primary channel — MTN Mobile Money',
-      fallback:        'Primary failed — routed via fallback Airtel Money',
-      all_failed:      'All channels failed — payment abandoned',
-      reroute:         'MTN degraded — auto-rerouted to Airtel Money',
+      primary_success: 'Routed via primary channel â€” MTN Mobile Money',
+      fallback:        'Primary failed â€” routed via fallback Airtel Money',
+      all_failed:      'All channels failed â€” payment abandoned',
+      reroute:         'MTN degraded â€” auto-rerouted to Airtel Money',
     }
     addToast(messages[scenario], hasSuccess ? 'success' : 'error')
 
@@ -448,11 +448,11 @@ export default function RoutingPage() {
         subtitle="Channel availability, routing rules, fee schedule, fallback configuration, and transaction priority"
       />
 
-      {/* ── Channel health grid ──────────────────────────────── */}
+      {/* â”€â”€ Channel health grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <HealthGrid />
 
       <div className="grid grid-cols-5 gap-4">
-        {/* ── Routing animation (left, wider) ─── */}
+        {/* â”€â”€ Routing animation (left, wider) â”€â”€â”€ */}
         <div className="col-span-2">
           <div className="bg-card rounded-card shadow-card p-5">
             <div className="flex items-center justify-between mb-4">
@@ -493,7 +493,7 @@ export default function RoutingPage() {
                 disabled={running}
                 className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary-light transition-colors disabled:opacity-60"
               >
-                {running ? <><RefreshCw size={13} className="animate-spin" />Simulating…</> : <><Play size={13} />Simulate Routing</>}
+                {running ? <><RefreshCw size={13} className="animate-spin" />Simulatingâ€¦</> : <><Play size={13} />Simulate Routing</>}
               </button>
               <button
                 onClick={reset}
@@ -520,7 +520,7 @@ export default function RoutingPage() {
           </div>
         </div>
 
-        {/* ── Right: tabs ─── */}
+        {/* â”€â”€ Right: tabs â”€â”€â”€ */}
         <div className="col-span-3">
           <Tabs.Root defaultValue="rules">
             <Tabs.List className="flex gap-1 bg-surface p-1 rounded-xl border border-border mb-4">
@@ -622,7 +622,7 @@ export default function RoutingPage() {
             <Tabs.Content value="fallback">
               <div className="bg-card rounded-card shadow-card overflow-hidden">
                 <div className="px-4 py-3 border-b border-border bg-surface">
-                  <p className="text-xs font-semibold text-slate-800">Fallback routing rules — automatic rerouting on channel failure</p>
+                  <p className="text-xs font-semibold text-slate-800">Fallback routing rules â€” automatic rerouting on channel failure</p>
                 </div>
                 <table className="w-full text-xs">
                   <thead className="bg-surface border-b border-border">
