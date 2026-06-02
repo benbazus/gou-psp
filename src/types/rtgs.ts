@@ -160,6 +160,8 @@ export interface RTGSSimulatorNode {
   state: SimulatorNodeState
 }
 
+export type SimulatorRunStatus = 'idle' | 'running' | 'completed' | 'failed'
+
 export interface RTGSSimulatorRun {
   scenario: SimulatorScenario
   currentStep: number
@@ -168,7 +170,7 @@ export interface RTGSSimulatorRun {
   amount: number
   senderBank: string
   receiverBank: string
-  status: 'idle' | 'running' | 'completed' | 'failed'
+  status: SimulatorRunStatus
   auditLog: RTGSAuditEntry[]
   finalOutcome?: string
 }
@@ -208,6 +210,13 @@ export interface RTGSKpi {
   netPosition: number
 }
 
+export interface ApprovalChainEntry {
+  role: string
+  actor: string
+  status: 'pending' | 'approved' | 'rejected'
+  timestamp?: string
+}
+
 export interface InterbankTransfer {
   id: string
   rtgsRef: string
@@ -220,6 +229,6 @@ export interface InterbankTransfer {
   fees: number
   submittedAt: string
   settledAt?: string
-  approvalChain: Array<{ role: string; actor: string; status: 'pending' | 'approved' | 'rejected'; timestamp?: string }>
+  approvalChain: ApprovalChainEntry[]
   auditLog: RTGSAuditEntry[]
 }
