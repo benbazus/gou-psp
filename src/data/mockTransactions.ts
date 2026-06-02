@@ -43,6 +43,7 @@ function buildTransactions(): Transaction[] {
     const status = randomItem(STATUSES)
     return {
       id: `TXN-2026-${String(100000 + i).slice(1)}`,
+      tenantId: 'national',
       amount,
       payer: randomItem(PAYERS),
       payee: svc.agency,

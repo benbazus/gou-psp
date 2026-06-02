@@ -1,4 +1,4 @@
-import type React from 'react'
+import type { ComponentType } from 'react'
 
 // ─── Roles ───────────────────────────────────────────────
 export type Role =
@@ -35,7 +35,7 @@ export type PortalType =
 
 export interface NavItem {
   path: string
-  icon: React.ComponentType<{ size?: number; className?: string }>
+  icon: ComponentType<{ size?: number; className?: string }>
   label: string
   external?: boolean
 }
