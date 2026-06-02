@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 import { ROUTE_ROLES } from "../../router";
-import type { Role, NavSection } from "../../types";
+import type { Role, NavSection, NavItem } from "../../types";
 import clsx from "clsx";
 
 function UgandaFlag({ className }: { className?: string }) {

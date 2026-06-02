@@ -26,12 +26,12 @@ const REPORTS = [
 ]
 
 const EXCEPTION_TYPE_CHART = [
-  { name: 'Insufficient Liquidity', value: 28 },
-  { name: 'Compliance Flag',        value: 12 },
-  { name: 'Settlement Timeout',     value: 18 },
-  { name: 'Invalid Beneficiary',    value: 9 },
-  { name: 'Treasury Mismatch',      value: 6 },
-  { name: 'Duplicate Instruction',  value: 4 },
+  { name: 'Insufficient Liquidity', value: 28, color: '#ef4444' },
+  { name: 'Compliance Flag',        value: 12, color: '#f59e0b' },
+  { name: 'Settlement Timeout',     value: 18, color: '#f97316' },
+  { name: 'Invalid Beneficiary',    value: 9,  color: '#8b5cf6' },
+  { name: 'Treasury Mismatch',      value: 6,  color: '#3b82f6' },
+  { name: 'Duplicate Instruction',  value: 4,  color: '#10b981' },
 ]
 
 export default function RTGSReportsPage() {
@@ -184,7 +184,7 @@ export default function RTGSReportsPage() {
               <>
                 <motion.div variants={fadeInUp} className="bg-slate-900 border border-slate-700 rounded-xl p-5">
                   <h3 className="text-sm font-semibold text-white mb-4">Exception Types Distribution</h3>
-                  <PieChart data={EXCEPTION_TYPE_CHART} nameKey="name" valueKey="value" height={220} />
+                  <PieChart data={EXCEPTION_TYPE_CHART} height={220} />
                 </motion.div>
                 <motion.div variants={fadeInUp} className="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden">
                   <div className="grid grid-cols-[1fr_100px_60px_80px] px-4 py-2.5 bg-slate-800 border-b border-slate-700 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">

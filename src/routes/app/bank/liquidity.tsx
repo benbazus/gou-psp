@@ -5,7 +5,7 @@ import { Droplets, X } from 'lucide-react'
 import clsx from 'clsx'
 
 import { PageHeader } from '../../../components/ui/PageHeader'
-import { KPICard, KPICardSkeleton } from '../../../components/ui/KPICard'
+import { KPICardSkeleton } from '../../../components/ui/KPICard'
 import { AreaChart } from '../../../components/charts/AreaChart'
 import { usePortalConfig } from '../../../contexts/portalConfig'
 import { tenantService } from '../../../services/tenantService'

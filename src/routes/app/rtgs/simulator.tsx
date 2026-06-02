@@ -66,7 +66,6 @@ export default function RTGSSimulatorPage() {
       <PageHeader
         title="RTGS Flow Simulator"
         subtitle="Simulate and visualise real RTGS settlement scenarios step-by-step"
-        icon={Cpu}
       />
 
       <div className="flex gap-1 bg-slate-900 border border-slate-700 rounded-xl p-1 w-fit">
