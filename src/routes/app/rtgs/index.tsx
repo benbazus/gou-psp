@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import {
-  Landmark, TrendingUp, Clock, CheckCircle2, XCircle, ListOrdered,
+  TrendingUp, Clock, CheckCircle2, XCircle, ListOrdered,
   Timer, Gauge, Building2, Vault, Wifi, DollarSign,
 } from 'lucide-react'
 import { PageHeader } from '../../../components/ui/PageHeader'
@@ -27,7 +27,6 @@ export default function RTGSDashboardPage() {
       <PageHeader
         title="RTGS Command Center"
         subtitle="High-Value Settlement Operations — Bank of Uganda National RTGS"
-        icon={Landmark}
       />
 
       <div className="space-y-1.5">

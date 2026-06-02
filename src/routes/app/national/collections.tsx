@@ -1,29 +1,29 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { Stepper } from '../../components/ui/Stepper'
-import { mockAgencies } from '../../data/mockAgencies'
-import { useAppStore } from '../../store/appStore'
-import { formatUGX, generatePRN, generateTxnId } from '../../utils/format'
-import { fadeInUp } from '../../utils/animations'
+import { PageHeader } from '../../../components/ui/PageHeader'
+import { Stepper } from '../../../components/ui/Stepper'
+import { mockAgencies } from '../../../data/mockAgencies'
+import { useAppStore } from '../../../store/appStore'
+import { formatUGX, generatePRN, generateTxnId } from '../../../utils/format'
+import { fadeInUp } from '../../../utils/animations'
 import {
   CheckCircle2, Printer, RotateCcw, Smartphone, CreditCard,
   Building2, Radio, Wallet, ArrowLeft, ChevronRight,
   ShieldCheck, Landmark,
 } from 'lucide-react'
-import type { Agency, AgencyService } from '../../types'
+import type { Agency, AgencyService } from '../../../types'
 import clsx from 'clsx'
 
-// ─── Channels ─────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Channels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type Channel = 'MTN Mobile Money' | 'Airtel Money' | 'Bank Transfer' | 'Visa/Mastercard' | 'Wallet' | 'USSD'
 
 const CHANNELS: { id: Channel; icon: React.ElementType; label: string; sub: string }[] = [
-  { id: 'MTN Mobile Money', icon: Smartphone,  label: 'MTN Mobile Money',  sub: 'Dial *165# · Instant' },
-  { id: 'Airtel Money',     icon: Smartphone,  label: 'Airtel Money',      sub: 'Dial *185# · Instant' },
+  { id: 'MTN Mobile Money', icon: Smartphone,  label: 'MTN Mobile Money',  sub: 'Dial *165# Â· Instant' },
+  { id: 'Airtel Money',     icon: Smartphone,  label: 'Airtel Money',      sub: 'Dial *185# Â· Instant' },
   { id: 'Bank Transfer',    icon: Building2,   label: 'Bank Transfer',     sub: 'Any connected bank' },
   { id: 'Visa/Mastercard',  icon: CreditCard,  label: 'Visa / Mastercard', sub: 'Debit or credit card' },
   { id: 'Wallet',           icon: Wallet,      label: 'GovPay Wallet',     sub: 'Prepaid wallet balance' },
-  { id: 'USSD',             icon: Radio,       label: 'USSD',              sub: '*280*PRN# — no data needed' },
+  { id: 'USSD',             icon: Radio,       label: 'USSD',              sub: '*280*PRN# â€” no data needed' },
 ]
 
 const BANKS = ['Stanbic Bank Uganda', 'Centenary Bank', 'DFCU Bank', 'Equity Bank', 'Absa Uganda', 'Bank of Africa', 'Housing Finance Bank']
@@ -38,7 +38,7 @@ const LIFECYCLE = [
 
 const STEPS = [{ label: 'Select Service' }, { label: 'Review & Pay' }, { label: 'Confirmation' }]
 
-// ─── Amount in words ──────────────────────────────────────────────────────────
+// â”€â”€â”€ Amount in words â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const ONES  = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
                'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen',
                'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']
@@ -54,7 +54,7 @@ function toWords(n: number): string {
   return toWords(Math.floor(n / 1_000_000_000)) + ' Billion' + (n % 1_000_000_000 ? ' ' + toWords(n % 1_000_000_000) : '')
 }
 
-// ─── Channel-specific form ────────────────────────────────────────────────────
+// â”€â”€â”€ Channel-specific form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ChannelForm({ channel }: { channel: Channel }) {
   const [phone, setPhone]     = useState('0772')
   const [bank, setBank]       = useState(BANKS[0])
@@ -129,12 +129,12 @@ function ChannelForm({ channel }: { channel: Channel }) {
             <label className="text-xs text-muted block mb-1">CVV</label>
             <input value={cvv} onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 3))}
               className="w-full border border-border rounded-xl px-3 py-2.5 text-sm outline-none focus:border-primary/50 font-mono"
-              placeholder="•••" maxLength={3} type="password" />
+              placeholder="â€¢â€¢â€¢" maxLength={3} type="password" />
           </div>
         </div>
         <div className="flex items-center gap-2 text-xs text-muted">
           <ShieldCheck size={12} className="text-green-500" />
-          Secured by 3D Secure · PCI-DSS Level 1 compliant
+          Secured by 3D Secure Â· PCI-DSS Level 1 compliant
         </div>
       </div>
     )
@@ -162,7 +162,7 @@ function ChannelForm({ channel }: { channel: Channel }) {
       <div className="bg-slate-900 text-green-400 font-mono text-sm rounded-xl p-4 text-center">
         <p className="text-xs text-green-400/60 mb-2">Dial this USSD code from any phone</p>
         <p className="text-2xl font-bold tracking-widest">*280*{'{PRN}'}#</p>
-        <p className="text-xs text-green-400/60 mt-2">No internet required · Works on all networks</p>
+        <p className="text-xs text-green-400/60 mt-2">No internet required Â· Works on all networks</p>
       </div>
       <div className="bg-surface border border-border rounded-xl px-4 py-3 text-xs text-muted space-y-1">
         <p>1. Dial <span className="font-mono font-bold text-slate-700">*280*PRN#</span> on your mobile phone</p>
@@ -174,7 +174,7 @@ function ChannelForm({ channel }: { channel: Channel }) {
   )
 }
 
-// ─── Official Receipt ─────────────────────────────────────────────────────────
+// â”€â”€â”€ Official Receipt â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function OfficialReceipt({
   prn, txnId, agency, service, channel, amount, onPrint, onNew,
 }: {
@@ -227,7 +227,7 @@ function OfficialReceipt({
             <div>
               <div className="text-[10px] text-muted uppercase tracking-wider mb-0.5">Receipt No.</div>
               <div className="font-mono font-bold text-primary text-sm">{rcptNo}</div>
-              <div className="text-[10px] text-muted mt-1">{dateStr} · {timeStr}</div>
+              <div className="text-[10px] text-muted mt-1">{dateStr} Â· {timeStr}</div>
             </div>
             <div className="flex flex-col items-center">
               <div className="w-16 h-16 rounded-full border-4 border-green-500 flex items-center justify-center bg-green-50">
@@ -283,8 +283,8 @@ function OfficialReceipt({
           {/* Footer */}
           <div className="text-center text-[10px] text-muted space-y-0.5">
             <p className="font-semibold text-slate-600">This is an official Government of Uganda payment receipt.</p>
-            <p>Verify at <span className="font-mono text-primary">verify.govpay.go.ug</span> · PRN: {prn}</p>
-            <p>Processed by Uganda GovPay Switch · Governed by Bank of Uganda</p>
+            <p>Verify at <span className="font-mono text-primary">verify.govpay.go.ug</span> Â· PRN: {prn}</p>
+            <p>Processed by Uganda GovPay Switch Â· Governed by Bank of Uganda</p>
           </div>
         </div>
 
@@ -320,7 +320,7 @@ function ReceiptRow({ label, value, mono }: { label: string; value: string; mono
   )
 }
 
-// ─── Main page ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function CollectionsPage() {
   const addToast = useAppStore((s) => s.addToast)
 
@@ -355,7 +355,7 @@ export default function CollectionsPage() {
       setLifecycleStage(i)
     }
     setDone(true)
-    addToast(`Payment ${id} confirmed — PRN ${prn} marked PAID`, 'success')
+    addToast(`Payment ${id} confirmed â€” PRN ${prn} marked PAID`, 'success')
   }
 
   function reset() {
@@ -378,7 +378,7 @@ export default function CollectionsPage() {
 
       <AnimatePresence mode="wait">
 
-        {/* ── Step 0: Select Agency + Service ── */}
+        {/* â”€â”€ Step 0: Select Agency + Service â”€â”€ */}
         {step === 0 && (
           <motion.div key="s0" variants={fadeInUp} initial="hidden" animate="visible" exit={{ opacity: 0 }}>
             <div className="grid grid-cols-2 gap-5">
@@ -444,7 +444,7 @@ export default function CollectionsPage() {
           </motion.div>
         )}
 
-        {/* ── Step 1: Invoice + Channel ── */}
+        {/* â”€â”€ Step 1: Invoice + Channel â”€â”€ */}
         {step === 1 && (
           <motion.div key="s1" variants={fadeInUp} initial="hidden" animate="visible" exit={{ opacity: 0 }}>
             <div className="grid grid-cols-2 gap-5">
@@ -531,11 +531,11 @@ export default function CollectionsPage() {
           </motion.div>
         )}
 
-        {/* ── Step 2: Processing + Confirmation ── */}
+        {/* â”€â”€ Step 2: Processing + Confirmation â”€â”€ */}
         {step === 2 && (
           <motion.div key="s2" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}>
             <div className="grid grid-cols-2 gap-5">
-              {/* Left: processing → receipt */}
+              {/* Left: processing â†’ receipt */}
               <div>
                 {!done ? (
                   <div className="bg-card rounded-card shadow-card p-8 flex flex-col items-center justify-center text-center min-h-64">
@@ -545,8 +545,8 @@ export default function CollectionsPage() {
                         <Smartphone size={20} className="text-primary" />
                       </div>
                     </div>
-                    <p className="text-sm font-semibold text-slate-800 mb-1">Processing payment…</p>
-                    <p className="text-xs text-muted">Contacting {channel} — please do not close this page</p>
+                    <p className="text-sm font-semibold text-slate-800 mb-1">Processing paymentâ€¦</p>
+                    <p className="text-xs text-muted">Contacting {channel} â€” please do not close this page</p>
                   </div>
                 ) : (
                   <OfficialReceipt
@@ -606,7 +606,7 @@ export default function CollectionsPage() {
                                 animate={{ opacity: 1 }}
                                 className="text-[10px] text-green-600 font-medium mt-0.5"
                               >
-                                ✓ Completed
+                                âœ“ Completed
                               </motion.div>
                             )}
                           </div>
@@ -624,7 +624,7 @@ export default function CollectionsPage() {
                   >
                     <div className="text-xs font-mono text-muted mb-1">Transaction ID</div>
                     <div className="font-mono font-bold text-primary text-sm">{txnId}</div>
-                    <div className="text-xs text-muted mt-1">PRN {prn} — Status: <span className="font-bold text-green-600">PAID</span></div>
+                    <div className="text-xs text-muted mt-1">PRN {prn} â€” Status: <span className="font-bold text-green-600">PAID</span></div>
                   </motion.div>
                 )}
               </div>

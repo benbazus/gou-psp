@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowRight, CheckCircle2, Clock } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { ApprovalChain } from '../../../features/rtgs/components/ApprovalChain'
 import { formatUGX } from '../../../utils/format'

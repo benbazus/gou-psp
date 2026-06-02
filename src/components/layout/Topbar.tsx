@@ -1,31 +1,22 @@
 import { useState, useEffect } from 'react'
 import { useRouterState, useNavigate } from '@tanstack/react-router'
-import { Search, Bell, ShieldCheck, Lock, LogOut } from 'lucide-react'
+import { Search, Bell, ShieldCheck, Lock, LogOut, ArrowLeftRight } from 'lucide-react'
 import { useAppStore } from '../../store/appStore'
 import { CommandPalette } from './CommandPalette'
 import { NotificationPanel } from './NotificationPanel'
+import { PortalSwitcher } from './PortalSwitcher'
+import type { PortalConfig } from '../../types'
 
-const BREADCRUMB_MAP: Record<string, string> = {
-  '/app/dashboard':      'Dashboard',
-  '/app/simulator':      'Payment Simulator',
-  '/app/collections':    'Collections',
-  '/app/routing':        'Payment Routing',
-  '/app/participants':   'Participant Management',
-  '/app/settlement':     'Settlement',
-  '/app/reconciliation': 'Reconciliation',
-  '/app/compliance':     'Compliance & Risk',
-  '/app/disputes':       'Disputes & Refunds',
-  '/app/api-platform':   'API Platform',
-  '/app/operations':     'Operations Center',
-  '/app/reports':        'Reports & Analytics',
-  '/app/admin':          'Admin & Configuration',
-  '/app/architecture':   'System Architecture',
+
+interface TopbarProps {
+  portalConfig?: PortalConfig
 }
 
-export function Topbar() {
-  const [cmdOpen, setCmdOpen]   = useState(false)
-  const [notifOpen, setNotifOpen] = useState(false)
-  const [secOpen, setSecOpen]   = useState(false)
+export function Topbar({ portalConfig }: TopbarProps) {
+  const [cmdOpen, setCmdOpen]       = useState(false)
+  const [notifOpen, setNotifOpen]   = useState(false)
+  const [secOpen, setSecOpen]       = useState(false)
+  const [switchOpen, setSwitchOpen] = useState(false)
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const navigate = useNavigate()
 
@@ -46,7 +37,19 @@ export function Topbar() {
   const notificationsRead   = useAppStore((s) => s.notificationsRead)
   const liveTransactions    = useAppStore((s) => s.liveTransactions)
   const logout              = useAppStore((s) => s.logout)
-  const pageTitle           = BREADCRUMB_MAP[pathname] ?? 'GovPay Switch'
+
+  function getPageTitle() {
+    if (!portalConfig) return 'GovPay Switch'
+    for (const section of portalConfig.navSections) {
+      for (const item of section.items) {
+        if (pathname === item.path || pathname.startsWith(item.path + '/')) {
+          return item.label
+        }
+      }
+    }
+    return portalConfig.tenantName
+  }
+  const pageTitle = getPageTitle()
 
   function handleLogout() {
     logout()
@@ -61,12 +64,27 @@ export function Topbar() {
     <>
       <header className="h-14 bg-card border-b border-border flex items-center justify-between px-6 flex-shrink-0 z-30">
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-muted">GovPay Switch</span>
-          <span className="text-muted">/</span>
+          {portalConfig && (
+            <>
+              <span className="text-muted text-xs font-medium">{portalConfig.tenantShort}</span>
+              <span className="text-muted">/</span>
+            </>
+          )}
           <span className="font-semibold text-slate-800">{pageTitle}</span>
         </div>
 
         <div className="flex items-center gap-3">
+          {/* Switch Portal button — only when inside a portal */}
+          {portalConfig && (
+            <button
+              onClick={() => setSwitchOpen(true)}
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-card transition-colors text-muted hover:text-slate-700"
+            >
+              <ArrowLeftRight size={12} />
+              <span className="hidden sm:inline">Switch Portal</span>
+            </button>
+          )}
+
           <button
             onClick={() => setCmdOpen(true)}
             className="flex items-center gap-2 text-sm text-muted bg-surface border border-border rounded-lg px-3 py-1.5 hover:border-primary/30 transition-colors"
@@ -133,8 +151,16 @@ export function Topbar() {
           </button>
 
           <div className="flex items-center gap-2 pl-3 border-l border-border">
-            <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
-              <span className="text-primary text-xs font-bold">{role ? role[0] : 'G'}</span>
+            <div
+              className="w-7 h-7 rounded-full flex items-center justify-center"
+              style={portalConfig
+                ? { background: portalConfig.accentColor + '22', borderColor: portalConfig.accentColor + '44', border: '1px solid' }
+                : { background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)' }
+              }
+            >
+              <span className="text-xs font-bold" style={portalConfig ? { color: portalConfig.accentColor } : undefined}>
+                {role ? role[0] : 'G'}
+              </span>
             </div>
             <span className="text-sm font-medium text-slate-700 hidden md:block">{role ?? 'Guest'}</span>
             <button
@@ -149,6 +175,7 @@ export function Topbar() {
       </header>
       <CommandPalette open={cmdOpen} onClose={() => setCmdOpen(false)} />
       <NotificationPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
+      {portalConfig && <PortalSwitcher open={switchOpen} onClose={() => setSwitchOpen(false)} />}
     </>
   )
 }

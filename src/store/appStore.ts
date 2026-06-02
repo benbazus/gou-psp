@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { Role, Toast, ToastVariant, Transaction, MfaChallenge, SessionInfo, SecurityEvent, SecurityEventType } from '../types'
+import type { Role, Toast, ToastVariant, Transaction, MfaChallenge, SessionInfo, SecurityEvent, SecurityEventType, PortalType } from '../types'
 
 function mockIp() {
   return `196.43.${Math.floor(Math.random() * 200 + 10)}.${Math.floor(Math.random() * 200 + 10)}`
@@ -13,6 +13,11 @@ interface AppState {
   // ─── Auth ─────────────────────────────────────────────
   activeRole: Role | null
   setRole: (role: Role) => void
+
+  // ─── Portal / Tenant ──────────────────────────────
+  activePortal: PortalType | null
+  activeTenant: string | null
+  setPortal: (portalType: PortalType, tenantId: string, role: Role) => void
 
   // ─── MFA ──────────────────────────────────────────────
   mfaChallenge: MfaChallenge | null
@@ -50,6 +55,17 @@ export const useAppStore = create<AppState>((set, get) => ({
   setRole: (role) => {
     localStorage.setItem('govpay_role', role)
     set({ activeRole: role })
+  },
+
+  // ─── Portal / Tenant ──────────────────────────────
+  activePortal: (localStorage.getItem('govpay_portal') as PortalType | null) ?? null,
+  activeTenant: localStorage.getItem('govpay_tenant') ?? null,
+
+  setPortal: (portalType, tenantId, role) => {
+    localStorage.setItem('govpay_portal', portalType)
+    localStorage.setItem('govpay_tenant', tenantId)
+    localStorage.setItem('govpay_role', role)
+    set({ activePortal: portalType, activeTenant: tenantId, activeRole: role })
   },
 
   // ─── MFA ──────────────────────────────────────────────
@@ -109,7 +125,9 @@ export const useAppStore = create<AppState>((set, get) => ({
     localStorage.removeItem('govpay_role')
     localStorage.removeItem('govpay_mfa')
     localStorage.removeItem('govpay_session')
-    set({ activeRole: null, mfaVerified: false, mfaChallenge: null, sessionInfo: null })
+    localStorage.removeItem('govpay_portal')
+    localStorage.removeItem('govpay_tenant')
+    set({ activeRole: null, mfaVerified: false, mfaChallenge: null, sessionInfo: null, activePortal: null, activeTenant: null })
   },
 
   // ─── Security Events ──────────────────────────────────

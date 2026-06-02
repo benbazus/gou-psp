@@ -1,3 +1,5 @@
+import type { ComponentType } from 'react'
+
 // ─── Roles ───────────────────────────────────────────────
 export type Role =
   | 'Super Admin'
@@ -14,6 +16,48 @@ export type Role =
   | 'Bank RTGS Operator'
   | 'Liquidity Manager'
   | 'RTGS Auditor'
+  | 'Bank Auditor'
+  | 'Collections Manager'
+  | 'Agency Auditor'
+  | 'Treasury Approver'
+  | 'Treasury Auditor'
+  | 'Mobile Operator'
+  | 'Mobile Auditor'
+
+// ─── Portal ───────────────────────────────────────
+export type PortalType =
+  | 'national'
+  | 'bank'
+  | 'rtgs'
+  | 'treasury'
+  | 'agency'
+  | 'mobile'
+
+export interface NavItem {
+  path: string
+  icon: ComponentType<{ size?: number; className?: string }>
+  label: string
+  external?: boolean
+}
+
+export interface NavSection {
+  header: string
+  accent?: 'amber' | 'emerald' | 'violet' | 'cyan' | 'orange'
+  items: NavItem[]
+}
+
+export interface PortalConfig {
+  portalType: PortalType
+  tenantId: string
+  tenantName: string
+  tenantShort: string
+  accentColor: string
+  accentLight: string
+  accentDark: string
+  homeRoute: string
+  navSections: NavSection[]
+  allowedRoles: Role[]
+}
 
 // ─── Shared ──────────────────────────────────────────────
 export type Status = 'completed' | 'pending' | 'failed' | 'processing' | 'cancelled' | 'reversed'
@@ -63,6 +107,7 @@ export interface Participant {
 // ─── Transactions ─────────────────────────────────────────
 export interface Transaction {
   id: string
+  tenantId: string
   amount: number // UGX
   payer: string
   payee: string
@@ -82,6 +127,7 @@ export type SettlementStatus = 'pending' | 'processing' | 'completed' | 'failed'
 
 export interface SettlementBatch {
   id: string
+  tenantId: string
   batchDate: string
   participant: string
   grossAmount: number

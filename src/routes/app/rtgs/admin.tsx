@@ -4,7 +4,6 @@ import { Check } from 'lucide-react'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { useAppStore } from '../../../store/appStore'
 import { staggerContainer, fadeInUp } from '../../../utils/animations'
-import { formatUGX } from '../../../utils/format'
 import clsx from 'clsx'
 
 const TABS = [

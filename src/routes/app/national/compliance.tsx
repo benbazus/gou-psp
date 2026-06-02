@@ -1,28 +1,28 @@
-import { useQuery } from '@tanstack/react-query'
+﻿import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as Tabs from '@radix-ui/react-tabs'
-import { PageHeader } from '../../components/ui/PageHeader'
-import { Drawer } from '../../components/ui/Drawer'
-import { Modal } from '../../components/ui/Modal'
-import { AreaChart } from '../../components/charts/AreaChart'
-import { BarChart } from '../../components/charts/BarChart'
-import { complianceApi } from '../../services/mockApi'
-import { useAppStore } from '../../store/appStore'
-import { formatUGX, formatDateTime } from '../../utils/format'
+import { PageHeader } from '../../../components/ui/PageHeader'
+import { Drawer } from '../../../components/ui/Drawer'
+import { Modal } from '../../../components/ui/Modal'
+import { AreaChart } from '../../../components/charts/AreaChart'
+import { BarChart } from '../../../components/charts/BarChart'
+import { complianceApi } from '../../../services/mockApi'
+import { useAppStore } from '../../../store/appStore'
+import { formatUGX, formatDateTime } from '../../../utils/format'
 import {
   mockAmlRules, mockSuspiciousTransactions, mockHighValuePayments,
   mockSlaBreaches, mockFailedSpikes, mockVelocityData,
-} from '../../data/mockCompliance'
+} from '../../../data/mockCompliance'
 import {
   AlertTriangle, ShieldX, Shield, Activity, Zap, Clock,
   FileText, Search, CheckCircle2, XCircle, Eye,
   TrendingUp, AlertCircle,
 } from 'lucide-react'
-import type { ComplianceAlert, AlertSeverity, SuspiciousTransaction } from '../../types'
+import type { ComplianceAlert, AlertSeverity, SuspiciousTransaction } from '../../../types'
 import clsx from 'clsx'
 
-// ─── Severity helpers ─────────────────────────────────────────────────────────
+// â”€â”€â”€ Severity helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SEV_BORDER: Record<AlertSeverity, string> = {
   critical: 'border-l-danger bg-danger/5',
   high:     'border-l-danger/60 bg-danger/[0.03]',
@@ -53,7 +53,7 @@ function Stat({ s }: { s: string }) {
   return <span className={clsx('text-[10px] font-bold px-2 py-0.5 rounded-full border capitalize', STATUS_BADGE[s] ?? 'bg-slate-100 text-slate-600 border-slate-200')}>{s.replace(/_/g, ' ')}</span>
 }
 
-// ─── KPI strip ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ KPI strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function KpiStrip({ alerts, blacklist }: { alerts: ComplianceAlert[]; blacklist: { length: number } }) {
   const open        = alerts.filter((a) => a.status === 'open').length
   const critical    = alerts.filter((a) => a.severity === 'critical').length
@@ -85,7 +85,7 @@ function KpiStrip({ alerts, blacklist }: { alerts: ComplianceAlert[]; blacklist:
   )
 }
 
-// ─── Tab: AML Alerts ──────────────────────────────────────────────────────────
+// â”€â”€â”€ Tab: AML Alerts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function AlertsTab() {
   const addToast = useAppStore((s) => s.addToast)
   const { data: alerts = [] } = useQuery({ queryKey: ['compliance-alerts'], queryFn: complianceApi.listAlerts })
@@ -171,7 +171,7 @@ function AlertsTab() {
             </div>
             {selected.status !== 'resolved' && (
               <button
-                onClick={() => { setSelected(null); addToast('Investigation initiated — case opened', 'info') }}
+                onClick={() => { setSelected(null); addToast('Investigation initiated â€” case opened', 'info') }}
                 className="w-full py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary-light transition-colors"
               >
                 Investigate Alert
@@ -184,7 +184,7 @@ function AlertsTab() {
   )
 }
 
-// ─── Tab: AML Rules ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Tab: AML Rules â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function RulesTab() {
   const addToast = useAppStore((s) => s.addToast)
 
@@ -241,7 +241,7 @@ function RulesTab() {
   )
 }
 
-// ─── Tab: Suspicious Transactions ────────────────────────────────────────────
+// â”€â”€â”€ Tab: Suspicious Transactions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function SuspiciousTab() {
   const addToast = useAppStore((s) => s.addToast)
   const [selected, setSelected] = useState<SuspiciousTransaction | null>(null)
@@ -296,7 +296,7 @@ function SuspiciousTab() {
       <Modal
         open={!!selected}
         onClose={() => setSelected(null)}
-        title={`Suspicious Transaction — ${selected?.transactionId ?? ''}`}
+        title={`Suspicious Transaction â€” ${selected?.transactionId ?? ''}`}
         footer={
           <div className="flex gap-2 w-full">
             <button onClick={() => { addToast('Transaction cleared', 'success'); setSelected(null) }}
@@ -329,12 +329,12 @@ function SuspiciousTab() {
   )
 }
 
-// ─── Tab: Velocity Checks ────────────────────────────────────────────────────
+// â”€â”€â”€ Tab: Velocity Checks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function VelocityTab() {
   return (
     <div className="space-y-4">
       <div className="bg-card rounded-card shadow-card p-4">
-        <h3 className="text-sm font-semibold text-slate-800 mb-1">Transaction Volume — Last 24 Hours</h3>
+        <h3 className="text-sm font-semibold text-slate-800 mb-1">Transaction Volume â€” Last 24 Hours</h3>
         <p className="text-xs text-muted mb-3">Red line marks 15,000 transactions/hour threshold. Alerts trigger automatically when exceeded.</p>
         <AreaChart
           data={mockVelocityData}
@@ -360,7 +360,7 @@ function VelocityTab() {
               <span className={clsx('text-[10px] font-bold px-2 py-0.5 rounded-full border',
                 rule.triggeredToday > 0 ? 'bg-red-100 text-red-700 border-red-200' : 'bg-green-100 text-green-700 border-green-200'
               )}>
-                {rule.triggeredToday > 0 ? `${rule.triggeredToday}× triggered today` : 'No triggers today'}
+                {rule.triggeredToday > 0 ? `${rule.triggeredToday}Ã— triggered today` : 'No triggers today'}
               </span>
             </div>
           ))}
@@ -370,7 +370,7 @@ function VelocityTab() {
   )
 }
 
-// ─── Tab: High-Value Payments ─────────────────────────────────────────────────
+// â”€â”€â”€ Tab: High-Value Payments â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function HighValueTab() {
   const addToast = useAppStore((s) => s.addToast)
 
@@ -379,7 +379,7 @@ function HighValueTab() {
       <div className="px-4 py-3 border-b border-border bg-surface flex items-center justify-between">
         <div>
           <p className="text-xs font-semibold text-slate-800">Payments exceeding UGX 40,000,000</p>
-          <p className="text-[10px] text-muted">Rule: HIGHVALUE_GT_40M — requires manual clearance above threshold</p>
+          <p className="text-[10px] text-muted">Rule: HIGHVALUE_GT_40M â€” requires manual clearance above threshold</p>
         </div>
         <span className="text-xs bg-danger/10 text-danger border border-danger/20 rounded-full px-2 py-0.5 font-bold">
           {mockHighValuePayments.filter((h) => h.clearanceStatus === 'manual_review').length} pending review
@@ -433,7 +433,7 @@ function HighValueTab() {
   )
 }
 
-// ─── Tab: Failed Spikes ───────────────────────────────────────────────────────
+// â”€â”€â”€ Tab: Failed Spikes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function FailedSpikesTab() {
   const spikes = mockFailedSpikes.filter((s) => s.spikeDetected)
 
@@ -444,13 +444,13 @@ function FailedSpikesTab() {
           <AlertTriangle size={16} className="text-danger flex-shrink-0 mt-0.5" />
           <div className="text-sm">
             <span className="font-semibold text-danger">{spikes.length} failed payment spike{spikes.length > 1 ? 's' : ''} detected today</span>
-            <span className="text-muted ml-2">— at {spikes.map((s) => s.hour).join(', ')}</span>
+            <span className="text-muted ml-2">â€” at {spikes.map((s) => s.hour).join(', ')}</span>
           </div>
         </div>
       )}
 
       <div className="bg-card rounded-card shadow-card p-4">
-        <h3 className="text-sm font-semibold text-slate-800 mb-1">Failed Transactions per Hour — Today</h3>
+        <h3 className="text-sm font-semibold text-slate-800 mb-1">Failed Transactions per Hour â€” Today</h3>
         <p className="text-xs text-muted mb-3">Orange bars mark hours where failures exceeded the 120/hr alert threshold.</p>
         <BarChart
           data={mockFailedSpikes}
@@ -497,7 +497,7 @@ function FailedSpikesTab() {
   )
 }
 
-// ─── Tab: SLA Breaches ────────────────────────────────────────────────────────
+// â”€â”€â”€ Tab: SLA Breaches â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function SlaTab() {
   const addToast = useAppStore((s) => s.addToast)
 
@@ -553,7 +553,7 @@ function SlaTab() {
   )
 }
 
-// ─── Tab: Blacklist ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Tab: Blacklist â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function BlacklistTab() {
   const addToast  = useAppStore((s) => s.addToast)
   const { data: blacklist = [] } = useQuery({ queryKey: ['blacklist'], queryFn: complianceApi.listBlacklist })
@@ -608,7 +608,7 @@ function BlacklistTab() {
           {[
             { label: 'Account Number', placeholder: '0XX-XXXX-XXXX' },
             { label: 'Entity Name',    placeholder: 'Full legal name' },
-            { label: 'Reason',         placeholder: 'Reason for blacklisting…' },
+            { label: 'Reason',         placeholder: 'Reason for blacklistingâ€¦' },
           ].map(({ label, placeholder }) => (
             <div key={label}>
               <label className="text-xs text-muted block mb-1">{label}</label>
@@ -621,7 +621,7 @@ function BlacklistTab() {
   )
 }
 
-// ─── Tab: Audit Log ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Tab: Audit Log â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function AuditLogTab() {
   const { data: auditLog = [] } = useQuery({ queryKey: ['audit-log'], queryFn: complianceApi.listAuditLog })
   const securityEvents = useAppStore((s) => s.securityEvents)
@@ -657,7 +657,7 @@ function AuditLogTab() {
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search actor, action, resource…"
+          placeholder="Search actor, action, resourceâ€¦"
           className="text-xs outline-none bg-transparent flex-1"
         />
       </div>
@@ -703,7 +703,7 @@ function AuditLogTab() {
   )
 }
 
-// ─── Shared row helper ────────────────────────────────────────────────────────
+// â”€â”€â”€ Shared row helper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function Row({ l, v, mono }: { l: string; v: string; mono?: boolean }) {
   return (
     <div className="flex justify-between items-center">
@@ -713,7 +713,7 @@ function Row({ l, v, mono }: { l: string; v: string; mono?: boolean }) {
   )
 }
 
-// ─── Main page ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function CompliancePage() {
   const { data: alerts    = [] } = useQuery({ queryKey: ['compliance-alerts'], queryFn: complianceApi.listAlerts })
   const { data: blacklist = [] } = useQuery({ queryKey: ['blacklist'],         queryFn: complianceApi.listBlacklist })
