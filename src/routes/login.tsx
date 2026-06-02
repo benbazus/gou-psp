@@ -80,6 +80,10 @@ export default function LoginPage() {
   }
 
   function handleOtpChange(idx: number, val: string) {
+    if (val.length > 1) {
+      handleOtpPaste(idx, val);
+      return;
+    }
     if (!/^\d?$/.test(val)) return;
     const next = [...otp];
     next[idx] = val;
@@ -89,6 +93,32 @@ export default function LoginPage() {
     if (next.every((d) => d !== "") && next.join("").length === 6) {
       submitOtp(next.join(""));
     }
+  }
+
+  function handleOtpPaste(idx: number, text: string) {
+    const digits = text.replace(/\D/g, "").slice(0, 6 - idx).split("");
+    if (digits.length === 0) return;
+
+    const next = [...otp];
+    digits.forEach((digit, offset) => {
+      next[idx + offset] = digit;
+    });
+
+    setOtp(next);
+    setError("");
+
+    const nextEmpty = next.findIndex((digit) => digit === "");
+    if (nextEmpty === -1) {
+      submitOtp(next.join(""));
+      return;
+    }
+
+    inputRefs.current[nextEmpty]?.focus();
+  }
+
+  function handleOtpPasteEvent(idx: number, e: React.ClipboardEvent<HTMLInputElement>) {
+    e.preventDefault();
+    handleOtpPaste(idx, e.clipboardData.getData("text"));
   }
 
   function handleOtpKeyDown(idx: number, e: React.KeyboardEvent) {
@@ -137,14 +167,14 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-primary via-primary to-primary-light flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background pattern */}
       <div
-        className="absolute inset-0 opacity-5"
+        className="pointer-events-none absolute inset-0 opacity-5"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }}
       />
 
       <motion.div
-        className="w-full max-w-2xl"
+        className="relative z-10 w-full max-w-2xl"
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
@@ -216,17 +246,24 @@ export default function LoginPage() {
                 {ROLES.map(({ role, icon: Icon, description }) => (
                   <button
                     key={role}
+                    type="button"
                     role="radio"
                     aria-checked={selected === role}
                     onClick={() => setSelected(role)}
                     className={`
-                      text-left p-4 rounded-xl border-2 transition-all duration-200
+                      relative text-left p-4 rounded-xl border-2 outline-none transition-all duration-200
+                      focus-visible:ring-2 focus-visible:ring-accent-light focus-visible:ring-offset-2 focus-visible:ring-offset-primary
                       ${selected === role
-                        ? "bg-accent border-accent text-primary shadow-lg scale-[1.02]"
-                        : "bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40"
+                        ? "bg-accent border-accent text-primary shadow-lg shadow-accent/30 ring-2 ring-white/80 scale-[1.02]"
+                        : "bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 active:scale-[0.99]"
                       }
                     `}
                   >
+                    {selected === role && (
+                      <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-accent">
+                        <CheckCircle2 size={14} />
+                      </span>
+                    )}
                     <Icon size={20} className="mb-2" />
                     <div className="font-semibold text-sm">{role}</div>
                     <div className={`text-xs mt-0.5 ${selected === role ? "text-primary/70" : "text-white/60"}`}>
@@ -324,6 +361,7 @@ export default function LoginPage() {
                     maxLength={1}
                     value={digit}
                     onChange={(e) => handleOtpChange(idx, e.target.value)}
+                    onPaste={(e) => handleOtpPasteEvent(idx, e)}
                     onKeyDown={(e) => handleOtpKeyDown(idx, e)}
                     className={`
                       w-11 h-13 text-center text-xl font-bold rounded-xl border-2 outline-none transition-all

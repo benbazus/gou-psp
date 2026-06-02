@@ -126,6 +126,9 @@ export interface Dispute {
   slaDueAt: string
   timeline: DisputeTimelineEntry[]
   refundAmount?: number
+  reversalStatus?: 'pending' | 'processing' | 'completed' | 'failed' | null
+  reversalRef?: string
+  participantNote?: string
 }
 
 // ─── Compliance ───────────────────────────────────────────
@@ -161,6 +164,116 @@ export interface AuditLogEntry {
   resource: string
   timestamp: string
   ip: string
+}
+
+export interface AmlRule {
+  id: string
+  code: string
+  name: string
+  description: string
+  threshold: string
+  action: 'block' | 'flag' | 'alert'
+  severity: AlertSeverity
+  status: 'active' | 'paused'
+  lastTriggeredAt?: string
+  triggeredToday: number
+}
+
+export interface SuspiciousTransaction {
+  id: string
+  transactionId: string
+  payer: string
+  amount: number
+  channel: Channel
+  reason: string
+  riskScore: number
+  flaggedAt: string
+  status: 'under_review' | 'cleared' | 'blocked' | 'escalated'
+  rule: string
+}
+
+export interface HighValuePayment {
+  id: string
+  transactionId: string
+  payer: string
+  payee: string
+  agency: string
+  amount: number
+  channel: Channel
+  region: Region
+  timestamp: string
+  clearanceStatus: 'auto_cleared' | 'manual_review' | 'blocked'
+  reviewedBy?: string
+}
+
+export interface SlaBreachEntry {
+  id: string
+  participant: string
+  type: 'Bank' | 'Mobile Money Operator' | 'Government Agency'
+  metric: string
+  target: string
+  actual: string
+  breachSince: string
+  severity: AlertSeverity
+  status: 'active' | 'resolved'
+}
+
+export interface FailedSpike {
+  hour: string
+  failed: number
+  total: number
+  threshold: number
+  spikeDetected: boolean
+}
+
+// ─── Reconciliation ───────────────────────────────────────
+export type ReconRecordSource = 'switch' | 'agency' | 'bank' | 'treasury'
+
+export type ReconExceptionType =
+  | 'unmatched'
+  | 'duplicate'
+  | 'missing_confirmation'
+  | 'overpayment'
+  | 'underpayment'
+
+export type ReconStatus = 'matched' | 'unmatched' | 'exception' | 'resolved'
+
+export interface ReconRecord {
+  id: string
+  transactionId: string
+  payer: string
+  payee: string
+  agency: string
+  channel: Channel
+  amount: number
+  source: ReconRecordSource
+  referenceDate: string
+  status: ReconStatus
+  exceptionType?: ReconExceptionType
+  switchAmount?: number
+  reportedAmount?: number
+  variance?: number
+  resolvedAt?: string
+  resolvedBy?: string
+  resolutionNote?: string
+}
+
+export interface ReconRun {
+  id: string
+  triggeredBy: string
+  startedAt: string
+  completedAt?: string
+  totalSwitch: number
+  totalAgency: number
+  totalBank: number
+  totalTreasury: number
+  matched: number
+  unmatched: number
+  duplicates: number
+  missingConfirmations: number
+  overpayments: number
+  underpayments: number
+  matchRate: number
 }
 
 // ─── Routing ──────────────────────────────────────────────
@@ -204,6 +317,20 @@ export interface ChannelBreakdown {
   channel: string
   count: number
   amount: number
+}
+
+export interface RegionalActivity {
+  region: Region
+  count: number
+  amount: number
+  successRate: number
+  topChannel: string
+}
+
+export interface FailureReason {
+  reason: string
+  count: number
+  pct: number
 }
 
 // ─── Toast ────────────────────────────────────────────────

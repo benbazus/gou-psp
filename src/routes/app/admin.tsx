@@ -48,6 +48,35 @@ const NOTIFICATION_TEMPLATES = [
   { id: 'NT-04', name: 'Dispute Raised',      channel: 'Email',       active: false },
 ]
 
+// ─── Fee schedule ─────────────────────────────────────────────────────────────
+const FEE_SCHEDULE = [
+  { id: 'FS-01', channel: 'MTN Mobile Money', type: 'Percentage', value: 1.5, cap: 5000,   payer: 'Citizen' },
+  { id: 'FS-02', channel: 'Airtel Money',     type: 'Percentage', value: 1.5, cap: 5000,   payer: 'Citizen' },
+  { id: 'FS-03', channel: 'Bank Transfer',    type: 'Flat',       value: 2500, cap: null,  payer: 'Citizen' },
+  { id: 'FS-04', channel: 'Visa/Mastercard',  type: 'Percentage', value: 2.9, cap: 15000,  payer: 'Citizen' },
+  { id: 'FS-05', channel: 'USSD',             type: 'Flat',       value: 500,  cap: null,  payer: 'Citizen' },
+  { id: 'FS-06', channel: 'Wallet',           type: 'Percentage', value: 1.0, cap: 3000,   payer: 'Agency' },
+]
+
+// ─── Agency accounts ──────────────────────────────────────────────────────────
+const AGENCY_ACCOUNTS = [
+  { id: 'AG-01', agency: 'Uganda Revenue Authority (URA)', settlementBank: 'Bank of Uganda', account: 'BOU-URA-0001', status: 'active',    contact: 'collections@ura.go.ug' },
+  { id: 'AG-02', agency: 'Kampala Capital City Authority', settlementBank: 'Stanbic Bank',   account: 'STAN-KCCA-4471', status: 'active',   contact: 'finance@kcca.go.ug' },
+  { id: 'AG-03', agency: 'Ministry of Lands',              settlementBank: 'Bank of Uganda', account: 'BOU-MLHUD-0023', status: 'active',   contact: 'lands@mlhud.go.ug' },
+  { id: 'AG-04', agency: 'NIRA',                           settlementBank: 'Centenary Bank', account: 'CENT-NIRA-8890', status: 'active',   contact: 'support@nira.go.ug' },
+  { id: 'AG-05', agency: 'URSB',                           settlementBank: 'dfcu Bank',      account: 'DFCU-URSB-2210', status: 'suspended', contact: 'registry@ursb.go.ug' },
+  { id: 'AG-06', agency: 'Directorate of Immigration',    settlementBank: 'Bank of Uganda', account: 'BOU-IMM-0044',   status: 'pending',  contact: 'epass@immigration.go.ug' },
+]
+
+// ─── Approval workflows (maker-checker chains) ─────────────────────────────────
+const APPROVAL_WORKFLOWS = [
+  { id: 'WF-01', name: 'Settlement Batch Release',  threshold: 'All batches',        steps: ['Settlement Officer', 'Treasury Officer', 'Bank of Uganda Operator'], enabled: true },
+  { id: 'WF-02', name: 'Refund / Reversal Approval', threshold: '> UGX 1,000,000',    steps: ['Support Officer', 'Compliance Officer'],                            enabled: true },
+  { id: 'WF-03', name: 'New Participant Onboarding', threshold: 'All participants',   steps: ['Agency Officer', 'Compliance Officer', 'Super Admin'],              enabled: true },
+  { id: 'WF-04', name: 'Fee Schedule Change',        threshold: 'Any fee edit',       steps: ['Treasury Officer', 'Super Admin'],                                  enabled: true },
+  { id: 'WF-05', name: 'High-Value Payment Hold',    threshold: '> UGX 50,000,000',   steps: ['Compliance Officer', 'Bank of Uganda Operator'],                    enabled: false },
+]
+
 // ─── PDPA data ────────────────────────────────────────────────────────────────
 const PDPA_ITEMS = [
   { id: 'P01', article: 'S.11', title: 'Lawful Processing',           desc: 'All data processing has a defined lawful basis (government mandate, consent, or legal obligation).', status: 'compliant' },
@@ -140,7 +169,12 @@ export default function AdminPage() {
     })),
   ].sort((a, b) => b.timestamp - a.timestamp)
 
-  const TABS = ['roles', 'routing', 'limits', 'settlement', 'notifications', 'webhooks', 'security', 'privacy']
+  const TABS = ['roles', 'fees', 'limits', 'routing', 'settlement', 'agencies', 'notifications', 'webhooks', 'approvals', 'security', 'privacy']
+  const TAB_LABELS: Record<string, string> = {
+    roles: 'User Roles', fees: 'Fees', limits: 'Tx Limits', routing: 'Routing Rules',
+    settlement: 'Settlement Cycles', agencies: 'Agency Accounts', notifications: 'Notifications',
+    webhooks: 'Webhooks', approvals: 'Approval Workflows', security: '🔐 Security', privacy: '🛡️ Privacy / PDPA',
+  }
 
   return (
     <div>
@@ -152,9 +186,9 @@ export default function AdminPage() {
             <Tabs.Trigger
               key={tab}
               value={tab}
-              className="px-3 py-1.5 text-sm rounded-md text-muted capitalize data-[state=active]:bg-card data-[state=active]:text-slate-800 data-[state=active]:font-semibold transition-all"
+              className="px-3 py-1.5 text-sm rounded-md text-muted data-[state=active]:bg-card data-[state=active]:text-slate-800 data-[state=active]:font-semibold transition-all"
             >
-              {tab === 'security' ? '🔐 Security' : tab === 'privacy' ? '🛡️ Privacy / PDPA' : tab}
+              {TAB_LABELS[tab] ?? tab}
             </Tabs.Trigger>
           ))}
         </Tabs.List>
@@ -232,6 +266,40 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
+        {/* ─── Fees tab ──────────────────────────────────────── */}
+        <Tabs.Content value="fees">
+          <div className="bg-card rounded-card shadow-card overflow-hidden">
+            <div className="px-5 py-3 border-b border-border flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-slate-800">Fee Schedule</h3>
+              <span className="text-xs text-muted">Per-channel convenience fees · maker-checker via <span className="font-medium">Fee Schedule Change</span> workflow</span>
+            </div>
+            <table className="w-full text-sm">
+              <thead className="bg-surface border-b border-border">
+                <tr>
+                  {['Channel', 'Fee Type', 'Value', 'Cap (UGX)', 'Borne By', 'Action'].map((h) => (
+                    <th key={h} className="px-4 py-2.5 text-left text-xs font-semibold text-muted uppercase">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {FEE_SCHEDULE.map((f) => (
+                  <tr key={f.id} className="hover:bg-primary-50">
+                    <td className="px-4 py-2.5 font-medium">{f.channel}</td>
+                    <td className="px-4 py-2.5"><Badge variant={f.type === 'Flat' ? 'info' : 'muted'}>{f.type}</Badge></td>
+                    <td className="px-4 py-2.5 font-mono text-primary">{f.type === 'Flat' ? formatUGX(f.value) : `${f.value}%`}</td>
+                    <td className="px-4 py-2.5 text-muted">{f.cap ? formatUGX(f.cap) : '—'}</td>
+                    <td className="px-4 py-2.5 text-muted">{f.payer}</td>
+                    <td className="px-4 py-2.5">
+                      <button onClick={() => { addToast(`Fee for ${f.channel} submitted for approval`, 'success'); pushSecurityEvent('CONFIG_CHANGED', `Fee schedule edit: ${f.channel}`, 'FEE_SCHEDULE') }}
+                        className="text-xs text-primary underline hover:text-primary-light">Edit</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Tabs.Content>
+
         {/* ─── Limits tab ────────────────────────────────────── */}
         <Tabs.Content value="limits">
           <div className="bg-card rounded-card shadow-card p-5 max-w-lg">
@@ -279,6 +347,42 @@ export default function AdminPage() {
                     <td className="px-4 py-2.5 font-mono">{sc.cutoff}</td>
                     <td className="px-4 py-2.5">
                       <button onClick={() => addToast(`Settlement cycle for ${sc.name} updated`, 'success')} className="text-xs text-primary underline hover:text-primary-light">Edit</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Tabs.Content>
+
+        {/* ─── Agency accounts tab ────────────────────────────── */}
+        <Tabs.Content value="agencies">
+          <div className="bg-card rounded-card shadow-card overflow-hidden">
+            <div className="px-5 py-3 border-b border-border flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-slate-800">Government Agency Accounts</h3>
+              <button onClick={() => addToast('Agency onboarding workflow started (demo)', 'info')}
+                className="text-xs text-primary underline hover:text-primary-light">+ Add Agency</button>
+            </div>
+            <table className="w-full text-sm">
+              <thead className="bg-surface border-b border-border">
+                <tr>
+                  {['Agency', 'Settlement Bank', 'Account Ref', 'Finance Contact', 'Status', 'Action'].map((h) => (
+                    <th key={h} className="px-4 py-2.5 text-left text-xs font-semibold text-muted uppercase">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {AGENCY_ACCOUNTS.map((a) => (
+                  <tr key={a.id} className="hover:bg-primary-50">
+                    <td className="px-4 py-2.5 font-medium">{a.agency}</td>
+                    <td className="px-4 py-2.5">{a.settlementBank}</td>
+                    <td className="px-4 py-2.5 font-mono text-xs">{a.account}</td>
+                    <td className="px-4 py-2.5 text-muted">{a.contact}</td>
+                    <td className="px-4 py-2.5">
+                      <Badge variant={a.status === 'active' ? 'success' : a.status === 'pending' ? 'warning' : 'danger'}>{a.status}</Badge>
+                    </td>
+                    <td className="px-4 py-2.5">
+                      <button onClick={() => addToast(`${a.agency} account updated`, 'success')} className="text-xs text-primary underline hover:text-primary-light">Manage</button>
                     </td>
                   </tr>
                 ))}
@@ -337,6 +441,51 @@ export default function AdminPage() {
                 <Save size={14} /> Save Webhook Config
               </button>
             </div>
+          </div>
+        </Tabs.Content>
+
+        {/* ─── Approval workflows tab ─────────────────────────── */}
+        <Tabs.Content value="approvals">
+          <div className="space-y-3">
+            <p className="text-xs text-muted">
+              Maker-checker approval chains. Each action must be approved sequentially by every role in the chain before it executes.
+            </p>
+            {APPROVAL_WORKFLOWS.map((wf) => (
+              <div key={wf.id} className="bg-card rounded-card shadow-card p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-slate-800">{wf.name}</span>
+                      <Badge variant={wf.enabled ? 'success' : 'muted'}>{wf.enabled ? 'Enabled' : 'Disabled'}</Badge>
+                    </div>
+                    <div className="text-xs text-muted mt-0.5">Trigger: {wf.threshold}</div>
+                  </div>
+                  <label className="flex items-center gap-2 text-xs text-muted cursor-pointer">
+                    <input type="checkbox" defaultChecked={wf.enabled} className="accent-primary"
+                      onChange={() => addToast(`${wf.name} workflow toggled (demo)`, 'info')} />
+                    Active
+                  </label>
+                </div>
+                <div className="flex items-center flex-wrap gap-1">
+                  {wf.steps.map((step, idx) => (
+                    <div key={step} className="flex items-center">
+                      <div className="flex items-center gap-1.5 bg-surface border border-border rounded-lg px-3 py-1.5">
+                        <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center">{idx + 1}</span>
+                        <span className="text-xs font-medium text-slate-700">{step}</span>
+                      </div>
+                      {idx < wf.steps.length - 1 && <ChevronUp size={14} className="text-muted rotate-90 mx-0.5" />}
+                    </div>
+                  ))}
+                  <div className="flex items-center">
+                    <ChevronUp size={14} className="text-muted rotate-90 mx-0.5" />
+                    <div className="flex items-center gap-1.5 bg-green-50 border border-green-200 rounded-lg px-3 py-1.5">
+                      <CheckCircle2 size={13} className="text-green-600" />
+                      <span className="text-xs font-medium text-green-700">Executed</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </Tabs.Content>
 

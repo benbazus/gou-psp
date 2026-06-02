@@ -16,7 +16,7 @@ const ACCENT_BORDER: Record<AccentColor, string> = {
 interface Props {
   title: string
   value: string | number
-  subtitle?: string
+  subtitle?: React.ReactNode
   icon?: React.ReactNode
   accent?: AccentColor
   animate?: boolean
