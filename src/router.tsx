@@ -225,16 +225,16 @@ const bankShellRoute = createRoute({
   component: BankPortalShell,
 })
 
-const bDashboard         = createRoute({ getParentRoute: () => bankShellRoute, path: '/dashboard',          component: BankDashboardPage })
-const bIncoming          = createRoute({ getParentRoute: () => bankShellRoute, path: '/incoming',           component: BankIncomingPage })
-const bOutgoing          = createRoute({ getParentRoute: () => bankShellRoute, path: '/outgoing',           component: BankOutgoingPage })
-const bRtgsQueue         = createRoute({ getParentRoute: () => bankShellRoute, path: '/rtgs-queue',         component: BankRtgsQueuePage })
-const bSettlement        = createRoute({ getParentRoute: () => bankShellRoute, path: '/settlement',         component: BankSettlementPage })
-const bLiquidity         = createRoute({ getParentRoute: () => bankShellRoute, path: '/liquidity',          component: BankLiquidityPage })
-const bExceptions        = createRoute({ getParentRoute: () => bankShellRoute, path: '/exceptions',         component: BankExceptionsPage })
-const bTreasuryTransfers = createRoute({ getParentRoute: () => bankShellRoute, path: '/treasury-transfers', component: BankTreasuryTransfersPage })
-const bRecon             = createRoute({ getParentRoute: () => bankShellRoute, path: '/reconciliation',     component: BankReconciliationPage })
-const bReports           = createRoute({ getParentRoute: () => bankShellRoute, path: '/reports',            component: BankReportsPage })
+const bDashboard         = createRoute({ getParentRoute: () => bankShellRoute, path: '/dashboard',          component: guardedRoute('/app/bank/:bankId/dashboard',          BankDashboardPage) })
+const bIncoming          = createRoute({ getParentRoute: () => bankShellRoute, path: '/incoming',           component: guardedRoute('/app/bank/:bankId/incoming',           BankIncomingPage) })
+const bOutgoing          = createRoute({ getParentRoute: () => bankShellRoute, path: '/outgoing',           component: guardedRoute('/app/bank/:bankId/outgoing',           BankOutgoingPage) })
+const bRtgsQueue         = createRoute({ getParentRoute: () => bankShellRoute, path: '/rtgs-queue',         component: guardedRoute('/app/bank/:bankId/rtgs-queue',         BankRtgsQueuePage) })
+const bSettlement        = createRoute({ getParentRoute: () => bankShellRoute, path: '/settlement',         component: guardedRoute('/app/bank/:bankId/settlement',         BankSettlementPage) })
+const bLiquidity         = createRoute({ getParentRoute: () => bankShellRoute, path: '/liquidity',          component: guardedRoute('/app/bank/:bankId/liquidity',          BankLiquidityPage) })
+const bExceptions        = createRoute({ getParentRoute: () => bankShellRoute, path: '/exceptions',         component: guardedRoute('/app/bank/:bankId/exceptions',         BankExceptionsPage) })
+const bTreasuryTransfers = createRoute({ getParentRoute: () => bankShellRoute, path: '/treasury-transfers', component: guardedRoute('/app/bank/:bankId/treasury-transfers', BankTreasuryTransfersPage) })
+const bRecon             = createRoute({ getParentRoute: () => bankShellRoute, path: '/reconciliation',     component: guardedRoute('/app/bank/:bankId/reconciliation',     BankReconciliationPage) })
+const bReports           = createRoute({ getParentRoute: () => bankShellRoute, path: '/reports',            component: guardedRoute('/app/bank/:bankId/reports',            BankReportsPage) })
 
 // ─── Route tree assembly ──────────────────────────────────────────────────────
 const routeTree = rootRoute.addChildren([

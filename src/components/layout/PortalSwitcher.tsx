@@ -56,8 +56,11 @@ export function PortalSwitcher({ open, onClose }: PortalSwitcherProps) {
       {open && (
         <>
           {/* Backdrop */}
-          <div
-            className="fixed inset-0 z-40"
+          <motion.div
+            className="fixed inset-0 bg-black/20 z-40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={onClose}
           />
 

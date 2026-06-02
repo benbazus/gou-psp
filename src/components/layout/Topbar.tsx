@@ -7,22 +7,6 @@ import { NotificationPanel } from './NotificationPanel'
 import { PortalSwitcher } from './PortalSwitcher'
 import type { PortalConfig } from '../../types'
 
-const BREADCRUMB_MAP: Record<string, string> = {
-  '/app/dashboard':      'Dashboard',
-  '/app/simulator':      'Payment Simulator',
-  '/app/collections':    'Collections',
-  '/app/routing':        'Payment Routing',
-  '/app/participants':   'Participant Management',
-  '/app/settlement':     'Settlement',
-  '/app/reconciliation': 'Reconciliation',
-  '/app/compliance':     'Compliance & Risk',
-  '/app/disputes':       'Disputes & Refunds',
-  '/app/api-platform':   'API Platform',
-  '/app/operations':     'Operations Center',
-  '/app/reports':        'Reports & Analytics',
-  '/app/admin':          'Admin & Configuration',
-  '/app/architecture':   'System Architecture',
-}
 
 interface TopbarProps {
   portalConfig?: PortalConfig
@@ -55,7 +39,7 @@ export function Topbar({ portalConfig }: TopbarProps) {
   const logout              = useAppStore((s) => s.logout)
 
   function getPageTitle() {
-    if (!portalConfig) return BREADCRUMB_MAP[pathname] ?? 'GovPay Switch'
+    if (!portalConfig) return 'GovPay Switch'
     for (const section of portalConfig.navSections) {
       for (const item of section.items) {
         if (pathname === item.path || pathname.startsWith(item.path + '/')) {

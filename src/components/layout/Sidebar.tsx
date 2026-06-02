@@ -91,7 +91,8 @@ export function Sidebar({ navSections: navSectionsProp, tenantName }: SidebarPro
 
   function isAllowed(path: string): boolean {
     if (!activeRole) return false;
-    return (ROUTE_ROLES[path] ?? []).includes(activeRole as Role);
+    const normPath = path.replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
+    return (ROUTE_ROLES[normPath] ?? []).includes(activeRole as Role);
   }
 
   function renderNavItem(item: NavItem) {
@@ -139,9 +140,10 @@ export function Sidebar({ navSections: navSectionsProp, tenantName }: SidebarPro
       </Link>
     );
 
+    const normPath = path.replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
     const tooltipContent = allowed
       ? label
-      : `${label} — requires ${(ROUTE_ROLES[path] ?? []).slice(0, 2).join(", ")}`;
+      : `${label} — requires ${(ROUTE_ROLES[normPath] ?? []).slice(0, 2).join(", ")}`;
 
     if (collapsed) {
       return (
