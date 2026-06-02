@@ -44,8 +44,7 @@ export function PortalShell({ config }: PortalShellProps) {
           tenantName={config.tenantShort}
         />
         <div className="flex flex-col flex-1 overflow-hidden min-w-0">
-          {/* TODO(Task 17): pass portalConfig to Topbar once it accepts the prop */}
-          <Topbar />
+          <Topbar portalConfig={config} />
           <motion.main
             key={config.tenantId}
             className="flex-1 overflow-y-auto p-6"
