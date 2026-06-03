@@ -436,3 +436,154 @@ export interface SecurityEvent {
   ip: string
   sessionId: string
 }
+
+// ─── Agency Portal ────────────────────────────────────────────────────────────
+export interface AgencyTransaction {
+  id: string
+  agencyId: string
+  amount: number
+  payer: string
+  serviceId: string
+  serviceName: string
+  channel: Channel
+  status: 'completed' | 'pending' | 'failed' | 'reversed'
+  prn: string
+  timestamp: string
+  processingTimeMs: number
+  failureReason?: string
+}
+
+export interface AgencySettlement {
+  id: string
+  agencyId: string
+  batchRef: string
+  batchDate: string
+  grossAmount: number
+  netAmount: number
+  fee: number
+  transactionCount: number
+  status: 'pending' | 'processing' | 'completed' | 'failed'
+  settledAt?: string
+  slaStatus: 'compliant' | 'breach' | 'warning'
+}
+
+export interface AgencyException {
+  id: string
+  agencyId: string
+  transactionId: string
+  type: 'unmatched_prn' | 'overpayment' | 'duplicate' | 'failed_settlement' | 'channel_error'
+  description: string
+  amount: number
+  payer: string
+  createdAt: string
+  status: 'open' | 'resolving' | 'resolved'
+  priority: 'high' | 'medium' | 'low'
+}
+
+// ─── Mobile Money Portal ──────────────────────────────────────────────────────
+export interface MobileTransaction {
+  id: string
+  operatorId: string
+  amount: number
+  sender: string
+  receiver: string
+  type: 'b2c' | 'c2b' | 'p2p' | 'airtime' | 'bill_payment'
+  channel: 'USSD' | 'App' | 'Agent'
+  status: 'completed' | 'pending' | 'failed' | 'reversed'
+  reference: string
+  timestamp: string
+  fee: number
+  failureReason?: string
+}
+
+export interface MobileFloat {
+  operatorId: string
+  available: number
+  reserved: number
+  threshold: number
+  utilizationPct: number
+  lastUpdated: string
+  intraday: { hour: string; value: number }[]
+}
+
+export interface MobileSettlement {
+  id: string
+  operatorId: string
+  batchRef: string
+  batchDate: string
+  grossAmount: number
+  netAmount: number
+  fee: number
+  transactionCount: number
+  status: 'pending' | 'processing' | 'completed' | 'failed'
+  settledAt?: string
+  slaStatus: 'compliant' | 'breach' | 'warning'
+}
+
+// ─── Treasury Portal ──────────────────────────────────────────────────────────
+export interface TreasuryDisbursement {
+  id: string
+  reference: string
+  amount: number
+  payee: string
+  bank: string
+  accountNumber: string
+  voteCode: string
+  ministryLine: string
+  description: string
+  status: 'pending_approval' | 'approved' | 'processing' | 'completed' | 'rejected'
+  requestedBy: string
+  requestedAt: string
+  approvedBy?: string
+  approvedAt?: string
+  processedAt?: string
+  priority: 'urgent' | 'normal' | 'low'
+}
+
+export interface TreasuryApproval {
+  id: string
+  disbursementId: string
+  reference: string
+  amount: number
+  payee: string
+  voteCode: string
+  ministryLine: string
+  description: string
+  requestedBy: string
+  requestedAt: string
+  priority: 'urgent' | 'normal' | 'low'
+}
+
+export interface TreasuryAccount {
+  id: string
+  bank: string
+  accountNumber: string
+  accountType: 'Consolidated Fund' | 'Salary Account' | 'Development Fund' | 'Donor Fund' | 'Petty Cash'
+  currency: 'UGX' | 'USD' | 'EUR'
+  balance: number
+  pendingDisbursements: number
+  availableBalance: number
+  lastUpdated: string
+}
+
+export interface TreasuryCommitment {
+  id: string
+  voteCode: string
+  ministryLine: string
+  description: string
+  financialYear: string
+  budgetAllocation: number
+  committed: number
+  actual: number
+  balance: number
+  utilizationPct: number
+  status: 'on_track' | 'at_risk' | 'overrun'
+}
+
+export interface ConsolidatedFundEntry {
+  date: string
+  openingBalance: number
+  receipts: number
+  disbursements: number
+  closingBalance: number
+}
