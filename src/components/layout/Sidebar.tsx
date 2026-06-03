@@ -218,7 +218,13 @@ export function Sidebar({ navSections: navSectionsProp, tenantName }: SidebarPro
                     exit={{ opacity: 0 }}
                     className={clsx(
                       "px-5 pt-1 pb-1.5 text-[9px] font-bold uppercase tracking-widest",
-                      section.accent === "amber" ? "text-amber-400" : "text-white/35",
+                      section.accent === "amber"   ? "text-amber-400"  :
+                      section.accent === "emerald" ? "text-emerald-400" :
+                      section.accent === "violet"  ? "text-violet-400"  :
+                      section.accent === "cyan"    ? "text-cyan-400"    :
+                      section.accent === "orange"  ? "text-orange-400"  :
+                      section.accent === "indigo"  ? "text-indigo-400"  :
+                      "text-white/35",
                     )}
                   >
                     {section.header}
