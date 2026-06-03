@@ -5,6 +5,7 @@ import {
   ShieldAlert, MessageSquareWarning, Code2, Activity,
   Landmark, Cpu, ArrowLeftRight, UserCheck, FileBarChart,
   SlidersHorizontal, Clock, Coins, RotateCcw, Droplets,
+  Briefcase, DollarSign, ShoppingBag,
 } from 'lucide-react'
 import type { PortalConfig } from '../types'
 
@@ -249,6 +250,45 @@ export const MOBILE_CONFIGS: Record<string, PortalConfig> = {
   mtn: mtnConfig, airtel: airtelConfig,
 }
 
+// ─── Aggregator portal config factory ─────────────────────────────────────────
+export function getAggregatorPortalConfig(aggregatorId: string, aggregatorName: string, aggregatorShort: string): PortalConfig {
+  return {
+    portalType: 'aggregator',
+    tenantId: aggregatorId,
+    tenantName: aggregatorName,
+    tenantShort: aggregatorShort,
+    accentColor: '#6366f1',
+    accentLight: '#e0e7ff',
+    accentDark: '#312e81',
+    homeRoute: `/app/aggregator/${aggregatorId}/dashboard`,
+    allowedRoles: ['Aggregator Admin', 'Aggregator Analyst', 'Super Admin'],
+    navSections: [
+      {
+        header: `${aggregatorShort} Portal`,
+        accent: 'indigo',
+        items: [
+          { path: `/app/aggregator/${aggregatorId}/dashboard`,    icon: LayoutDashboard, label: 'Dashboard' },
+          { path: `/app/aggregator/${aggregatorId}/merchants`,    icon: ShoppingBag,     label: 'Merchants' },
+          { path: `/app/aggregator/${aggregatorId}/transactions`, icon: ListOrdered,     label: 'Transactions' },
+          { path: `/app/aggregator/${aggregatorId}/settlement`,   icon: Banknote,        label: 'Settlement' },
+          { path: `/app/aggregator/${aggregatorId}/fees`,         icon: DollarSign,      label: 'Fees & Revenue' },
+          { path: `/app/aggregator/${aggregatorId}/disputes`,     icon: AlertTriangle,   label: 'Disputes' },
+          { path: `/app/aggregator/${aggregatorId}/reports`,      icon: BarChart3,       label: 'Reports' },
+          { path: `/app/aggregator/${aggregatorId}/profile`,      icon: Briefcase,       label: 'Aggregator Profile' },
+        ],
+      },
+    ],
+  }
+}
+
+export const pesalinkConfig    = getAggregatorPortalConfig('pesalink',    'Pesalink Aggregator',  'Pesalink')
+export const interswitchConfig = getAggregatorPortalConfig('interswitch', 'Interswitch Uganda',   'Interswitch')
+export const flutterwaveConfig = getAggregatorPortalConfig('flutterwave', 'Flutterwave Uganda',   'Flutterwave')
+
+export const AGGREGATOR_CONFIGS: Record<string, PortalConfig> = {
+  pesalink: pesalinkConfig, interswitch: interswitchConfig, flutterwave: flutterwaveConfig,
+}
+
 // All portal entries for the Switch Portal modal
 export const ALL_PORTAL_ENTRIES: {
   config: PortalConfig
@@ -280,4 +320,8 @@ export const ALL_PORTAL_ENTRIES: {
   // Mobile Money
   { config: mtnConfig,            label: 'MTN Mobile Money',                   comingSoon: false },
   { config: airtelConfig,         label: 'Airtel Money',                       comingSoon: false },
+  // Aggregators
+  { config: pesalinkConfig,    label: 'Pesalink Aggregator',  comingSoon: false },
+  { config: interswitchConfig, label: 'Interswitch Uganda',   comingSoon: false },
+  { config: flutterwaveConfig, label: 'Flutterwave Uganda',   comingSoon: false },
 ]
