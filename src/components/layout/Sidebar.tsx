@@ -95,6 +95,7 @@ export function Sidebar({ navSections: navSectionsProp, tenantName }: SidebarPro
       .replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
       .replace(/\/app\/agency\/[^/]+/, '/app/agency/:agencyId')
       .replace(/\/app\/mobile\/[^/]+/, '/app/mobile/:operatorId')
+      .replace(/\/app\/aggregator\/[^/]+/, '/app/aggregator/:aggregatorId')
     return (ROUTE_ROLES[normPath] ?? []).includes(activeRole as Role);
   }
 
@@ -147,6 +148,7 @@ export function Sidebar({ navSections: navSectionsProp, tenantName }: SidebarPro
       .replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
       .replace(/\/app\/agency\/[^/]+/, '/app/agency/:agencyId')
       .replace(/\/app\/mobile\/[^/]+/, '/app/mobile/:operatorId')
+      .replace(/\/app\/aggregator\/[^/]+/, '/app/aggregator/:aggregatorId')
     const tooltipContent = allowed
       ? label
       : `${label} — requires ${(ROUTE_ROLES[normPath] ?? []).slice(0, 2).join(", ")}`;

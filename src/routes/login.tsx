@@ -70,19 +70,23 @@ const INSTITUTION_ROLES: Record<string, { role: Role; description: string }[]> =
   kcca:   [{ role: "Agency Officer", description: "Collections management" }, { role: "Collections Manager", description: "Revenue tracking" }, { role: "Agency Auditor", description: "Read-only access" }],
   mtn:       [{ role: "Mobile Operator", description: "Channel & routing ops" }, { role: "Mobile Auditor", description: "Read-only access" }],
   airtel:    [{ role: "Mobile Operator", description: "Channel & routing ops" }, { role: "Mobile Auditor", description: "Read-only access" }],
+  pesalink:    [{ role: 'Aggregator Admin', description: 'Full aggregator access' }, { role: 'Aggregator Analyst', description: 'Read-only analytics' }],
+  interswitch: [{ role: 'Aggregator Admin', description: 'Full aggregator access' }, { role: 'Aggregator Analyst', description: 'Read-only analytics' }],
+  flutterwave: [{ role: 'Aggregator Admin', description: 'Full aggregator access' }, { role: 'Aggregator Analyst', description: 'Read-only analytics' }],
 };
 
 // ─── Portal type labels & group ordering ─────────────────────────────────────
 const PORTAL_TYPE_LABELS: Record<string, string> = {
-  national: "National",
-  bank:     "Bank",
-  rtgs:     "RTGS",
-  treasury: "Treasury",
-  agency:   "Agency",
-  mobile:   "Mobile",
+  national:   "National",
+  bank:       "Bank",
+  rtgs:       "RTGS",
+  treasury:   "Treasury",
+  agency:     "Agency",
+  mobile:     "Mobile",
+  aggregator: "Aggregator",
 };
 
-const GROUP_ORDER = ["national", "rtgs", "bank", "treasury", "agency", "mobile"];
+const GROUP_ORDER = ["national", "rtgs", "bank", "treasury", "agency", "mobile", "aggregator"];
 
 type Step = "org" | "role" | "mfa";
 
