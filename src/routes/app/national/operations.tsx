@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { AreaChart } from '../../../components/charts/AreaChart'
@@ -15,7 +15,7 @@ import { mockChannelHealth } from '../../../data/mockRouting'
 import { mockParticipants } from '../../../data/mockParticipants'
 import type { Transaction } from '../../../types'
 
-// â”€â”€â”€ Static data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Static data ──────────────────────────────────────────────────────────────
 const SYSTEM_COMPONENTS = [
   { name: 'Payment Gateway',    status: 'healthy',  latency: 42  },
   { name: 'Routing Engine',     status: 'healthy',  latency: 18  },
@@ -59,8 +59,8 @@ const LATENCY_DATA = Array.from({ length: 20 }, (_, i) => ({
 }))
 
 const INCIDENTS = [
-  { id: 'INC-001', description: 'DFCU Bank API timeout â€” 89 transactions in retry queue', severity: 'high',   at: new Date(Date.now() - 5 * 3600000).toISOString(),  status: 'open' },
-  { id: 'INC-002', description: 'Notification service degraded â€” avg latency 280ms',      severity: 'medium', at: new Date(Date.now() - 2 * 3600000).toISOString(),  status: 'investigating' },
+  { id: 'INC-001', description: 'DFCU Bank API timeout - 89 transactions in retry queue', severity: 'high',   at: new Date(Date.now() - 5 * 3600000).toISOString(),  status: 'open' },
+  { id: 'INC-002', description: 'Notification service degraded - avg latency 280ms',      severity: 'medium', at: new Date(Date.now() - 2 * 3600000).toISOString(),  status: 'investigating' },
   { id: 'INC-003', description: 'Message Queue consumer lag >1000 messages',              severity: 'medium', at: new Date(Date.now() - 45 * 60000).toISOString(),  status: 'open' },
   { id: 'INC-004', description: 'Settlement batch DFCU-2026-0601-003 failed',             severity: 'high',   at: new Date(Date.now() - 18 * 3600000).toISOString(), status: 'resolved' },
 ]
@@ -73,7 +73,7 @@ const QUEUES = [
   { label: 'Notification Queue', value: 2140, max: 3000, color: 'bg-warning' },
 ]
 
-// â”€â”€â”€ Status helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Status helpers ───────────────────────────────────────────────────────────
 const STATUS_DOT: Record<string, string> = {
   healthy:  'bg-green-500',
   degraded: 'bg-yellow-400 animate-pulse',
@@ -90,7 +90,7 @@ const INC_BADGE: Record<string, string> = {
   low:    'bg-slate-100 text-slate-600 border-slate-200',
 }
 
-// â”€â”€â”€ Live KPI strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Live KPI strip ───────────────────────────────────────────────────────────
 function LiveKpis() {
   const liveTransactions = useAppStore((s) => s.liveTransactions)
   const [tick, setTick]  = useState(0)
@@ -141,7 +141,7 @@ function LiveKpis() {
   )
 }
 
-// â”€â”€â”€ Uganda map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Uganda map ───────────────────────────────────────────────────────────────
 function UgandaMap() {
   const [hovered, setHovered] = useState<string | null>(null)
   const hoveredRegion = REGIONS.find((r) => r.name === hovered)
@@ -218,7 +218,7 @@ function UgandaMap() {
   )
 }
 
-// â”€â”€â”€ Transaction stream â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Transaction stream ───────────────────────────────────────────────────────
 function TransactionStream() {
   const liveTransactions = useAppStore((s) => s.liveTransactions)
   const [selectedTx, setSelectedTx] = useState<Transaction | null>(null)
@@ -254,7 +254,7 @@ function TransactionStream() {
                   </div>
                   <div className="flex items-center gap-1.5 text-[10px] text-muted">
                     <span>{tx.payer.split(' ')[0]}</span>
-                    <span>â†’</span>
+                    <span>→</span>
                     <span>{tx.agency}</span>
                     <span className="font-semibold text-primary ml-auto">{formatUGX(tx.amount)}</span>
                   </div>
@@ -271,7 +271,7 @@ function TransactionStream() {
           {liveTransactions.length === 0 && (
             <div className="py-8 text-center text-muted text-xs">
               <RefreshCw size={20} className="mx-auto mb-2 opacity-30 animate-spin" />
-              Waiting for live transactionsâ€¦
+              Waiting for live transactions...
             </div>
           )}
         </div>
@@ -281,7 +281,7 @@ function TransactionStream() {
   )
 }
 
-// â”€â”€â”€ Channel health monitor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Channel health monitor ───────────────────────────────────────────────────
 function ChannelHealthMonitor() {
   return (
     <div className="bg-card rounded-card shadow-card p-4">
@@ -330,7 +330,7 @@ function ChannelHealthMonitor() {
   )
 }
 
-// â”€â”€â”€ Participant health monitor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Participant health monitor ───────────────────────────────────────────────
 function ParticipantHealthMonitor() {
   const active = mockParticipants.filter((p) => p.status === 'active' || p.status === 'onboarding')
 
@@ -377,14 +377,14 @@ function ParticipantHealthMonitor() {
   )
 }
 
-// â”€â”€â”€ Processing latency â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Processing latency ───────────────────────────────────────────────────────
 function ProcessingLatency() {
   return (
     <div className="bg-card rounded-card shadow-card p-4">
       <h3 className="text-sm font-semibold text-slate-800 mb-0.5 flex items-center gap-2">
         <Clock size={14} className="text-primary" /> Processing Latency
       </h3>
-      <p className="text-xs text-muted mb-3">P50 / P95 / P99 â€” last 60 minutes</p>
+      <p className="text-xs text-muted mb-3">P50 / P95 / P99 - last 60 minutes</p>
       <LineChart
         data={LATENCY_DATA}
         xKey="t"
@@ -411,7 +411,7 @@ function ProcessingLatency() {
   )
 }
 
-// â”€â”€â”€ Queue depths â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Queue depths ─────────────────────────────────────────────────────────────
 function QueueDepths() {
   return (
     <div className="bg-card rounded-card shadow-card p-4">
@@ -444,7 +444,7 @@ function QueueDepths() {
   )
 }
 
-// â”€â”€â”€ Incidents â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Incidents ────────────────────────────────────────────────────────────────
 function IncidentPanel() {
   const addToast = useAppStore((s) => s.addToast)
   const [incidents, setIncidents] = useState(INCIDENTS)
@@ -477,7 +477,7 @@ function IncidentPanel() {
                 <p className="text-slate-700 leading-snug">{inc.description}</p>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-muted">{timeAgo(inc.at)}</span>
-                  <span className="text-muted">Â·</span>
+                  <span className="text-muted">·</span>
                   <span className={clsx('font-semibold',
                     inc.status === 'resolved' ? 'text-green-600' :
                     inc.status === 'investigating' ? 'text-yellow-600' : 'text-danger'
@@ -500,7 +500,7 @@ function IncidentPanel() {
   )
 }
 
-// â”€â”€â”€ System component health â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── System component health ──────────────────────────────────────────────────
 function SystemComponents() {
   const healthy  = SYSTEM_COMPONENTS.filter((c) => c.status === 'healthy').length
   const degraded = SYSTEM_COMPONENTS.filter((c) => c.status === 'degraded').length
@@ -537,7 +537,7 @@ function SystemComponents() {
   )
 }
 
-// â”€â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Main page ────────────────────────────────────────────────────────────────
 export default function OperationsPage() {
   return (
     <div className="space-y-4">
@@ -552,10 +552,10 @@ export default function OperationsPage() {
         }
       />
 
-      {/* â”€â”€ Live KPI strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Live KPI strip ──────────────────────────────────── */}
       <LiveKpis />
 
-      {/* â”€â”€ Row 1: Map | Stream | Channel Health â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Row 1: Map | Stream | Channel Health ────────────── */}
       <div className="grid grid-cols-3 gap-4">
         <UgandaMap />
         <TransactionStream />
@@ -565,7 +565,7 @@ export default function OperationsPage() {
         </div>
       </div>
 
-      {/* â”€â”€ Row 2: Success/Failure | Latency | Queue â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Row 2: Success/Failure | Latency | Queue ─────────── */}
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-2 bg-card rounded-card shadow-card p-4">
           <h3 className="text-sm font-semibold text-slate-800 mb-3">24-Hour Success vs Failure Volume</h3>
@@ -585,10 +585,10 @@ export default function OperationsPage() {
         </div>
       </div>
 
-      {/* â”€â”€ Row 3: Participant Health â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Row 3: Participant Health ─────────────────────────── */}
       <ParticipantHealthMonitor />
 
-      {/* â”€â”€ Row 4: System Components â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Row 4: System Components ─────────────────────────── */}
       <SystemComponents />
     </div>
   )

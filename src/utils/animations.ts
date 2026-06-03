@@ -22,6 +22,24 @@ export const scaleIn: Variants = {
   exit: { scale: 0.95, opacity: 0, transition: { duration: 0.15 } },
 }
 
+export const centeredScaleIn: Variants = {
+  hidden: { x: '-50%', y: '-50%', scale: 0.95, opacity: 0 },
+  visible: {
+    x: '-50%',
+    y: '-50%',
+    scale: 1,
+    opacity: 1,
+    transition: { duration: 0.2, ease: 'easeOut' },
+  },
+  exit: {
+    x: '-50%',
+    y: '-50%',
+    scale: 0.95,
+    opacity: 0,
+    transition: { duration: 0.15 },
+  },
+}
+
 export const flowNode: Variants = {
   idle: { scale: 1, boxShadow: '0 0 0 0 rgba(244, 176, 0, 0)' },
   active: {

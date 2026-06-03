@@ -1,4 +1,4 @@
-﻿import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as Tabs from '@radix-ui/react-tabs'
@@ -21,7 +21,7 @@ import {
 import type { SettlementBatch, SettlementAccount } from '../../../types'
 import clsx from 'clsx'
 
-// â”€â”€â”€ Pipeline stages â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Pipeline stages ──────────────────────────────────────────────────────────
 const PIPELINE_STAGES = [
   { label: 'Batch Created',      detail: 'Transactions grouped by participant' },
   { label: 'Validation',         detail: 'Reference & balance integrity checks' },
@@ -31,7 +31,7 @@ const PIPELINE_STAGES = [
   { label: 'Complete',           detail: 'Settlement report distributed' },
 ]
 
-// â”€â”€â”€ CSV export â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── CSV export ───────────────────────────────────────────────────────────────
 function downloadCSV(batches: SettlementBatch[]) {
   const header = 'Batch ID,Date,Participant,Gross Amount (UGX),Net Amount (UGX),Transactions,Status,Approved By,Completed At\n'
   const rows = batches.map((b) =>
@@ -45,7 +45,7 @@ function downloadCSV(batches: SettlementBatch[]) {
   URL.revokeObjectURL(url)
 }
 
-// â”€â”€â”€ Animated pipeline component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Animated pipeline component ─────────────────────────────────────────────
 function AnimatedPipeline({ active }: { active: boolean }) {
   const [stage, setStage] = useState(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -91,7 +91,7 @@ function AnimatedPipeline({ active }: { active: boolean }) {
               current && 'bg-primary text-white animate-pulse',
               waiting && 'bg-border text-muted',
             )}>
-              {done ? 'âœ“' : i + 1}
+              {done ? '✓' : i + 1}
             </div>
             <div className="min-w-0 flex-1">
               <div className={clsx(
@@ -115,7 +115,7 @@ function AnimatedPipeline({ active }: { active: boolean }) {
   )
 }
 
-// â”€â”€â”€ Account group â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Account group ────────────────────────────────────────────────────────────
 function AccountGroup({ title, icon: Icon, accounts, iconColor }: {
   title: string
   icon: React.ElementType
@@ -143,7 +143,7 @@ function AccountGroup({ title, icon: Icon, accounts, iconColor }: {
                   <div className="text-[10px] text-green-600">+{formatUGX(acc.pendingInflow)} in</div>
                 )}
                 {acc.pendingOutflow > 0 && (
-                  <div className="text-[10px] text-red-500">âˆ’{formatUGX(acc.pendingOutflow)} out</div>
+                  <div className="text-[10px] text-red-500">−{formatUGX(acc.pendingOutflow)} out</div>
                 )}
               </div>
             </div>
@@ -154,7 +154,7 @@ function AccountGroup({ title, icon: Icon, accounts, iconColor }: {
   )
 }
 
-// â”€â”€â”€ Batch row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Batch row ────────────────────────────────────────────────────────────────
 function BatchRow({ batch, onClick }: { batch: SettlementBatch; onClick: () => void }) {
   const isProcessing = batch.status === 'processing'
 
@@ -185,7 +185,7 @@ function BatchRow({ batch, onClick }: { batch: SettlementBatch; onClick: () => v
   )
 }
 
-// â”€â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Main page ────────────────────────────────────────────────────────────────
 export default function SettlementPage() {
   const addToast           = useAppStore((s) => s.addToast)
   const pushSecurityEvent  = useAppStore((s) => s.pushSecurityEvent)
@@ -216,7 +216,7 @@ export default function SettlementPage() {
   const { mutate: reject } = useMutation({
     mutationFn: (id: string) => settlementsApi.reject(id),
     onSuccess: () => {
-      addToast('Settlement batch rejected â€” sent back for review', 'error')
+      addToast('Settlement batch rejected - sent back for review', 'error')
       pushSecurityEvent('SETTLEMENT_REJECTED', 'Settlement batch rejected', selectedBatch?.id)
       qc.invalidateQueries({ queryKey: ['settlement-batches'] })
       setSelectedBatch(null)
@@ -261,9 +261,9 @@ export default function SettlementPage() {
     .filter((b) => b.completedAt)
     .sort((a, b) => new Date(b.completedAt!).getTime() - new Date(a.completedAt!).getTime())
     .map((b) => ({
-      label: `${b.participant} â€” ${formatUGX(b.netAmount)}`,
+      label: `${b.participant} - ${formatUGX(b.netAmount)}`,
       timestamp: formatDateTime(b.completedAt!),
-      description: `${b.transactionCount.toLocaleString()} txns Â· Approved by ${b.approvedBy}`,
+      description: `${b.transactionCount.toLocaleString()} txns · Approved by ${b.approvedBy}`,
       actor: b.id,
       status: 'done' as const,
     }))
@@ -287,7 +287,7 @@ export default function SettlementPage() {
         }
       />
 
-      {/* â”€â”€ KPI cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── KPI cards ────────────────────────────────────────────── */}
       <motion.div
         className="grid grid-cols-5 gap-3 mb-5"
         variants={staggerContainer}
@@ -315,7 +315,7 @@ export default function SettlementPage() {
         </motion.div>
       </motion.div>
 
-      {/* â”€â”€ Processing banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Processing banner ─────────────────────────────────────── */}
       <AnimatePresence>
         {hasProcessing && (
           <motion.div
@@ -326,7 +326,7 @@ export default function SettlementPage() {
           >
             <RefreshCw size={15} className="text-warning animate-spin flex-shrink-0" />
             <span className="text-sm font-medium text-yellow-800">
-              {processing.length} batch{processing.length > 1 ? 'es' : ''} currently processing â€”
+              {processing.length} batch{processing.length > 1 ? 'es' : ''} currently processing -
               live progress shown in the Settlement Pipeline panel
             </span>
           </motion.div>
@@ -334,7 +334,7 @@ export default function SettlementPage() {
       </AnimatePresence>
 
       <div className="grid grid-cols-3 gap-4">
-        {/* â”€â”€ Left: batch table with tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── Left: batch table with tabs ──────────────────────── */}
         <div className="col-span-2">
           <div className="bg-card rounded-card shadow-card overflow-hidden">
             {/* Tab bar */}
@@ -375,7 +375,7 @@ export default function SettlementPage() {
               {/* Table */}
               <Tabs.Content value={activeTab} className="overflow-x-auto">
                 {isLoading ? (
-                  <div className="p-8 text-center text-muted text-sm">Loading batchesâ€¦</div>
+                  <div className="p-8 text-center text-muted text-sm">Loading batches...</div>
                 ) : filtered.length === 0 ? (
                   <div className="p-8 text-center text-muted text-sm">No {activeTab} batches</div>
                 ) : (
@@ -403,7 +403,7 @@ export default function SettlementPage() {
           </div>
         </div>
 
-        {/* â”€â”€ Right panel: Pipeline / Accounts / Timeline â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── Right panel: Pipeline / Accounts / Timeline ──────── */}
         <div className="space-y-3">
           {/* Panel switcher */}
           <div className="flex gap-1 bg-surface p-1 rounded-lg border border-border">
@@ -525,7 +525,7 @@ export default function SettlementPage() {
         </div>
       </div>
 
-      {/* â”€â”€ Batch detail modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Batch detail modal ────────────────────────────────────── */}
       <Modal
         open={!!selectedBatch}
         onClose={() => setSelectedBatch(null)}
@@ -569,7 +569,7 @@ export default function SettlementPage() {
               {selectedBatch.status === 'processing' && (
                 <div className="flex items-center gap-2 text-sm text-muted ml-auto">
                   <RefreshCw size={13} className="animate-spin text-primary" />
-                  Processing â€” no actions available
+                  Processing - no actions available
                 </div>
               )}
             </div>
@@ -601,7 +601,7 @@ export default function SettlementPage() {
             {/* Fee row */}
             <div className="flex justify-between text-xs border-b border-border pb-3">
               <span className="text-muted">Settlement Fees</span>
-              <span className="font-medium text-danger">âˆ’{formatUGX(selectedBatch.grossAmount - selectedBatch.netAmount)}</span>
+              <span className="font-medium text-danger">−{formatUGX(selectedBatch.grossAmount - selectedBatch.netAmount)}</span>
             </div>
 
             {/* Details */}
@@ -662,7 +662,7 @@ export default function SettlementPage() {
         intent="danger"
       />
 
-      {/* Error state â€” displayed above table when query fails */}
+      {/* Error state - displayed above table when query fails */}
       {isError && (
         <ErrorState kind="server" message="Failed to load settlement batches. The settlement service may be temporarily unavailable." compact className="mb-4" />
       )}

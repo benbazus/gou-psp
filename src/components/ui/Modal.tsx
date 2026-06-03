@@ -1,7 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
-import { scaleIn, overlayVariants } from '../../utils/animations'
+import { centeredScaleIn, overlayVariants } from '../../utils/animations'
 
 interface Props {
   open: boolean
@@ -28,8 +28,8 @@ export function Modal({ open, onClose, title, children, maxWidth = 'max-w-lg', f
               </Dialog.Overlay>
               <Dialog.Content asChild forceMount>
                 <motion.div
-                  className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full ${maxWidth} bg-card rounded-xl shadow-modal z-50 overflow-hidden`}
-                  variants={scaleIn}
+                  className={`fixed top-1/2 left-1/2 w-[calc(100%-2rem)] ${maxWidth} bg-card rounded-xl shadow-modal z-50 overflow-hidden`}
+                  variants={centeredScaleIn}
                   initial="hidden" animate="visible" exit="exit"
                 >
                   <div className="flex items-center justify-between px-5 py-4 border-b border-border">

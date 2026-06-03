@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import * as Tabs from '@radix-ui/react-tabs'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { Badge } from '../../../components/ui/Badge'
@@ -48,7 +48,7 @@ const NOTIFICATION_TEMPLATES = [
   { id: 'NT-04', name: 'Dispute Raised',      channel: 'Email',       active: false },
 ]
 
-// â”€â”€â”€ Fee schedule â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Fee schedule ─────────────────────────────────────────────────────────────
 const FEE_SCHEDULE = [
   { id: 'FS-01', channel: 'MTN Mobile Money', type: 'Percentage', value: 1.5, cap: 5000,   payer: 'Citizen' },
   { id: 'FS-02', channel: 'Airtel Money',     type: 'Percentage', value: 1.5, cap: 5000,   payer: 'Citizen' },
@@ -58,7 +58,7 @@ const FEE_SCHEDULE = [
   { id: 'FS-06', channel: 'Wallet',           type: 'Percentage', value: 1.0, cap: 3000,   payer: 'Agency' },
 ]
 
-// â”€â”€â”€ Agency accounts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Agency accounts ──────────────────────────────────────────────────────────
 const AGENCY_ACCOUNTS = [
   { id: 'AG-01', agency: 'Uganda Revenue Authority (URA)', settlementBank: 'Bank of Uganda', account: 'BOU-URA-0001', status: 'active',    contact: 'collections@ura.go.ug' },
   { id: 'AG-02', agency: 'Kampala Capital City Authority', settlementBank: 'Stanbic Bank',   account: 'STAN-KCCA-4471', status: 'active',   contact: 'finance@kcca.go.ug' },
@@ -68,7 +68,7 @@ const AGENCY_ACCOUNTS = [
   { id: 'AG-06', agency: 'Directorate of Immigration',    settlementBank: 'Bank of Uganda', account: 'BOU-IMM-0044',   status: 'pending',  contact: 'epass@immigration.go.ug' },
 ]
 
-// â”€â”€â”€ Approval workflows (maker-checker chains) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Approval workflows (maker-checker chains) ─────────────────────────────────
 const APPROVAL_WORKFLOWS = [
   { id: 'WF-01', name: 'Settlement Batch Release',  threshold: 'All batches',        steps: ['Settlement Officer', 'Treasury Officer', 'Bank of Uganda Operator'], enabled: true },
   { id: 'WF-02', name: 'Refund / Reversal Approval', threshold: '> UGX 1,000,000',    steps: ['Support Officer', 'Compliance Officer'],                            enabled: true },
@@ -77,11 +77,11 @@ const APPROVAL_WORKFLOWS = [
   { id: 'WF-05', name: 'High-Value Payment Hold',    threshold: '> UGX 50,000,000',   steps: ['Compliance Officer', 'Bank of Uganda Operator'],                    enabled: false },
 ]
 
-// â”€â”€â”€ PDPA data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── PDPA data ────────────────────────────────────────────────────────────────
 const PDPA_ITEMS = [
   { id: 'P01', article: 'S.11', title: 'Lawful Processing',           desc: 'All data processing has a defined lawful basis (government mandate, consent, or legal obligation).', status: 'compliant' },
   { id: 'P02', article: 'S.12', title: 'Purpose Limitation',          desc: 'Payment data collected for collections is not re-used for unrelated purposes.', status: 'compliant' },
-  { id: 'P03', article: 'S.13', title: 'Data Minimisation',           desc: 'Only NIN, phone number, and transaction reference are collected â€” no biometric profiling.', status: 'compliant' },
+  { id: 'P03', article: 'S.13', title: 'Data Minimisation',           desc: 'Only NIN, phone number, and transaction reference are collected - no biometric profiling.', status: 'compliant' },
   { id: 'P04', article: 'S.14', title: 'Accuracy',                    desc: 'Payer records are verified against NIRA database at onboarding. Annual refresh scheduled.', status: 'compliant' },
   { id: 'P05', article: 'S.15', title: 'Storage Limitation',          desc: 'Transaction records retained for 7 years per Bank of Uganda Directive 2022/04, then deleted.', status: 'compliant' },
   { id: 'P06', article: 'S.16', title: 'Integrity & Confidentiality', desc: 'AES-256-GCM encryption at rest, TLS 1.3 in transit. HSM-backed key management.', status: 'compliant' },
@@ -95,7 +95,7 @@ const PDPA_ITEMS = [
   { id: 'P14', article: 'S.40', title: 'Privacy Impact Assessment',   desc: 'PIA completed January 2026. Next review due January 2027.', status: 'due'       },
 ]
 
-// â”€â”€â”€ Security config data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Security config data ─────────────────────────────────────────────────────
 const ENCRYPTION_STATUS = [
   { layer: 'Database (PostgreSQL)',     algo: 'AES-256-GCM',    status: 'active', detail: 'Tablespace encryption via pgcrypto + HSM-backed keys' },
   { layer: 'File Storage (settlements)', algo: 'AES-256-GCM',  status: 'active', detail: 'Encrypted at write; keys rotated every 90 days' },
@@ -108,7 +108,7 @@ const TLS_CONFIG = [
   { item: 'TLS 1.0 / 1.1',  value: 'Disabled',                         ok: true  },
   { item: 'TLS 1.2',        value: 'Allowed (legacy participants only)', ok: false },
   { item: 'Cipher Suite',   value: 'TLS_AES_256_GCM_SHA384',            ok: true  },
-  { item: 'Certificate',    value: 'DigiCert â€” expires 2027-01-15',     ok: true  },
+  { item: 'Certificate',    value: 'DigiCert - expires 2027-01-15',     ok: true  },
   { item: 'HSTS',           value: 'max-age=31536000; includeSubDomains', ok: true },
   { item: 'OCSP Stapling',  value: 'Enabled',                           ok: true  },
   { item: 'mTLS (participants)', value: 'Required for all API calls',   ok: true  },
@@ -173,7 +173,7 @@ export default function AdminPage() {
   const TAB_LABELS: Record<string, string> = {
     roles: 'User Roles', fees: 'Fees', limits: 'Tx Limits', routing: 'Routing Rules',
     settlement: 'Settlement Cycles', agencies: 'Agency Accounts', notifications: 'Notifications',
-    webhooks: 'Webhooks', approvals: 'Approval Workflows', security: 'ðŸ” Security', privacy: 'ðŸ›¡ï¸ Privacy / PDPA',
+    webhooks: 'Webhooks', approvals: 'Approval Workflows', security: '🔐 Security', privacy: '🛡️ Privacy / PDPA',
   }
 
   return (
@@ -193,7 +193,7 @@ export default function AdminPage() {
           ))}
         </Tabs.List>
 
-        {/* â”€â”€â”€ Roles tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Roles tab ─────────────────────────────────────── */}
         <Tabs.Content value="roles">
           <div className="bg-card rounded-card shadow-card overflow-x-auto">
             <table className="w-full text-xs">
@@ -232,7 +232,7 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
-        {/* â”€â”€â”€ Routing tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Routing tab ───────────────────────────────────── */}
         <Tabs.Content value="routing">
           <div className="bg-card rounded-card shadow-card overflow-hidden">
             <table className="w-full text-sm">
@@ -266,12 +266,12 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
-        {/* â”€â”€â”€ Fees tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Fees tab ──────────────────────────────────────── */}
         <Tabs.Content value="fees">
           <div className="bg-card rounded-card shadow-card overflow-hidden">
             <div className="px-5 py-3 border-b border-border flex items-center justify-between">
               <h3 className="text-sm font-semibold text-slate-800">Fee Schedule</h3>
-              <span className="text-xs text-muted">Per-channel convenience fees Â· maker-checker via <span className="font-medium">Fee Schedule Change</span> workflow</span>
+              <span className="text-xs text-muted">Per-channel convenience fees · maker-checker via <span className="font-medium">Fee Schedule Change</span> workflow</span>
             </div>
             <table className="w-full text-sm">
               <thead className="bg-surface border-b border-border">
@@ -287,7 +287,7 @@ export default function AdminPage() {
                     <td className="px-4 py-2.5 font-medium">{f.channel}</td>
                     <td className="px-4 py-2.5"><Badge variant={f.type === 'Flat' ? 'info' : 'muted'}>{f.type}</Badge></td>
                     <td className="px-4 py-2.5 font-mono text-primary">{f.type === 'Flat' ? formatUGX(f.value) : `${f.value}%`}</td>
-                    <td className="px-4 py-2.5 text-muted">{f.cap ? formatUGX(f.cap) : 'â€”'}</td>
+                    <td className="px-4 py-2.5 text-muted">{f.cap ? formatUGX(f.cap) : '-'}</td>
                     <td className="px-4 py-2.5 text-muted">{f.payer}</td>
                     <td className="px-4 py-2.5">
                       <button onClick={() => { addToast(`Fee for ${f.channel} submitted for approval`, 'success'); pushSecurityEvent('CONFIG_CHANGED', `Fee schedule edit: ${f.channel}`, 'FEE_SCHEDULE') }}
@@ -300,15 +300,15 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
-        {/* â”€â”€â”€ Limits tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Limits tab ────────────────────────────────────── */}
         <Tabs.Content value="limits">
           <div className="bg-card rounded-card shadow-card p-5 max-w-lg">
             <h3 className="text-sm font-semibold text-slate-800 mb-4">Channel Transaction Limits (UGX)</h3>
             <div className="space-y-4">
               {[
-                { key: 'mtn',    label: 'MTN Mobile Money â€” Max per transaction' },
-                { key: 'airtel', label: 'Airtel Money â€” Max per transaction' },
-                { key: 'bank',   label: 'Bank Transfer â€” Max per transaction' },
+                { key: 'mtn',    label: 'MTN Mobile Money - Max per transaction' },
+                { key: 'airtel', label: 'Airtel Money - Max per transaction' },
+                { key: 'bank',   label: 'Bank Transfer - Max per transaction' },
               ].map((f) => (
                 <div key={f.key}>
                   <label className="text-xs text-muted mb-1 block">{f.label}</label>
@@ -328,7 +328,7 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
-        {/* â”€â”€â”€ Settlement tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Settlement tab ─────────────────────────────────── */}
         <Tabs.Content value="settlement">
           <div className="bg-card rounded-card shadow-card overflow-hidden">
             <table className="w-full text-sm">
@@ -355,7 +355,7 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
-        {/* â”€â”€â”€ Agency accounts tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Agency accounts tab ────────────────────────────── */}
         <Tabs.Content value="agencies">
           <div className="bg-card rounded-card shadow-card overflow-hidden">
             <div className="px-5 py-3 border-b border-border flex items-center justify-between">
@@ -391,7 +391,7 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
-        {/* â”€â”€â”€ Notifications tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Notifications tab ──────────────────────────────── */}
         <Tabs.Content value="notifications">
           <div className="bg-card rounded-card shadow-card overflow-hidden">
             <table className="w-full text-sm">
@@ -418,7 +418,7 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
-        {/* â”€â”€â”€ Webhooks tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Webhooks tab ────────────────────────────────────── */}
         <Tabs.Content value="webhooks">
           <div className="bg-card rounded-card shadow-card p-5 max-w-lg">
             <h3 className="text-sm font-semibold text-slate-800 mb-4">Webhook Settings</h3>
@@ -444,7 +444,7 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
-        {/* â”€â”€â”€ Approval workflows tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Approval workflows tab ─────────────────────────── */}
         <Tabs.Content value="approvals">
           <div className="space-y-3">
             <p className="text-xs text-muted">
@@ -489,7 +489,7 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
-        {/* â”€â”€â”€ Security tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Security tab ─────────────────────────────────────── */}
         <Tabs.Content value="security">
           <div className="space-y-5">
             {/* Encryption at rest */}
@@ -638,7 +638,7 @@ export default function AdminPage() {
                       )} />
                       <div className="min-w-0 flex-1">
                         <div className="text-xs font-medium text-slate-800 truncate">{entry.action.replace(/_/g, ' ')}</div>
-                        <div className="text-[10px] text-muted truncate">{entry.actor} Â· {String(entry.ip)}</div>
+                        <div className="text-[10px] text-muted truncate">{entry.actor} · {String(entry.ip)}</div>
                       </div>
                       <div className="text-[10px] text-muted flex-shrink-0">
                         {new Date(entry.timestamp).toLocaleTimeString('en-UG', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
@@ -651,7 +651,7 @@ export default function AdminPage() {
           </div>
         </Tabs.Content>
 
-        {/* â”€â”€â”€ Privacy / PDPA tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ─── Privacy / PDPA tab ─────────────────────────────── */}
         <Tabs.Content value="privacy">
           <div className="space-y-4">
             {/* Header */}
@@ -727,7 +727,7 @@ export default function AdminPage() {
               </h3>
               <div className="grid grid-cols-3 gap-4 text-xs">
                 {[
-                  { label: 'Appointed DPO',    value: 'Bank of Uganda â€” Legal & Compliance Division' },
+                  { label: 'Appointed DPO',    value: 'Bank of Uganda - Legal & Compliance Division' },
                   { label: 'Contact',           value: 'dpo@bou.go.ug' },
                   { label: 'PDPO Registration', value: 'DPO-2024-BOU-0018' },
                   { label: 'Next PIA Review',   value: 'January 2027' },

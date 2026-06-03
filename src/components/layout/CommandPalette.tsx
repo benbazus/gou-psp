@@ -4,7 +4,7 @@ import { Search } from 'lucide-react'
 import { useAppStore } from '../../store/appStore'
 import { formatUGX, timeAgo } from '../../utils/format'
 import { motion, AnimatePresence } from 'framer-motion'
-import { scaleIn, overlayVariants } from '../../utils/animations'
+import { centeredScaleIn, overlayVariants } from '../../utils/animations'
 
 interface Props {
   open: boolean
@@ -44,8 +44,8 @@ export function CommandPalette({ open, onClose }: Props) {
               </Dialog.Overlay>
               <Dialog.Content asChild forceMount>
                 <motion.div
-                  className="fixed top-24 left-1/2 -translate-x-1/2 w-full max-w-xl bg-card rounded-xl shadow-modal z-50 overflow-hidden"
-                  variants={scaleIn}
+                  className="fixed top-1/2 left-1/2 w-[calc(100%-2rem)] max-w-xl bg-card rounded-xl shadow-modal z-50 overflow-hidden"
+                  variants={centeredScaleIn}
                   initial="hidden"
                   animate="visible"
                   exit="exit"

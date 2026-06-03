@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { Drawer } from '../../../components/ui/Drawer'
@@ -13,7 +13,7 @@ import {
 } from 'lucide-react'
 import clsx from 'clsx'
 
-// â”€â”€â”€ Process flow stages (spec) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Process flow stages (spec) ───────────────────────────────────────────────
 const FLOW_STAGES = [
   { key: 'Dispute Raised',       label: 'Raised',      icon: AlertTriangle },
   { key: 'Investigation',        label: 'Investigation', icon: Eye },
@@ -23,7 +23,7 @@ const FLOW_STAGES = [
   { key: 'Closure',              label: 'Closed',       icon: CheckCircle2 },
 ]
 
-// â”€â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 const TYPE_LABELS: Record<string, string> = {
   failed_debit:      'Failed Debit',
   duplicate_payment: 'Duplicate',
@@ -57,7 +57,7 @@ const FILE_ICON_COLOR: Record<string, string> = {
   CSV:  'bg-orange-100 text-orange-600',
 }
 
-// â”€â”€â”€ SLA Timer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── SLA Timer ────────────────────────────────────────────────────────────────
 function SLATimer({ dueAt, compact }: { dueAt: string; compact?: boolean }) {
   const [timeLeft, setTimeLeft] = useState('')
 
@@ -87,7 +87,7 @@ function SLATimer({ dueAt, compact }: { dueAt: string; compact?: boolean }) {
   )
 }
 
-// â”€â”€â”€ Visual process flow â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Visual process flow ──────────────────────────────────────────────────────
 function ProcessFlow({ dispute }: { dispute: DisputeEx }) {
   const completedStages = new Set(dispute.timeline.map((t) => t.stage))
   const currentStageIdx = FLOW_STAGES.reduce((last, stage, i) => completedStages.has(stage.key) ? i : last, -1)
@@ -137,7 +137,7 @@ function ProcessFlow({ dispute }: { dispute: DisputeEx }) {
   )
 }
 
-// â”€â”€â”€ Evidence panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Evidence panel ───────────────────────────────────────────────────────────
 function EvidencePanel({ evidence }: { evidence: DisputeEvidence[] }) {
   const addToast = useAppStore((s) => s.addToast)
   const [uploadOpen, setUploadOpen] = useState(false)
@@ -169,7 +169,7 @@ function EvidencePanel({ evidence }: { evidence: DisputeEvidence[] }) {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-medium text-slate-800 truncate">{f.name}</div>
-                <div className="text-[10px] text-muted">{f.size} Â· {f.uploadedBy} Â· {formatDateTime(f.uploadedAt)}</div>
+                <div className="text-[10px] text-muted">{f.size} · {f.uploadedBy} · {formatDateTime(f.uploadedAt)}</div>
               </div>
               <div className="flex gap-1.5">
                 <button onClick={() => addToast(`Viewing ${f.name} (demo)`, 'info')}
@@ -203,12 +203,12 @@ function EvidencePanel({ evidence }: { evidence: DisputeEvidence[] }) {
           >
             <Upload size={28} className="text-primary/40 mx-auto mb-2" />
             <p className="text-sm font-medium text-slate-700">Click to select a file</p>
-            <p className="text-xs text-muted mt-1">PDF, PNG, JPEG, CSV â€” max 10 MB</p>
+            <p className="text-xs text-muted mt-1">PDF, PNG, JPEG, CSV - max 10 MB</p>
           </div>
           <div>
             <label className="text-xs text-muted block mb-1">Evidence Description</label>
             <input className="w-full border border-border rounded-lg px-3 py-2 text-sm outline-none focus:border-primary/50"
-              placeholder="Describe what this document showsâ€¦" />
+              placeholder="Describe what this document shows..." />
           </div>
         </div>
       </Modal>
@@ -216,7 +216,7 @@ function EvidencePanel({ evidence }: { evidence: DisputeEvidence[] }) {
   )
 }
 
-// â”€â”€â”€ Dispute drawer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Dispute drawer ───────────────────────────────────────────────────────────
 function DisputeDetail({ dispute, onClose, onAction }: {
   dispute: DisputeEx
   onClose: () => void
@@ -232,7 +232,7 @@ function DisputeDetail({ dispute, onClose, onAction }: {
       open
       onClose={onClose}
       title={dispute.id}
-      subtitle={`${TYPE_LABELS[dispute.type]} Â· ${dispute.channel} Â· ${dispute.agency}`}
+      subtitle={`${TYPE_LABELS[dispute.type]} · ${dispute.channel} · ${dispute.agency}`}
     >
       <div className="space-y-5">
         {/* Status + reversal row */}
@@ -398,7 +398,7 @@ function DisputeDetail({ dispute, onClose, onAction }: {
               onChange={(e) => setRejectNote(e.target.value)}
               rows={3}
               className="w-full border border-border rounded-xl px-3 py-2 text-sm outline-none focus:border-primary/50 resize-none"
-              placeholder="Explain why this dispute is being rejectedâ€¦"
+              placeholder="Explain why this dispute is being rejected..."
             />
           </div>
         </div>
@@ -407,7 +407,7 @@ function DisputeDetail({ dispute, onClose, onAction }: {
   )
 }
 
-// â”€â”€â”€ KPI strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── KPI strip ────────────────────────────────────────────────────────────────
 function KpiStrip({ disputes }: { disputes: DisputeEx[] }) {
   const open        = disputes.filter((d) => d.status === 'open').length
   const overdue     = disputes.filter((d) => new Date(d.slaDueAt) < new Date() && d.status !== 'closed').length
@@ -435,7 +435,7 @@ function KpiStrip({ disputes }: { disputes: DisputeEx[] }) {
   )
 }
 
-// â”€â”€â”€ Dispute row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Dispute row ──────────────────────────────────────────────────────────────
 function DisputeRow({ d, onClick }: { d: DisputeEx; onClick: () => void }) {
   const overdue = new Date(d.slaDueAt) < new Date() && d.status !== 'closed'
 
@@ -464,7 +464,7 @@ function DisputeRow({ d, onClick }: { d: DisputeEx; onClick: () => void }) {
       <td className="px-4 py-3">
         {d.refundAmount
           ? <span className="text-xs font-semibold text-green-700">{formatUGX(d.refundAmount)}</span>
-          : <span className="text-xs text-muted">â€”</span>
+          : <span className="text-xs text-muted">•</span>
         }
       </td>
       <td className="px-4 py-3">
@@ -478,10 +478,10 @@ function DisputeRow({ d, onClick }: { d: DisputeEx; onClick: () => void }) {
             REVERSAL_COLOR[d.reversalStatus])}>
             <RotateCcw size={9} /> {d.reversalStatus}
           </span>
-        ) : <span className="text-xs text-muted">â€”</span>}
+        ) : <span className="text-xs text-muted">•</span>}
       </td>
       <td className="px-4 py-3">
-        {d.status !== 'closed' ? <SLATimer dueAt={d.slaDueAt} compact /> : <span className="text-xs text-muted">â€”</span>}
+        {d.status !== 'closed' ? <SLATimer dueAt={d.slaDueAt} compact /> : <span className="text-xs text-muted">•</span>}
       </td>
       <td className="px-4 py-3">
         <div className="flex items-center gap-1.5">
@@ -497,7 +497,7 @@ function DisputeRow({ d, onClick }: { d: DisputeEx; onClick: () => void }) {
   )
 }
 
-// â”€â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Main page ────────────────────────────────────────────────────────────────
 type TypeFilter = 'all' | 'failed_debit' | 'duplicate_payment' | 'incorrect_amount' | 'no_confirmation'
 type StatusFilter = 'all' | 'open' | 'investigating' | 'participant_response' | 'approved' | 'closed'
 
@@ -527,7 +527,7 @@ export default function DisputesPage() {
             stage: action === 'approve' ? 'Approval' : action === 'reject' ? 'Closure' : 'Investigation',
             actor: 'Current User',
             timestamp: new Date().toISOString(),
-            note: action === 'approve' ? 'Refund approved â€” reversal initiated' :
+            note: action === 'approve' ? 'Refund approved - reversal initiated' :
                   action === 'reject'  ? 'Dispute rejected by support officer' :
                   'Escalated to compliance team for review',
           },
@@ -536,7 +536,7 @@ export default function DisputesPage() {
     ))
 
     addToast(
-      action === 'approve'  ? `Dispute ${selected.id} approved â€” refund processing` :
+      action === 'approve'  ? `Dispute ${selected.id} approved - refund processing` :
       action === 'reject'   ? `Dispute ${selected.id} rejected`  :
       `Dispute ${selected.id} escalated to compliance`,
       action === 'approve' ? 'success' : action === 'reject' ? 'error' : 'warning',
@@ -567,7 +567,7 @@ export default function DisputesPage() {
 
       <KpiStrip disputes={disputes} />
 
-      {/* â”€â”€ Filters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Filters ────────────────────────────────────────── */}
       <div className="flex items-center gap-3 mb-4 flex-wrap">
         {/* Type tabs */}
         <div className="flex gap-1 bg-surface p-1 rounded-xl border border-border flex-wrap">
@@ -602,7 +602,7 @@ export default function DisputesPage() {
         <span className="text-xs text-muted ml-auto">{filtered.length} disputes</span>
       </div>
 
-      {/* â”€â”€ Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Table ──────────────────────────────────────────── */}
       <div className="bg-card rounded-card shadow-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -634,7 +634,7 @@ export default function DisputesPage() {
         </div>
       </div>
 
-      {/* â”€â”€ Dispute detail drawer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Dispute detail drawer ──────────────────────────── */}
       <AnimatePresence>
         {selected && (
           <DisputeDetail

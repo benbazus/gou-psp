@@ -1,4 +1,4 @@
-﻿import { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { FlowDiagram, type FlowNode, type NodeState } from '../../../features/simulator/FlowDiagram'
@@ -21,7 +21,7 @@ interface LogEntry {
   ts: string
 }
 
-// â”€â”€â”€ Node metadata â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Node metadata ────────────────────────────────────────────────────────────
 const NODES_META = [
   { id: 'citizen',    label: 'Citizen / Business',      baseDesc: 'Initiating payment request' },
   { id: 'portal',     label: 'Gov Service Portal',      baseDesc: 'Validating service reference' },
@@ -35,7 +35,7 @@ const NODES_META = [
   { id: 'settlement', label: 'Settlement & Recon',      baseDesc: 'Creating ledger entry' },
 ]
 
-// â”€â”€â”€ Per-scenario step sequences â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Per-scenario step sequences ──────────────────────────────────────────────
 // Each entry: { nodeIndex, state, description, logMsg, delay }
 interface StepDef {
   nodeIndex: number
@@ -65,22 +65,22 @@ function buildSequence(
 
   if (scenario === 'success') {
     return [
-      [step(0, 'active',     `Payment of ${formatUGX(amount)} initiated`,         `${payer} initiates payment â€” PRN ${prn} Â· ${formatUGX(amount)} to ${agency}`)],
-      [step(0, 'completed',  `Payment initiated`,                                  `PRN ${prn} generated â€” citizen payment request received`),
+      [step(0, 'active',     `Payment of ${formatUGX(amount)} initiated`,         `${payer} initiates payment - PRN ${prn} · ${formatUGX(amount)} to ${agency}`)],
+      [step(0, 'completed',  `Payment initiated`,                                  `PRN ${prn} generated - citizen payment request received`),
        step(1, 'active',     `Validating service: ${agency}`,                      `Gov Service Portal validates ${agency} service reference`)],
-      [step(1, 'completed',  `Service validated âœ“`,                                `Service reference validated â€” amount ${formatUGX(amount)} confirmed`),
+      [step(1, 'completed',  `Service validated ✓`,                                `Service reference validated - amount ${formatUGX(amount)} confirmed`),
        step(2, 'active',     `Assigning TXN ID: ${txnId}`,                         `GovPay Switch assigned transaction ID ${txnId}`)],
-      [step(2, 'completed',  `${txnId} assigned`,                                  `Transaction ${txnId} registered in switch â€” idempotency key stored`),
+      [step(2, 'completed',  `${txnId} assigned`,                                  `Transaction ${txnId} registered in switch - idempotency key stored`),
        step(3, 'active',     `Verifying PRN & daily limits`,                        `Validation Engine: PRN check, balance, daily limit, blacklist screening`)],
-      [step(3, 'completed',  `Validation passed âœ“`,                                `PRN valid, payer not blacklisted, within daily limit (UGX 5M)`),
-       step(4, 'active',     `Selecting optimal routeâ€¦`,                            `Routing Engine: ${channel} selected â€” latency 44ms, 99.2% uptime`)],
-      [step(4, 'completed',  `Routed to ${channel}`,                               `Primary route: ${channel} â€” fee rate 0.5% â€” estimated 2s`),
-       step(5, 'active',     `Debiting ${payer} via ${channel}`,                   `Debit instruction sent to ${channel} API â€” awaiting response`)],
-      [step(5, 'completed',  `Debit confirmed by ${channel}`,                      `${channel} confirmed debit â€” ref: ${channel.slice(0, 3).toUpperCase()}-${Math.floor(Math.random() * 99999)}`),
-       step(6, 'active',     `Confirmation received`,                              `Switch received SUCCESS confirmation â€” marking transaction CONFIRMED`)],
-      [step(6, 'completed',  `Transaction confirmed`,                              `Transaction ${txnId} status: COMPLETED â€” receipt generated`),
-       step(7, 'active',     `Notifying ${agency}`,                                `Agency notification: ${agency} collection account credited â€” PRN marked PAID`)],
-      [step(7, 'completed',  `${agency} notified âœ“`,                              `${agency} acknowledged payment â€” collection record updated`),
+      [step(3, 'completed',  `Validation passed ✓`,                                `PRN valid, payer not blacklisted, within daily limit (UGX 5M)`),
+       step(4, 'active',     `Selecting optimal route...`,                            `Routing Engine: ${channel} selected - latency 44ms, 99.2% uptime`)],
+      [step(4, 'completed',  `Routed to ${channel}`,                               `Primary route: ${channel} - fee rate 0.5% - estimated 2s`),
+       step(5, 'active',     `Debiting ${payer} via ${channel}`,                   `Debit instruction sent to ${channel} API - awaiting response`)],
+      [step(5, 'completed',  `Debit confirmed by ${channel}`,                      `${channel} confirmed debit - ref: ${channel.slice(0, 3).toUpperCase()}-${Math.floor(Math.random() * 99999)}`),
+       step(6, 'active',     `Confirmation received`,                              `Switch received SUCCESS confirmation - marking transaction CONFIRMED`)],
+      [step(6, 'completed',  `Transaction confirmed`,                              `Transaction ${txnId} status: COMPLETED - receipt generated`),
+       step(7, 'active',     `Notifying ${agency}`,                                `Agency notification: ${agency} collection account credited - PRN marked PAID`)],
+      [step(7, 'completed',  `${agency} notified ✓`,                              `${agency} acknowledged payment - collection record updated`),
        step(8, 'active',     `Crediting treasury account`,                         `BOU treasury collection account BOU-TREAS-001-${agency.slice(0, 3)} credited`)],
       [step(8, 'completed',  `Treasury credited ${formatUGX(amount)}`,            `Net amount ${formatUGX(Math.round(amount * 0.995))} credited after fees`),
        step(9, 'active',     `Creating settlement entry`,                          `Settlement ledger entry LEDG-${txnId.slice(-6)} created for EOD batch`)],
@@ -90,15 +90,15 @@ function buildSequence(
 
   if (scenario === 'failed') {
     return [
-      [step(0, 'active',     `Payment initiated`,                                  `${payer} initiates payment â€” PRN ${prn} Â· ${formatUGX(amount)} to ${agency}`)],
+      [step(0, 'active',     `Payment initiated`,                                  `${payer} initiates payment - PRN ${prn} · ${formatUGX(amount)} to ${agency}`)],
       [step(0, 'completed',  `Initiated`,                                          `PRN ${prn} received by switch`),
        step(1, 'active',     `Validating service`,                                 `Gov Service Portal checking ${agency} reference`)],
       [step(1, 'completed',  `Portal validated`,                                   `Service reference valid`),
        step(2, 'active',     `Assigning TXN ID`,                                   `Switch assigns ${txnId}`)],
       [step(2, 'completed',  `${txnId} assigned`,                                  `Transaction registered`),
-       step(3, 'active',     `Running validation checks`,                           `Checking PRN, balance, limits, blacklistâ€¦`)],
-      [step(3, 'failed',     `FAILED â€” Validation Error`,                          `BLOCKED: ${payer} â€” account velocity limit exceeded (47 txns in 2h). Rule: VELOCITY_PAYER_2H_GT_40`),
-       step(4, 'skipped',    `Skipped`,                                            `Not reached â€” transaction blocked at validation`),
+       step(3, 'active',     `Running validation checks`,                           `Checking PRN, balance, limits, blacklist...`)],
+      [step(3, 'failed',     `FAILED - Validation Error`,                          `BLOCKED: ${payer} - account velocity limit exceeded (47 txns in 2h). Rule: VELOCITY_PAYER_2H_GT_40`),
+       step(4, 'skipped',    `Skipped`,                                            `Not reached - transaction blocked at validation`),
        step(5, 'skipped',    `Skipped`,                                            ``),
        step(6, 'skipped',    `Skipped`,                                            ``),
        step(7, 'skipped',    `Skipped`,                                            ``),
@@ -109,16 +109,16 @@ function buildSequence(
 
   if (scenario === 'timeout') {
     return [
-      [step(0, 'active',     `Payment initiated`,                                  `${payer} initiates payment â€” PRN ${prn}`)],
+      [step(0, 'active',     `Payment initiated`,                                  `${payer} initiates payment - PRN ${prn}`)],
       [step(0, 'completed',  `Initiated`,                                          `Request received`),
        step(1, 'active',     `Validating`,                                         `Portal validates service`)],
       [step(1, 'completed',  `Validated`,                                          `Reference OK`),
        step(2, 'active',     `Assigning TXN ID`,                                   `Switch assigns ${txnId}`)],
       [step(2, 'completed',  `${txnId} assigned`,                                  `Transaction registered`),
-       step(3, 'active',     `Validation running`,                                  `PRN and limit checksâ€¦`)],
+       step(3, 'active',     `Validation running`,                                  `PRN and limit checks...`)],
       [step(3, 'completed',  `Validation passed`,                                  `All checks passed`),
-       step(4, 'active',     `Routing â€” selecting channelâ€¦`,                        `Routing Engine querying ${channel} health checkâ€¦`, 1200)],
-      [step(4, 'failed',     `TIMEOUT â€” Routing Engine`,                           `TIMEOUT: ${channel} health check did not respond within 30s. Fallback channels exhausted. Transaction ABANDONED.`),
+       step(4, 'active',     `Routing - selecting channel...`,                        `Routing Engine querying ${channel} health check...`, 1200)],
+      [step(4, 'failed',     `TIMEOUT - Routing Engine`,                           `TIMEOUT: ${channel} health check did not respond within 30s. Fallback channels exhausted. Transaction ABANDONED.`),
        step(5, 'skipped',    `Skipped`,                                            ``),
        step(6, 'skipped',    `Skipped`,                                            ``),
        step(7, 'skipped',    `Skipped`,                                            ``),
@@ -129,21 +129,21 @@ function buildSequence(
 
   if (scenario === 'retry') {
     return [
-      [step(0, 'active',     `Payment initiated`,                                  `${payer} initiates â€” PRN ${prn} Â· ${formatUGX(amount)} to ${agency}`)],
+      [step(0, 'active',     `Payment initiated`,                                  `${payer} initiates - PRN ${prn} · ${formatUGX(amount)} to ${agency}`)],
       [step(0, 'completed',  `Initiated`,                                          `PRN received`),
        step(1, 'active',     `Validating`,                                         `Portal validates`)],
       [step(1, 'completed',  `Validated`,                                          `Reference OK`),
        step(2, 'active',     `Assigning TXN ID`,                                   `Switch assigns ${txnId}`)],
       [step(2, 'completed',  `${txnId} assigned`,                                  `Registered`),
-       step(3, 'active',     `Validation running`,                                  `PRN and limitsâ€¦`)],
+       step(3, 'active',     `Validation running`,                                  `PRN and limits...`)],
       [step(3, 'completed',  `Validation passed`,                                  `All checks passed`),
        step(4, 'active',     `Routing`,                                             `${channel} selected`)],
       [step(4, 'completed',  `Route: ${channel}`,                                  `Primary route confirmed`),
-       step(5, 'active',     `Sending debit instruction (attempt 1/3)`,            `Debit instruction sent to ${channel}â€¦`, 800)],
+       step(5, 'active',     `Sending debit instruction (attempt 1/3)`,            `Debit instruction sent to ${channel}...`, 800)],
       // Retry frame
-      [step(5, 'retrying',   `RETRY 1/3 â€” ${channel} timed out`,                  `RETRY 1/3: ${channel} API timeout (5s). Retrying in 2sâ€¦`, 1400)],
-      [step(5, 'active',     `Attempt 2/3 â€” resending`,                            `Retry 2 sent to ${channel}â€¦`, 800)],
-      [step(5, 'completed',  `Debit confirmed on retry`,                           `${channel} responded SUCCESS on attempt 2/3 â€” ref confirmed`),
+      [step(5, 'retrying',   `RETRY 1/3 - ${channel} timed out`,                  `RETRY 1/3: ${channel} API timeout (5s). Retrying in 2s...`, 1400)],
+      [step(5, 'active',     `Attempt 2/3 - resending`,                            `Retry 2 sent to ${channel}...`, 800)],
+      [step(5, 'completed',  `Debit confirmed on retry`,                           `${channel} responded SUCCESS on attempt 2/3 - ref confirmed`),
        step(6, 'active',     `Confirmation received`,                              `Marking CONFIRMED`)],
       [step(6, 'completed',  `Confirmed`,                                          `Transaction ${txnId} COMPLETED`),
        step(7, 'active',     `Notifying ${agency}`,                                `Agency notified`)],
@@ -151,19 +151,19 @@ function buildSequence(
        step(8, 'active',     `Crediting treasury`,                                 `BOU account credited`)],
       [step(8, 'completed',  `Treasury credited`,                                  `Net ${formatUGX(Math.round(amount * 0.995))} after fees`),
        step(9, 'active',     `Settlement entry`,                                   `Ledger entry created`)],
-      [step(9, 'completed',  `Complete â€” recovered via retry`,                     `Settlement batch updated`)],
+      [step(9, 'completed',  `Complete - recovered via retry`,                     `Settlement batch updated`)],
     ]
   }
 
   // Reversal
   return [
-    [step(0, 'active',     `Payment initiated`,                                  `${payer} â€” PRN ${prn}`)],
+    [step(0, 'active',     `Payment initiated`,                                  `${payer} - PRN ${prn}`)],
     [step(0, 'completed',  `Initiated`,                                          `Received`),
      step(1, 'active',     `Validating`,                                         `Portal validates`)],
     [step(1, 'completed',  `Validated`,                                          `OK`),
      step(2, 'active',     `${txnId} assigned`,                                  `Registered`)],
     [step(2, 'completed',  `Assigned`,                                           `Switch registered`),
-     step(3, 'active',     `Validation`,                                          `Checksâ€¦`)],
+     step(3, 'active',     `Validation`,                                          `Checks...`)],
     [step(3, 'completed',  `Passed`,                                             `OK`),
      step(4, 'active',     `Routing`,                                             `${channel} selected`)],
     [step(4, 'completed',  `Routed`,                                             `${channel} primary`),
@@ -178,14 +178,14 @@ function buildSequence(
      step(9, 'active',     `Settlement entry`,                                   `Ledger created`)],
     [step(9, 'completed',  `Settlement complete`,                                `Batch updated`)],
     // Now reversal kicks in
-    [step(9, 'reversing',  `REVERSAL â€” Reversal request received`,               `âš  Citizen disputed payment â€” reversal initiated by ${agency}`)],
-    [step(9, 'reversing',  `Reversing settlement entry`,                         `Settlement ledger entry REVERSED â€” net position adjusted`),
-     step(8, 'reversing',  `Reversing treasury credit`,                          `Treasury account debited â€” funds returned to switch float`)],
-    [step(7, 'reversing',  `Reversing agency notification`,                      `${agency} notified â€” PRN marked REVERSED`),
+    [step(9, 'reversing',  `REVERSAL - Reversal request received`,               `⚠ Citizen disputed payment - reversal initiated by ${agency}`)],
+    [step(9, 'reversing',  `Reversing settlement entry`,                         `Settlement ledger entry REVERSED - net position adjusted`),
+     step(8, 'reversing',  `Reversing treasury credit`,                          `Treasury account debited - funds returned to switch float`)],
+    [step(7, 'reversing',  `Reversing agency notification`,                      `${agency} notified - PRN marked REVERSED`),
      step(6, 'reversing',  `Issuing reversal confirmation`,                      `Reversal confirmation dispatched to ${payer}`)],
-    [step(5, 'reversing',  `Reversing channel debit`,                            `Credit instruction sent to ${channel} â€” ${payer} wallet refund initiated`),
+    [step(5, 'reversing',  `Reversing channel debit`,                            `Credit instruction sent to ${channel} - ${payer} wallet refund initiated`),
      step(4, 'reversing',  `Routing reversal`,                                   `Reversal routed via original channel`)],
-    [step(3, 'reversing',  `Reversal validated`,                                 `Reversal request validated â€” within 24h reversal window`),
+    [step(3, 'reversing',  `Reversal validated`,                                 `Reversal request validated - within 24h reversal window`),
      step(2, 'reversing',  `Reversal TXN created`,                               `REV-${txnId} registered in switch`)],
     [step(2, 'completed',  `Reversal complete`,                                  `Original TXN ${txnId} marked REVERSED`),
      step(1, 'completed',  `Portal updated`,                                     `Service portal status updated to REVERSED`),
@@ -193,29 +193,29 @@ function buildSequence(
   ]
 }
 
-// â”€â”€â”€ Scenario tab config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Scenario tab config ──────────────────────────────────────────────────────
 const SCENARIOS: { id: Scenario; label: string; desc: string; icon: React.ElementType; color: string }[] = [
   { id: 'success',  label: 'Success',   desc: 'All 10 nodes complete',               icon: CheckCircle2,    color: 'text-green-700 bg-green-50 border-green-200' },
   { id: 'failed',   label: 'Failed',    desc: 'Blocked at validation (AML rule)',     icon: XCircle,         color: 'text-danger bg-red-50 border-red-200' },
   { id: 'timeout',  label: 'Timeout',   desc: 'Routing engine does not respond',      icon: Clock,           color: 'text-yellow-700 bg-yellow-50 border-yellow-200' },
-  { id: 'retry',    label: 'Retry',     desc: 'Channel fails â†’ retries â†’ succeeds',  icon: RefreshCw,       color: 'text-orange-700 bg-orange-50 border-orange-200' },
+  { id: 'retry',    label: 'Retry',     desc: 'Channel fails → retries → succeeds',  icon: RefreshCw,       color: 'text-orange-700 bg-orange-50 border-orange-200' },
   { id: 'reversal', label: 'Reversal',  desc: 'Completes then reverses end-to-end',  icon: ArrowLeftRight,  color: 'text-purple-700 bg-purple-50 border-purple-200' },
 ]
 
 const FINAL_TOAST: Record<Scenario, { msg: string; variant: 'success' | 'error' | 'warning' | 'info' }> = {
   success:  { msg: 'Transaction completed successfully',                       variant: 'success' },
-  failed:   { msg: 'Transaction blocked â€” AML velocity rule triggered',        variant: 'error' },
-  timeout:  { msg: 'Transaction abandoned â€” routing engine timeout',           variant: 'warning' },
+  failed:   { msg: 'Transaction blocked - AML velocity rule triggered',        variant: 'error' },
+  timeout:  { msg: 'Transaction abandoned - routing engine timeout',           variant: 'warning' },
   retry:    { msg: 'Transaction completed via retry (attempt 2/3)',            variant: 'success' },
-  reversal: { msg: 'Transaction reversed â€” full refund issued to citizen',    variant: 'info' },
+  reversal: { msg: 'Transaction reversed - full refund issued to citizen',    variant: 'info' },
 }
 
-// â”€â”€â”€ Blank node states â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Blank node states ────────────────────────────────────────────────────────
 function blankNodes(): FlowNode[] {
   return NODES_META.map((n) => ({ ...n, description: n.baseDesc, state: 'idle' as NodeState }))
 }
 
-// â”€â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Main page ────────────────────────────────────────────────────────────────
 export default function SimulatorPage() {
   const addToast = useAppStore((s) => s.addToast)
 
@@ -293,7 +293,7 @@ export default function SimulatorPage() {
 
     if (runningRef.current) {
       const toast = FINAL_TOAST[scenario]
-      addToast(`${id} â€” ${toast.msg}`, toast.variant)
+      addToast(`${id} - ${toast.msg}`, toast.variant)
       setDone(true)
     }
     runningRef.current = false
@@ -326,13 +326,13 @@ export default function SimulatorPage() {
           >
             <Icon size={13} />
             <span className="font-semibold">{label}</span>
-            <span className="hidden sm:inline opacity-60">â€” {desc}</span>
+            <span className="hidden sm:inline opacity-60"> - {desc}</span>
           </button>
         ))}
       </div>
 
       <div className="grid grid-cols-5 gap-4">
-        {/* â”€â”€ Flow diagram (left, wider) â”€â”€â”€ */}
+        {/* ── Flow diagram (left, wider) ─── */}
         <div className="col-span-2">
           <div className="bg-card rounded-card shadow-card p-6">
             <div className="flex items-center justify-between mb-4">
@@ -340,7 +340,7 @@ export default function SimulatorPage() {
               {running && (
                 <span className="flex items-center gap-1.5 text-xs text-primary">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  Simulatingâ€¦
+                  Simulating...
                 </span>
               )}
               {done && (
@@ -358,7 +358,7 @@ export default function SimulatorPage() {
           </div>
         </div>
 
-        {/* â”€â”€ Right column â”€â”€â”€ */}
+        {/* ── Right column ─── */}
         <div className="col-span-3 flex flex-col gap-4">
           {/* Transaction info bar */}
           <AnimatePresence>
@@ -421,7 +421,7 @@ export default function SimulatorPage() {
                   className="flex items-center justify-center gap-2 w-full py-3 bg-primary text-white rounded-xl font-semibold text-sm hover:bg-primary-light transition-colors disabled:opacity-60"
                 >
                   {running
-                    ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />Simulatingâ€¦</>
+                    ? <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />Simulating...</>
                     : <><Play size={15} />Simulate Payment</>
                   }
                 </button>
@@ -486,7 +486,7 @@ export default function SimulatorPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="font-semibold text-[11px] text-slate-700 mb-0.5">
-                            Step {entry.step} â€” {entry.label}
+                            Step {entry.step} - {entry.label}
                           </div>
                           <div className="text-muted leading-relaxed">{entry.message}</div>
                         </div>

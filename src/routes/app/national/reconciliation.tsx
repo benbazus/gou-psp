@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as Tabs from '@radix-ui/react-tabs'
 import { PageHeader } from '../../../components/ui/PageHeader'
@@ -20,7 +20,7 @@ import {
 import type { ReconRecord, ReconExceptionType } from '../../../types'
 import clsx from 'clsx'
 
-// â”€â”€â”€ Run stages â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Run stages ──────────────────────────────────────────────────────────────
 const RUN_STAGES = [
   { label: 'Loading Switch Records',      detail: 'Fetching 200 switch-side payment records',       count: latestReconRun.totalSwitch },
   { label: 'Loading Agency Records',      detail: 'Fetching records from URA, NIRA, KCCA, Police',  count: latestReconRun.totalAgency },
@@ -33,7 +33,7 @@ const RUN_STAGES = [
 
 const STAGE_DELAYS = [600, 700, 700, 600, 900, 800, 500]
 
-// â”€â”€â”€ Exception badge colours â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Exception badge colours ──────────────────────────────────────────────────
 const EX_STYLE: Record<ReconExceptionType, { badge: string; row: string; label: string }> = {
   unmatched:            { badge: 'bg-red-100 text-red-700 border-red-200',       row: 'hover:bg-red-50',     label: 'Unmatched' },
   duplicate:            { badge: 'bg-orange-100 text-orange-700 border-orange-200', row: 'hover:bg-orange-50', label: 'Duplicate' },
@@ -42,7 +42,7 @@ const EX_STYLE: Record<ReconExceptionType, { badge: string; row: string; label: 
   underpayment:         { badge: 'bg-blue-100 text-blue-700 border-blue-200',      row: 'hover:bg-blue-50',    label: 'Underpayment' },
 }
 
-// â”€â”€â”€ Animated run overlay â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Animated run overlay ─────────────────────────────────────────────────────
 function ReconAnimation({ onClose }: { onClose: (score: number) => void }) {
   const [stage, setStage] = useState(-1)
   const [done, setDone]   = useState(false)
@@ -81,7 +81,7 @@ function ReconAnimation({ onClose }: { onClose: (score: number) => void }) {
           </div>
           <div>
             <div className="font-bold text-slate-800 text-sm">
-              {done ? 'Reconciliation Complete' : 'Running Reconciliationâ€¦'}
+              {done ? 'Reconciliation Complete' : 'Running Reconciliation...'}
             </div>
             <div className="text-xs text-muted">
               {done ? `Run ID: ${latestReconRun.id}` : 'Processing all record sources'}
@@ -115,7 +115,7 @@ function ReconAnimation({ onClose }: { onClose: (score: number) => void }) {
                   active  && 'bg-primary text-white',
                   waiting && 'bg-border text-muted',
                 )}>
-                  {past ? 'âœ“' : active
+                  {past ? '✓' : active
                     ? <RefreshCw size={11} className="animate-spin" />
                     : i + 1
                   }
@@ -163,7 +163,7 @@ function ReconAnimation({ onClose }: { onClose: (score: number) => void }) {
                 {latestReconRun.matchRate}%
               </motion.div>
               <div className="text-xs text-green-600 mt-1">
-                {latestReconRun.matched.toLocaleString()} matched Â·{' '}
+                {latestReconRun.matched.toLocaleString()} matched ·{' '}
                 {(latestReconRun.unmatched + latestReconRun.duplicates + latestReconRun.missingConfirmations + latestReconRun.overpayments + latestReconRun.underpayments)} exceptions
               </div>
             </motion.div>
@@ -185,7 +185,7 @@ function ReconAnimation({ onClose }: { onClose: (score: number) => void }) {
   )
 }
 
-// â”€â”€â”€ Records table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Records table ────────────────────────────────────────────────────────────
 function RecordsTable({
   records, onSelect, search,
 }: {
@@ -270,7 +270,7 @@ function RecordsTable({
   )
 }
 
-// â”€â”€â”€ Exception queue â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Exception queue ──────────────────────────────────────────────────────────
 function ExceptionQueue({ onSelect }: { onSelect: (r: ReconRecord) => void }) {
   const [exTab, setExTab] = useState<ReconExceptionType | 'all'>('all')
 
@@ -348,9 +348,9 @@ function ExceptionQueue({ onSelect }: { onSelect: (r: ReconRecord) => void }) {
                       </span>
                     </td>
                     <td className="px-3 py-2">{r.switchAmount ? formatUGX(r.switchAmount) : formatUGX(r.amount)}</td>
-                    <td className="px-3 py-2">{r.reportedAmount ? formatUGX(r.reportedAmount) : 'â€”'}</td>
+                    <td className="px-3 py-2">{r.reportedAmount ? formatUGX(r.reportedAmount) : '-'}</td>
                     <td className={clsx('px-3 py-2 font-semibold', r.variance ? (r.exceptionType === 'overpayment' ? 'text-purple-700' : 'text-blue-700') : '')}>
-                      {r.variance ? formatUGX(r.variance) : 'â€”'}
+                      {r.variance ? formatUGX(r.variance) : '-'}
                     </td>
                     <td className="px-3 py-2">
                       {ex && <span className={clsx('px-2 py-0.5 rounded-full text-[10px] font-bold border', ex.badge)}>{ex.label}</span>}
@@ -374,9 +374,9 @@ function ExceptionQueue({ onSelect }: { onSelect: (r: ReconRecord) => void }) {
   )
 }
 
-// â”€â”€â”€ Resolution modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Resolution modal ─────────────────────────────────────────────────────────
 const RESOLUTION_ACTIONS = [
-  { val: 'accept',   label: 'Accept & Close',        desc: 'Mark as reconciled â€” variance within tolerance' },
+  { val: 'accept',   label: 'Accept & Close',        desc: 'Mark as reconciled - variance within tolerance' },
   { val: 'reject',   label: 'Reject & Return',        desc: 'Send back to participant for correction' },
   { val: 'escalate', label: 'Escalate to Compliance', desc: 'Flag for AML/compliance review' },
   { val: 'reverse',  label: 'Initiate Reversal',      desc: 'Trigger payment reversal workflow' },
@@ -484,7 +484,7 @@ function ResolutionModal({
               onChange={(e) => setNote(e.target.value)}
               rows={3}
               className="w-full border border-border rounded-xl px-3 py-2 text-sm outline-none focus:border-primary/50 resize-none"
-              placeholder="Describe the resolution action taken and supporting evidenceâ€¦"
+              placeholder="Describe the resolution action taken and supporting evidence..."
             />
           </div>
         </div>
@@ -502,7 +502,7 @@ function Row({ label, value, mono, valueClass }: { label: string; value: string;
   )
 }
 
-// â”€â”€â”€ KPI chip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── KPI chip ─────────────────────────────────────────────────────────────────
 function KpiChip({ label, value, color }: { label: string; value: number | string; color: string }) {
   return (
     <div className={clsx('rounded-xl border p-3 flex flex-col gap-0.5', color)}>
@@ -512,7 +512,7 @@ function KpiChip({ label, value, color }: { label: string; value: number | strin
   )
 }
 
-// â”€â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Main page ────────────────────────────────────────────────────────────────
 export default function ReconciliationPage() {
   const addToast = useAppStore((s) => s.addToast)
   const [showAnimation, setShowAnimation] = useState(false)
@@ -526,7 +526,7 @@ export default function ReconciliationPage() {
     setShowAnimation(false)
     setHasRun(true)
     setScore(s)
-    addToast(`Reconciliation complete â€” ${s}% match rate`, 'success')
+    addToast(`Reconciliation complete - ${s}% match rate`, 'success')
   }
 
   function openResolve(r: ReconRecord) {
@@ -572,7 +572,7 @@ export default function ReconciliationPage() {
         }
       />
 
-      {/* â”€â”€ Summary + chart row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Summary + chart row ──────────────────────────────── */}
       <div className="grid grid-cols-3 gap-4 mb-5">
         {/* Score donut */}
         <div className="bg-card rounded-card shadow-card p-4 flex flex-col items-center justify-center">
@@ -580,7 +580,7 @@ export default function ReconciliationPage() {
           <PieChart data={piData} height={150} donut />
           <div className="text-4xl font-black text-primary mt-2">{score}%</div>
           <div className="text-xs text-muted mt-0.5">
-            Last run: {run.completedAt ? formatDateTime(run.completedAt) : 'â€”'}
+            Last run: {run.completedAt ? formatDateTime(run.completedAt) : '-'}
           </div>
           <div className="text-[10px] text-muted mt-0.5">by {run.triggeredBy}</div>
         </div>
@@ -600,7 +600,7 @@ export default function ReconciliationPage() {
 
         {/* 14-day trend */}
         <div className="bg-card rounded-card shadow-card p-4">
-          <div className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">Match Rate â€” Last 14 Days</div>
+          <div className="text-xs font-semibold text-muted uppercase tracking-wide mb-1">Match Rate - Last 14 Days</div>
           <LineChart
             data={matchRateTrend}
             xKey="day"
@@ -614,7 +614,7 @@ export default function ReconciliationPage() {
         </div>
       </div>
 
-      {/* â”€â”€ Record source tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Record source tabs ───────────────────────────────── */}
       {hasRun && (
         <div className="mb-5">
           <h2 className="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2">
@@ -646,7 +646,7 @@ export default function ReconciliationPage() {
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search ID, payer, agencyâ€¦"
+                  placeholder="Search ID, payer, agency..."
                   className="text-xs outline-none bg-transparent w-40 placeholder:text-muted"
                 />
                 {search && (
@@ -668,7 +668,7 @@ export default function ReconciliationPage() {
         </div>
       )}
 
-      {/* â”€â”€ Exception queue â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Exception queue ──────────────────────────────────── */}
       {hasRun && (
         <div>
           <h2 className="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2">
@@ -690,7 +690,7 @@ export default function ReconciliationPage() {
         </div>
       )}
 
-      {/* â”€â”€ Resolution modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── Resolution modal ─────────────────────────────────── */}
       <ResolutionModal
         record={selectedRecord}
         open={resolveOpen}

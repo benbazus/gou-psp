@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { Badge } from '../../../components/ui/Badge'
@@ -18,7 +18,7 @@ const PRINT_STYLES = `
   aside, header, nav, [data-sidebar], [data-topbar],
   button:not(.print-keep), .no-print { display: none !important; }
 
-  /* Reset layout â€” full width */
+  /* Reset layout - full width */
   body { background: white !important; font-family: 'Inter', sans-serif; font-size: 11pt; color: #1a1a1a; }
   main { padding: 0 !important; margin: 0 !important; }
   .flex.h-screen { display: block !important; }
@@ -31,16 +31,16 @@ const PRINT_STYLES = `
   h1 { font-size: 22pt; color: #1B3A6B; page-break-before: avoid; }
   h2, h3 { color: #1B3A6B; page-break-after: avoid; }
 
-  /* Cards â€” keep borders, drop shadows */
+  /* Cards - keep borders, drop shadows */
   .shadow-card, .shadow-modal, .shadow-drawer { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
 
-  /* Tab content â€” show ALL panels when printing */
+  /* Tab content - show ALL panels when printing */
   [data-tab-content] { display: block !important; opacity: 1 !important; }
 
   /* Prevent page breaks inside cards */
   .bg-card, .rounded-card { page-break-inside: avoid; }
 
-  /* SVG diagram â€” scale to fit */
+  /* SVG diagram - scale to fit */
   svg { max-width: 100%; page-break-inside: avoid; }
 
   /* Print header */
@@ -65,7 +65,7 @@ const PRINT_STYLES = `
   .print-break-before { page-break-before: always; }
 }`
 
-// â”€â”€â”€ Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Data ──────────────────────────────────────────────────────────────────
 
 const MICROSERVICES = [
   {
@@ -87,7 +87,7 @@ const MICROSERVICES = [
   {
     id: 'payment', name: 'govpay-payment', port: 8082,
     tech: 'Spring Boot 3.2', color: 'accent',
-    desc: 'Core payment processing engine. Manages PRN generation, payment lifecycle state machine (INITIATED â†’ PROCESSING â†’ CONFIRMED/FAILED), idempotency via Redis, and publishes events to Kafka.',
+    desc: 'Core payment processing engine. Manages PRN generation, payment lifecycle state machine (INITIATED → PROCESSING → CONFIRMED/FAILED), idempotency via Redis, and publishes events to Kafka.',
     deps: ['Spring State Machine', 'Spring Data JPA', 'Kafka Producer', 'Redis', 'PostgreSQL'],
     endpoints: ['POST /payments', 'GET /payments/{id}', 'POST /payments/{id}/confirm', 'POST /payments/{id}/reverse'],
     icon: Zap,
@@ -135,7 +135,7 @@ const MICROSERVICES = [
   {
     id: 'dispute', name: 'govpay-dispute', port: 8088,
     tech: 'Spring Boot 3.2', color: 'warning',
-    desc: 'Dispute lifecycle management. Tracks disputes through a state machine (OPEN â†’ INVESTIGATING â†’ PARTICIPANT_RESPONSE â†’ APPROVED/REJECTED â†’ CLOSED). Enforces SLA timers with Quartz and stores evidence documents in MinIO.',
+    desc: 'Dispute lifecycle management. Tracks disputes through a state machine (OPEN → INVESTIGATING → PARTICIPANT_RESPONSE → APPROVED/REJECTED → CLOSED). Enforces SLA timers with Quartz and stores evidence documents in MinIO.',
     deps: ['Spring State Machine', 'Quartz Scheduler', 'MinIO SDK', 'Spring Data JPA'],
     endpoints: ['POST /disputes', 'GET /disputes', 'GET /disputes/{id}', 'POST /disputes/{id}/resolve', 'POST /disputes/{id}/evidence'],
     icon: MessageSquareWarning,
@@ -375,12 +375,12 @@ const SCREENSHOTS = [
             <div className="text-[6px] font-semibold text-slate-700 mb-0.5">AML Alerts</div>
             {[['CRITICAL','High Volume'],['HIGH','Participant Down'],['HIGH','Settlement Mismatch'],['MEDIUM','High Value Txn'],['CRITICAL','Blacklist Match']].map(([sev,type])=>(
               <div key={type} className={clsx('rounded px-1 py-0.5 border-l-2 text-[5px]', sev==='CRITICAL'||sev==='HIGH'?'border-l-danger bg-danger-light/40 text-danger':'border-l-warning bg-warning-light text-warning')}>
-                <span className="font-bold">{sev}</span> â€” {type}
+                <span className="font-bold">{sev}</span> - {type}
               </div>
             ))}
           </div>
           <div className="col-span-2 bg-white rounded p-1">
-            <div className="text-[6px] text-slate-400 mb-0.5">Velocity â€” 24h</div>
+            <div className="text-[6px] text-slate-400 mb-0.5">Velocity - 24h</div>
             <div className="flex items-end gap-px h-12">
               {[40,55,70,45,60,80,55,72,65,50,85,78,60,45,55,70,65,80,55,62,70,75,60,55].map((h,i)=>(
                 <div key={i} className="flex-1 rounded-sm bg-primary/60" style={{height:`${h}%`}} />
@@ -403,7 +403,7 @@ const COLOR_MAP: Record<string, string> = {
   muted:   'bg-slate-50 border-border text-muted',
 }
 
-// â”€â”€â”€ Sub-components â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Sub-components ─────────────────────────────────────────────────────────
 
 function ServiceCard({ svc }: { svc: typeof MICROSERVICES[0] }) {
   const [open, setOpen] = useState(false)
@@ -493,7 +493,7 @@ function ArchitectureSVG() {
           </marker>
         </defs>
 
-        {/* â”€â”€ Layer labels (left axis) â”€â”€ */}
+        {/* ── Layer labels (left axis) ── */}
         {[
           [8,  62,  'CLIENT'],
           [8,  148, 'EDGE'],
@@ -507,7 +507,7 @@ function ArchitectureSVG() {
           </text>
         ))}
 
-        {/* â•â•â•â•â•â•â•â•â•â• LAYER 1: CLIENT â•â•â•â•â•â•â•â•â•â• */}
+        {/* ══════════ LAYER 1: CLIENT ══════════ */}
         <rect x="30" y="20" width="840" height="60" rx="8" fill="#EEF2F9" stroke="#1B3A6B" strokeWidth="1" strokeDasharray="4,3"/>
         <text x="45" y="38" fontSize="9" fill="#64748B" fontWeight="600">CLIENT LAYER</text>
 
@@ -524,9 +524,9 @@ function ArchitectureSVG() {
         {/* Gov portal */}
         <rect x="310" y="42" width="130" height="30" rx="5" fill="#374151"/>
         <text x="375" y="57" fontSize="8" fill="white" textAnchor="middle" fontWeight="600">Gov Agency Portals</text>
-        <text x="375" y="67" fontSize="7" fill="#9ca3af" textAnchor="middle">URA Â· NIRA Â· KCCA Â· MOW</text>
+        <text x="375" y="67" fontSize="7" fill="#9ca3af" textAnchor="middle">URA · NIRA · KCCA · MOW</text>
 
-        {/* â•â•â•â•â•â•â•â•â•â• LAYER 2: EDGE â•â•â•â•â•â•â•â•â•â• */}
+        {/* ══════════ LAYER 2: EDGE ══════════ */}
         <rect x="30" y="100" width="840" height="60" rx="8" fill="#fef3c7" stroke="#d97706" strokeWidth="1" strokeDasharray="4,3"/>
         <text x="45" y="118" fontSize="9" fill="#64748B" fontWeight="600">EDGE / SECURITY LAYER</text>
 
@@ -546,9 +546,9 @@ function ArchitectureSVG() {
         <text x="490" y="137" fontSize="8" fill="white" textAnchor="middle" fontWeight="600">NLB Load Balancer</text>
         <text x="490" y="147" fontSize="7" fill="white" textAnchor="middle" opacity="0.8">Round-robin + health checks</text>
 
-        {/* â•â•â•â•â•â•â•â•â•â• LAYER 3: API GATEWAY â•â•â•â•â•â•â•â•â•â• */}
+        {/* ══════════ LAYER 3: API GATEWAY ══════════ */}
         <rect x="30" y="180" width="840" height="65" rx="8" fill="#dcfce7" stroke="#16a34a" strokeWidth="1" strokeDasharray="4,3"/>
-        <text x="45" y="198" fontSize="9" fill="#64748B" fontWeight="600">API GATEWAY LAYER â€” Spring Cloud Gateway 4.1</text>
+        <text x="45" y="198" fontSize="9" fill="#64748B" fontWeight="600">API GATEWAY LAYER - Spring Cloud Gateway 4.1</text>
 
         <rect x="50" y="202" width="150" height="34" rx="5" fill="#16a34a"/>
         <text x="125" y="218" fontSize="8" fill="white" textAnchor="middle" fontWeight="600">Spring Cloud Gateway</text>
@@ -556,23 +556,23 @@ function ArchitectureSVG() {
 
         <rect x="220" y="202" width="120" height="34" rx="5" fill="#15803d"/>
         <text x="280" y="218" fontSize="8" fill="white" textAnchor="middle" fontWeight="600">JWT Validation</text>
-        <text x="280" y="228" fontSize="7" fill="white" textAnchor="middle" opacity="0.8">RS256 Â· Spring Security</text>
+        <text x="280" y="228" fontSize="7" fill="white" textAnchor="middle" opacity="0.8">RS256 · Spring Security</text>
 
         <rect x="360" y="202" width="120" height="34" rx="5" fill="#166534"/>
         <text x="420" y="218" fontSize="8" fill="white" textAnchor="middle" fontWeight="600">Rate Limiting</text>
-        <text x="420" y="228" fontSize="7" fill="white" textAnchor="middle" opacity="0.8">Bucket4j Â· Redis backend</text>
+        <text x="420" y="228" fontSize="7" fill="white" textAnchor="middle" opacity="0.8">Bucket4j · Redis backend</text>
 
         <rect x="500" y="202" width="120" height="34" rx="5" fill="#14532d"/>
         <text x="560" y="218" fontSize="8" fill="white" textAnchor="middle" fontWeight="600">SSL Termination</text>
-        <text x="560" y="228" fontSize="7" fill="white" textAnchor="middle" opacity="0.8">TLS 1.3 Â· ACM certs</text>
+        <text x="560" y="228" fontSize="7" fill="white" textAnchor="middle" opacity="0.8">TLS 1.3 · ACM certs</text>
 
         <rect x="640" y="202" width="120" height="34" rx="5" fill="#1a1a2e"/>
         <text x="700" y="218" fontSize="8" fill="white" textAnchor="middle" fontWeight="600">Eureka Discovery</text>
-        <text x="700" y="228" fontSize="7" fill="#a5b4fc" textAnchor="middle" opacity="0.8">Netflix OSS Â· :8761</text>
+        <text x="700" y="228" fontSize="7" fill="#a5b4fc" textAnchor="middle" opacity="0.8">Netflix OSS · :8761</text>
 
-        {/* â•â•â•â•â•â•â•â•â•â• LAYER 4: MICROSERVICES â•â•â•â•â•â•â•â•â•â• */}
+        {/* ══════════ LAYER 4: MICROSERVICES ══════════ */}
         <rect x="30" y="265" width="840" height="130" rx="8" fill="#EEF2F9" stroke="#1B3A6B" strokeWidth="1.5" strokeDasharray="4,3"/>
-        <text x="45" y="283" fontSize="9" fill="#64748B" fontWeight="600">SPRING BOOT MICROSERVICES â€” Java 21 Â· Docker Â· Kubernetes</text>
+        <text x="45" y="283" fontSize="9" fill="#64748B" fontWeight="600">SPRING BOOT MICROSERVICES - Java 21 · Docker · Kubernetes</text>
 
         {[
           [45,  'Payment\nService\n:8082', '#F4B000'],
@@ -602,17 +602,17 @@ function ArchitectureSVG() {
         {/* Kafka bus line */}
         <rect x="30" y="400" width="840" height="18" rx="4" fill="#f97316" opacity="0.15"/>
         <line x1="30" y1="409" x2="870" y2="409" stroke="#f97316" strokeWidth="2" strokeDasharray="6,3"/>
-        <text x="440" y="413" fontSize="8" fill="#ea580c" textAnchor="middle" fontWeight="700">Apache Kafka 3.6 â€” Event Bus (payment.events Â· settlement.commands Â· compliance.alerts Â· audit.log)</text>
+        <text x="440" y="413" fontSize="8" fill="#ea580c" textAnchor="middle" fontWeight="700">Apache Kafka 3.6 - Event Bus (payment.events · settlement.commands · compliance.alerts · audit.log)</text>
 
-        {/* â•â•â•â•â•â•â•â•â•â• LAYER 5: DATA â•â•â•â•â•â•â•â•â•â• */}
+        {/* ══════════ LAYER 5: DATA ══════════ */}
         <rect x="30" y="428" width="840" height="70" rx="8" fill="#fdf4ff" stroke="#7c3aed" strokeWidth="1" strokeDasharray="4,3"/>
         <text x="45" y="446" fontSize="9" fill="#64748B" fontWeight="600">DATA LAYER</text>
 
         {[
           [50,  '#3b82f6', 'PostgreSQL 16', 'Per-service schema\nPgBouncer pooling'],
-          [200, '#ef4444', 'Redis 7.2',     'Cache Â· Sessions\nIdempotency keys'],
-          [350, '#f59e0b', 'Elasticsearch', 'Audit log Â· Search\n90-day retention'],
-          [500, '#10b981', 'MinIO',         'Documents Â· Reports\nS3-compatible API'],
+          [200, '#ef4444', 'Redis 7.2',     'Cache · Sessions\nIdempotency keys'],
+          [350, '#f59e0b', 'Elasticsearch', 'Audit log · Search\n90-day retention'],
+          [500, '#10b981', 'MinIO',         'Documents · Reports\nS3-compatible API'],
           [650, '#8b5cf6', 'HashiCorp Vault','API keys (AES-256)\nCred rotation'],
         ].map(([x, color, name, desc], i) => (
           <g key={i}>
@@ -624,7 +624,7 @@ function ArchitectureSVG() {
           </g>
         ))}
 
-        {/* â•â•â•â•â•â•â•â•â•â• LAYER 6: EXTERNAL â•â•â•â•â•â•â•â•â•â• */}
+        {/* ══════════ LAYER 6: EXTERNAL ══════════ */}
         <rect x="30" y="515" width="840" height="70" rx="8" fill="#f1f5f9" stroke="#64748B" strokeWidth="1" strokeDasharray="4,3"/>
         <text x="45" y="533" fontSize="9" fill="#64748B" fontWeight="600">EXTERNAL INTEGRATIONS</text>
 
@@ -644,18 +644,18 @@ function ArchitectureSVG() {
           </g>
         ))}
 
-        {/* â”€â”€ Connector arrows â”€â”€ */}
-        {/* Client â†’ Edge */}
+        {/* ── Connector arrows ── */}
+        {/* Client → Edge */}
         <line x1="220" y1="80" x2="220" y2="100" stroke="#94a3b8" strokeWidth="1.5" markerEnd="url(#arrow)"/>
-        {/* Edge â†’ Gateway */}
+        {/* Edge → Gateway */}
         <line x1="450" y1="160" x2="450" y2="180" stroke="#16a34a" strokeWidth="1.5" markerEnd="url(#arrow-primary)"/>
-        {/* Gateway â†’ Services */}
+        {/* Gateway → Services */}
         <line x1="450" y1="245" x2="450" y2="265" stroke="#1B3A6B" strokeWidth="1.5" markerEnd="url(#arrow-primary)"/>
-        {/* Services â†’ Kafka */}
+        {/* Services → Kafka */}
         <line x1="450" y1="395" x2="450" y2="400" stroke="#f97316" strokeWidth="1.5"/>
-        {/* Kafka â†’ Data */}
+        {/* Kafka → Data */}
         <line x1="450" y1="418" x2="450" y2="428" stroke="#7c3aed" strokeWidth="1.5" markerEnd="url(#arrow)"/>
-        {/* Data â†’ External */}
+        {/* Data → External */}
         <line x1="450" y1="498" x2="450" y2="515" stroke="#64748B" strokeWidth="1.5" markerEnd="url(#arrow)"/>
       </svg>
     </div>
@@ -668,7 +668,7 @@ function DataFlowSection() {
     { n: '02', title: 'PRN Generated', color: 'bg-primary-light', desc: 'govpay-collections generates a unique Payment Reference Number (PRN). Invoice stored in PostgreSQL. Event published to Kafka topic payment.created.' },
     { n: '03', title: 'JWT Auth Check', color: 'bg-success', desc: 'Spring Cloud Gateway intercepts request. govpay-auth validates RS256 JWT, checks role permissions. Bucket4j enforces rate limits per participant.' },
     { n: '04', title: 'Routing Decision', color: 'bg-warning', desc: 'govpay-routing evaluates routing rules (priority, amount, channel health). Primary route selected. Resilience4j circuit breaker monitors downstream health.' },
-    { n: '05', title: 'Channel Processing', color: 'bg-accent', desc: 'govpay-payment calls selected channel API (MTN MoMo / Bank / Card). Idempotency key stored in Redis (24h TTL). State machine: INITIATED â†’ PROCESSING.' },
+    { n: '05', title: 'Channel Processing', color: 'bg-accent', desc: 'govpay-payment calls selected channel API (MTN MoMo / Bank / Card). Idempotency key stored in Redis (24h TTL). State machine: INITIATED → PROCESSING.' },
     { n: '06', title: 'Async Confirmation', color: 'bg-primary', desc: 'Channel posts webhook callback to govpay-payment. State machine transitions to CONFIRMED. Kafka event: payment.confirmed published to all consumers.' },
     { n: '07', title: 'Agency Notification', color: 'bg-success', desc: 'govpay-collections webhook notifies agency. govpay-notification sends SMS/email to payer via Africa\'s Talking + AWS SES.' },
     { n: '08', title: 'AML Compliance', color: 'bg-danger', desc: 'govpay-compliance Drools engine evaluates transaction against AML rules (velocity, blacklist, structuring). Alert raised if threshold exceeded.' },
@@ -697,7 +697,7 @@ function DataFlowSection() {
   )
 }
 
-// â”€â”€â”€ Main Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Main Page ───────────────────────────────────────────────────────────────
 
 function downloadMd() {
   const a = document.createElement('a')
@@ -731,7 +731,7 @@ export default function ArchitecturePage() {
     <div>
       <PageHeader
         title="System Architecture"
-        subtitle="Uganda GovPay Switch â€” Full-stack national payment infrastructure design"
+        subtitle="Uganda GovPay Switch - Full-stack national payment infrastructure design"
         actions={
           <div className="flex items-center gap-2 flex-wrap">
             <Badge variant="success">Spring Boot 3.2</Badge>
@@ -777,7 +777,7 @@ export default function ArchitecturePage() {
 
       <AnimatePresence mode="wait">
 
-        {/* â”€â”€ OVERVIEW â”€â”€ */}
+        {/* ── OVERVIEW ── */}
         {activeTab === 'overview' && (
           <motion.div key="overview" variants={staggerContainer} initial="hidden" animate="visible" exit={{ opacity: 0 }}>
             <motion.div variants={fadeInUp}>
@@ -789,19 +789,19 @@ export default function ArchitecturePage() {
               <div className="bg-card rounded-card shadow-card p-4 border-t-[3px] border-t-primary">
                 <div className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">Frontend Stack</div>
                 <ul className="text-xs text-slate-600 space-y-1">
-                  {['React 19 + Vite 6 + TypeScript','TanStack Router v1 (client-side routing)','TanStack Query v5 (server state)','Zustand v5 (global UI state)','Framer Motion v12 (animations)','Tailwind CSS v3 (design system)','Recharts v2 (analytics charts)','Radix UI (accessible primitives)'].map(t => <li key={t} className="flex items-start gap-1.5"><span className="text-primary mt-0.5">â€¢</span>{t}</li>)}
+                  {['React 19 + Vite 6 + TypeScript','TanStack Router v1 (client-side routing)','TanStack Query v5 (server state)','Zustand v5 (global UI state)','Framer Motion v12 (animations)','Tailwind CSS v3 (design system)','Recharts v2 (analytics charts)','Radix UI (accessible primitives)'].map(t => <li key={t} className="flex items-start gap-1.5"><span className="text-primary mt-0.5">•</span>{t}</li>)}
                 </ul>
               </div>
               <div className="bg-card rounded-card shadow-card p-4 border-t-[3px] border-t-success">
                 <div className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">Backend Stack</div>
                 <ul className="text-xs text-slate-600 space-y-1">
-                  {['Java 21 (Virtual Threads via Loom)','Spring Boot 3.2 (12 microservices)','Spring Cloud Gateway 4.1','Spring Security + OAuth2 / JWT','Spring Batch (settlement & recon)','Spring State Machine (payment lifecycle)','Spring Cloud Config + Eureka','Resilience4j (circuit breaker)'].map(t => <li key={t} className="flex items-start gap-1.5"><span className="text-success mt-0.5">â€¢</span>{t}</li>)}
+                  {['Java 21 (Virtual Threads via Loom)','Spring Boot 3.2 (12 microservices)','Spring Cloud Gateway 4.1','Spring Security + OAuth2 / JWT','Spring Batch (settlement & recon)','Spring State Machine (payment lifecycle)','Spring Cloud Config + Eureka','Resilience4j (circuit breaker)'].map(t => <li key={t} className="flex items-start gap-1.5"><span className="text-success mt-0.5">•</span>{t}</li>)}
                 </ul>
               </div>
               <div className="bg-card rounded-card shadow-card p-4 border-t-[3px] border-t-warning">
                 <div className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">Infrastructure</div>
                 <ul className="text-xs text-slate-600 space-y-1">
-                  {['AWS EKS (Kubernetes orchestration)','Docker (containerisation)','Apache Kafka 3.6 (event streaming)','PostgreSQL 16 (per-service DB)','Redis 7.2 (cache + idempotency)','Elasticsearch 8.x (audit + search)','HashiCorp Vault (secrets)','Prometheus + Grafana (observability)'].map(t => <li key={t} className="flex items-start gap-1.5"><span className="text-warning mt-0.5">â€¢</span>{t}</li>)}
+                  {['AWS EKS (Kubernetes orchestration)','Docker (containerisation)','Apache Kafka 3.6 (event streaming)','PostgreSQL 16 (per-service DB)','Redis 7.2 (cache + idempotency)','Elasticsearch 8.x (audit + search)','HashiCorp Vault (secrets)','Prometheus + Grafana (observability)'].map(t => <li key={t} className="flex items-start gap-1.5"><span className="text-warning mt-0.5">•</span>{t}</li>)}
                 </ul>
               </div>
             </motion.div>
@@ -825,7 +825,7 @@ export default function ArchitecturePage() {
           </motion.div>
         )}
 
-        {/* â”€â”€ SPRING BOOT SERVICES â”€â”€ */}
+        {/* ── SPRING BOOT SERVICES ── */}
         {activeTab === 'services' && (
           <motion.div key="services" variants={staggerContainer} initial="hidden" animate="visible" exit={{ opacity: 0 }}>
             <motion.div variants={fadeInUp} className="bg-primary-50 border border-primary/20 rounded-lg px-4 py-3 mb-5 text-sm text-primary">
@@ -837,20 +837,20 @@ export default function ArchitecturePage() {
           </motion.div>
         )}
 
-        {/* â”€â”€ PAYMENT DATA FLOW â”€â”€ */}
+        {/* ── PAYMENT DATA FLOW ── */}
         {activeTab === 'flow' && (
           <motion.div key="flow" variants={staggerContainer} initial="hidden" animate="visible" exit={{ opacity: 0 }}>
             <motion.div variants={fadeInUp} className="bg-card rounded-card shadow-card p-4 mb-5">
               <h3 className="text-sm font-bold text-slate-800 mb-2">End-to-End Payment Journey</h3>
               <p className="text-xs text-muted leading-relaxed">
-                A single payment traverses 10 discrete stages across 7 microservices, 3 external systems, and 4 data stores before reaching final settlement. Average processing time: <strong className="text-slate-700">342ms</strong> (P95: 890ms). The flow is event-driven â€” services communicate via Kafka ensuring loose coupling and replay capability.
+                A single payment traverses 10 discrete stages across 7 microservices, 3 external systems, and 4 data stores before reaching final settlement. Average processing time: <strong className="text-slate-700">342ms</strong> (P95: 890ms). The flow is event-driven - services communicate via Kafka ensuring loose coupling and replay capability.
               </p>
             </motion.div>
             <DataFlowSection />
           </motion.div>
         )}
 
-        {/* â”€â”€ DATA & STORAGE â”€â”€ */}
+        {/* ── DATA & STORAGE ── */}
         {activeTab === 'data' && (
           <motion.div key="data" variants={staggerContainer} initial="hidden" animate="visible" exit={{ opacity: 0 }}>
             <motion.div variants={fadeInUp} className="grid grid-cols-2 gap-4 mb-5">
@@ -887,7 +887,7 @@ export default function ArchitecturePage() {
           </motion.div>
         )}
 
-        {/* â”€â”€ INFRASTRUCTURE â”€â”€ */}
+        {/* ── INFRASTRUCTURE ── */}
         {activeTab === 'infra' && (
           <motion.div key="infra" variants={staggerContainer} initial="hidden" animate="visible" exit={{ opacity: 0 }}>
             <motion.div variants={fadeInUp} className="grid grid-cols-2 gap-4 mb-5">
@@ -916,7 +916,7 @@ export default function ArchitecturePage() {
                   { stage: 'Build & Test', detail: 'Jenkins + JUnit 5 + Testcontainers', color: '#2A5298' },
                   { stage: 'SAST Scan', detail: 'SonarQube + OWASP Dependency Check', color: '#D97706' },
                   { stage: 'Docker Build', detail: 'Multi-stage Dockerfile + ECR push', color: '#16A34A' },
-                  { stage: 'Staging Deploy', detail: 'Helm chart â†’ EKS staging namespace', color: '#0F766E' },
+                  { stage: 'Staging Deploy', detail: 'Helm chart → EKS staging namespace', color: '#0F766E' },
                   { stage: 'Integration Tests', detail: 'Postman + Newman E2E test suite', color: '#7C3AED' },
                   { stage: 'Prod Deploy', detail: 'Blue/green via Argo Rollouts', color: '#D62828' },
                 ].map((s, i) => (
@@ -933,11 +933,11 @@ export default function ArchitecturePage() {
           </motion.div>
         )}
 
-        {/* â”€â”€ SCREENSHOTS â”€â”€ */}
+        {/* ── SCREENSHOTS ── */}
         {activeTab === 'screenshots' && (
           <motion.div key="screenshots" variants={staggerContainer} initial="hidden" animate="visible" exit={{ opacity: 0 }}>
             <motion.div variants={fadeInUp} className="mb-4 text-sm text-muted bg-card rounded-card shadow-card p-4">
-              UI preview thumbnails of the 13 platform modules â€” rendered using the actual React component design system (navy #1B3A6B Â· gold #F4B000 Â· Tailwind CSS tokens).
+              UI preview thumbnails of the 13 platform modules - rendered using the actual React component design system (navy #1B3A6B · gold #F4B000 · Tailwind CSS tokens).
             </motion.div>
             <div className="grid grid-cols-3 gap-4">
               {SCREENSHOTS.map((s) => (
@@ -985,7 +985,7 @@ export default function ArchitecturePage() {
                 { title: 'API Platform', path: '/app/api-platform', desc: '8 endpoint cards + Try It split-pane modal + webhook delivery log' },
                 { title: 'Participants', path: '/app/participants', desc: 'Sortable table + API health sparkline drawer + API key management modal' },
                 { title: 'Reports & Analytics', path: '/app/reports', desc: '6-chart grid + date range selector + treasury collection summary table' },
-                { title: 'Admin & Config', path: '/app/admin', desc: '8-tab layout: role matrix Â· routing reorder Â· limits Â· settlement cycles' },
+                { title: 'Admin & Config', path: '/app/admin', desc: '8-tab layout: role matrix · routing reorder · limits · settlement cycles' },
               ].map((m) => (
                 <motion.div key={m.title} variants={fadeInUp} className="bg-card rounded-card shadow-card p-4 flex flex-col justify-between">
                   <div>
