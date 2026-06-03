@@ -11,7 +11,7 @@ import { fadeInUp, staggerContainer } from '../../../utils/animations'
 export default function TreasuryReconciliationPage() {
   const addToast = useAppStore((s) => s.addToast)
 
-  const { data: disbursements = [], isLoading } = useQuery({
+  const { data: disbursements = [] } = useQuery({
     queryKey: ['treasury-disbursements'],
     queryFn: () => tenantService.getTreasuryDisbursements(),
   })

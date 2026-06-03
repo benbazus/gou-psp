@@ -4,7 +4,7 @@ import {
   BarChart3, Settings, Building2, GitBranch, Users,
   ShieldAlert, MessageSquareWarning, Code2, Activity,
   Landmark, Cpu, ArrowLeftRight, UserCheck, FileBarChart,
-  SlidersHorizontal, Clock, Coins, RotateCcw, Smartphone, Droplets,
+  SlidersHorizontal, Clock, Coins, RotateCcw, Droplets,
 } from 'lucide-react'
 import type { PortalConfig } from '../types'
 

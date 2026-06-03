@@ -30,11 +30,11 @@ export default function TreasuryApprovalsPage() {
   const totalValue     = approvals.reduce((s, a) => s + a.amount, 0)
   const urgentCount    = approvals.filter((a) => a.priority === 'urgent').length
 
-  function handleApprove(id: string, reference: string) {
+  function handleApprove(_id: string, reference: string) {
     addToast(`Payment order ${reference} approved`, 'success')
   }
 
-  function handleReject(id: string, reference: string) {
+  function handleReject(_id: string, reference: string) {
     addToast(`Payment order ${reference} rejected`, 'error')
   }
 

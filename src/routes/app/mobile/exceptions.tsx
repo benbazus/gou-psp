@@ -1,7 +1,6 @@
 // src/routes/app/mobile/exceptions.tsx
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import clsx from 'clsx'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { usePortalConfig } from '../../../contexts/portalConfig'
 import { useAppStore } from '../../../store/appStore'
