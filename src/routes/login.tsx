@@ -62,6 +62,12 @@ const INSTITUTION_ROLES: Record<string, { role: Role; description: string }[]> =
   rtgs:      [{ role: "RTGS Super Admin", description: "Full RTGS access" }, { role: "Central Bank Settlement Operator", description: "RTGS settlement ops" }, { role: "Liquidity Manager", description: "Liquidity management" }, { role: "RTGS Auditor", description: "Audit & compliance" }],
   treasury:  [{ role: "Treasury Officer", description: "Settlement & treasury" }, { role: "Treasury Approver", description: "Approvals & authorisations" }, { role: "Treasury Auditor", description: "Read-only access" }],
   ura:       [{ role: "Agency Officer", description: "Collections management" }, { role: "Collections Manager", description: "Revenue tracking" }, { role: "Agency Auditor", description: "Read-only access" }],
+  nira:   [{ role: "Agency Officer", description: "Collections management" }, { role: "Collections Manager", description: "Revenue tracking" }, { role: "Agency Auditor", description: "Read-only access" }],
+  ursb:   [{ role: "Agency Officer", description: "Collections management" }, { role: "Collections Manager", description: "Revenue tracking" }, { role: "Agency Auditor", description: "Read-only access" }],
+  mol:    [{ role: "Agency Officer", description: "Collections management" }, { role: "Collections Manager", description: "Revenue tracking" }, { role: "Agency Auditor", description: "Read-only access" }],
+  upf:    [{ role: "Agency Officer", description: "Collections management" }, { role: "Collections Manager", description: "Revenue tracking" }, { role: "Agency Auditor", description: "Read-only access" }],
+  imm:    [{ role: "Agency Officer", description: "Collections management" }, { role: "Collections Manager", description: "Revenue tracking" }, { role: "Agency Auditor", description: "Read-only access" }],
+  kcca:   [{ role: "Agency Officer", description: "Collections management" }, { role: "Collections Manager", description: "Revenue tracking" }, { role: "Agency Auditor", description: "Read-only access" }],
   mtn:       [{ role: "Mobile Operator", description: "Channel & routing ops" }, { role: "Mobile Auditor", description: "Read-only access" }],
   airtel:    [{ role: "Mobile Operator", description: "Channel & routing ops" }, { role: "Mobile Auditor", description: "Read-only access" }],
 };

@@ -91,7 +91,10 @@ export function Sidebar({ navSections: navSectionsProp, tenantName }: SidebarPro
 
   function isAllowed(path: string): boolean {
     if (!activeRole) return false;
-    const normPath = path.replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
+    const normPath = path
+      .replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
+      .replace(/\/app\/agency\/[^/]+/, '/app/agency/:agencyId')
+      .replace(/\/app\/mobile\/[^/]+/, '/app/mobile/:operatorId')
     return (ROUTE_ROLES[normPath] ?? []).includes(activeRole as Role);
   }
 
@@ -140,7 +143,10 @@ export function Sidebar({ navSections: navSectionsProp, tenantName }: SidebarPro
       </Link>
     );
 
-    const normPath = path.replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
+    const normPath = path
+      .replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
+      .replace(/\/app\/agency\/[^/]+/, '/app/agency/:agencyId')
+      .replace(/\/app\/mobile\/[^/]+/, '/app/mobile/:operatorId')
     const tooltipContent = allowed
       ? label
       : `${label} — requires ${(ROUTE_ROLES[normPath] ?? []).slice(0, 2).join(", ")}`;

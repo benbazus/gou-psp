@@ -4,7 +4,7 @@ import {
   BarChart3, Settings, Building2, GitBranch, Users,
   ShieldAlert, MessageSquareWarning, Code2, Activity,
   Landmark, Cpu, ArrowLeftRight, UserCheck, FileBarChart,
-  SlidersHorizontal,
+  SlidersHorizontal, Clock, Coins, RotateCcw, Smartphone, Droplets,
 } from 'lucide-react'
 import type { PortalConfig } from '../types'
 
@@ -139,47 +139,145 @@ export const BANK_CONFIGS: Record<string, PortalConfig> = {
   equity: equityConfig, absa: absaConfig, hfb: hfbConfig, boa: boaConfig,
 }
 
+// ─── Treasury Portal config ───────────────────────────────────────────────────
+export const treasuryPortalConfig: PortalConfig = {
+  portalType: 'treasury',
+  tenantId: 'treasury',
+  tenantName: 'Ministry of Finance',
+  tenantShort: 'MoF',
+  accentColor: '#a855f7',
+  accentLight: '#f3e8ff',
+  accentDark: '#581c87',
+  homeRoute: '/app/treasury/dashboard',
+  allowedRoles: ['Treasury Officer', 'Treasury Approver', 'Treasury Auditor', 'Super Admin'],
+  navSections: [
+    {
+      header: 'Ministry of Finance',
+      accent: 'violet',
+      items: [
+        { path: '/app/treasury/dashboard',         icon: LayoutDashboard, label: 'Dashboard' },
+        { path: '/app/treasury/consolidated-fund', icon: Vault,           label: 'Consolidated Fund' },
+        { path: '/app/treasury/disbursements',     icon: ArrowUpRight,    label: 'Disbursements' },
+        { path: '/app/treasury/approvals',         icon: UserCheck,       label: 'Approval Queue' },
+        { path: '/app/treasury/commitments',       icon: BarChart3,       label: 'Commitments' },
+        { path: '/app/treasury/accounts',          icon: Building2,       label: 'Treasury Accounts' },
+        { path: '/app/treasury/reconciliation',    icon: RefreshCw,       label: 'Reconciliation' },
+        { path: '/app/treasury/reports',           icon: FileBarChart,    label: 'Reports' },
+      ],
+    },
+  ],
+}
+
+// ─── Agency portal config factory ─────────────────────────────────────────────
+export function getAgencyPortalConfig(agencyId: string, agencyName: string, agencyShort: string): PortalConfig {
+  return {
+    portalType: 'agency',
+    tenantId: agencyId,
+    tenantName: agencyName,
+    tenantShort: agencyShort,
+    accentColor: '#f97316',
+    accentLight: '#ffedd5',
+    accentDark: '#7c2d12',
+    homeRoute: `/app/agency/${agencyId}/dashboard`,
+    allowedRoles: ['Agency Officer', 'Collections Manager', 'Agency Auditor', 'Super Admin'],
+    navSections: [
+      {
+        header: `${agencyShort} Portal`,
+        accent: 'orange',
+        items: [
+          { path: `/app/agency/${agencyId}/dashboard`,      icon: LayoutDashboard, label: 'Dashboard' },
+          { path: `/app/agency/${agencyId}/collections`,    icon: Coins,           label: 'Collections' },
+          { path: `/app/agency/${agencyId}/pending`,        icon: Clock,           label: 'Pending Payments' },
+          { path: `/app/agency/${agencyId}/settlement`,     icon: Banknote,        label: 'Settlement' },
+          { path: `/app/agency/${agencyId}/reconciliation`, icon: RefreshCw,       label: 'Reconciliation' },
+          { path: `/app/agency/${agencyId}/reversals`,      icon: RotateCcw,       label: 'Reversals' },
+          { path: `/app/agency/${agencyId}/reports`,        icon: BarChart3,       label: 'Reports' },
+          { path: `/app/agency/${agencyId}/profile`,        icon: Building2,       label: 'Agency Profile' },
+        ],
+      },
+    ],
+  }
+}
+
+export const uraConfig   = getAgencyPortalConfig('ura',  'Uganda Revenue Authority',                  'URA')
+export const niraConfig  = getAgencyPortalConfig('nira', 'National ID & Registration Authority',      'NIRA')
+export const ursbConfig  = getAgencyPortalConfig('ursb', 'Uganda Registration Services Bureau',       'URSB')
+export const molConfig   = getAgencyPortalConfig('mol',  'Ministry of Lands',                         'MoL')
+export const upfConfig   = getAgencyPortalConfig('upf',  'Uganda Police Force',                       'UPF')
+export const immConfig   = getAgencyPortalConfig('imm',  'Directorate of Citizenship & Immigration',  'DCIA')
+export const kccaConfig  = getAgencyPortalConfig('kcca', 'Kampala Capital City Authority',            'KCCA')
+
+export const AGENCY_CONFIGS: Record<string, PortalConfig> = {
+  ura: uraConfig, nira: niraConfig, ursb: ursbConfig, mol: molConfig,
+  upf: upfConfig, imm: immConfig, kcca: kccaConfig,
+}
+
+// ─── Mobile portal config factory ─────────────────────────────────────────────
+export function getMobilePortalConfig(operatorId: string, operatorName: string, operatorShort: string): PortalConfig {
+  return {
+    portalType: 'mobile',
+    tenantId: operatorId,
+    tenantName: operatorName,
+    tenantShort: operatorShort,
+    accentColor: '#06b6d4',
+    accentLight: '#cffafe',
+    accentDark: '#164e63',
+    homeRoute: `/app/mobile/${operatorId}/dashboard`,
+    allowedRoles: ['Mobile Operator', 'Mobile Auditor', 'Super Admin'],
+    navSections: [
+      {
+        header: `${operatorShort} Mobile`,
+        accent: 'cyan',
+        items: [
+          { path: `/app/mobile/${operatorId}/dashboard`,      icon: LayoutDashboard, label: 'Dashboard' },
+          { path: `/app/mobile/${operatorId}/transactions`,   icon: ListOrdered,     label: 'Transactions' },
+          { path: `/app/mobile/${operatorId}/float`,          icon: Droplets,        label: 'Float Management' },
+          { path: `/app/mobile/${operatorId}/settlement`,     icon: Banknote,        label: 'Settlement' },
+          { path: `/app/mobile/${operatorId}/exceptions`,     icon: AlertTriangle,   label: 'Exceptions' },
+          { path: `/app/mobile/${operatorId}/reconciliation`, icon: RefreshCw,       label: 'Reconciliation' },
+          { path: `/app/mobile/${operatorId}/reports`,        icon: BarChart3,       label: 'Reports' },
+        ],
+      },
+    ],
+  }
+}
+
+export const mtnConfig    = getMobilePortalConfig('mtn',    'MTN Mobile Money', 'MTN')
+export const airtelConfig = getMobilePortalConfig('airtel', 'Airtel Money',     'Airtel')
+
+export const MOBILE_CONFIGS: Record<string, PortalConfig> = {
+  mtn: mtnConfig, airtel: airtelConfig,
+}
+
 // All portal entries for the Switch Portal modal
 export const ALL_PORTAL_ENTRIES: {
   config: PortalConfig
   label: string
   comingSoon: boolean
 }[] = [
-  { config: nationalPortalConfig, label: 'National GovPay Command Center', comingSoon: false },
-  { config: stanbicConfig,        label: 'Stanbic Bank Portal',            comingSoon: false },
-  { config: centenaryConfig,      label: 'Centenary Bank Portal',          comingSoon: false },
-  { config: dfcuConfig,           label: 'DFCU Bank Portal',               comingSoon: false },
-  { config: equityConfig,         label: 'Equity Bank Portal',             comingSoon: false },
-  { config: absaConfig,           label: 'Absa Uganda Portal',             comingSoon: false },
-  { config: hfbConfig,            label: 'Housing Finance Portal',         comingSoon: false },
-  { config: boaConfig,            label: 'Bank of Africa Portal',          comingSoon: false },
-  { config: rtgsPortalConfig,     label: 'RTGS Command Center',            comingSoon: false },
-  // Phase 3+ portals — shown as coming soon in the Switch Portal modal
-  {
-    config: {
-      portalType: 'treasury', tenantId: 'treasury', tenantName: 'Ministry of Finance',
-      tenantShort: 'MoF', accentColor: '#a855f7', accentLight: '#f3e8ff', accentDark: '#581c87',
-      homeRoute: '/app/treasury/dashboard', navSections: [], allowedRoles: [],
-    },
-    label: 'Treasury Portal',
-    comingSoon: true,
-  },
-  {
-    config: {
-      portalType: 'agency', tenantId: 'ura', tenantName: 'Uganda Revenue Authority',
-      tenantShort: 'URA', accentColor: '#f97316', accentLight: '#ffedd5', accentDark: '#7c2d12',
-      homeRoute: '/app/agency/ura/dashboard', navSections: [], allowedRoles: [],
-    },
-    label: 'Uganda Revenue Authority',
-    comingSoon: true,
-  },
-  {
-    config: {
-      portalType: 'mobile', tenantId: 'mtn', tenantName: 'MTN Mobile Money',
-      tenantShort: 'MTN', accentColor: '#06b6d4', accentLight: '#cffafe', accentDark: '#164e63',
-      homeRoute: '/app/mobile/mtn/dashboard', navSections: [], allowedRoles: [],
-    },
-    label: 'MTN Mobile Money',
-    comingSoon: true,
-  },
+  // National
+  { config: nationalPortalConfig, label: 'National GovPay Command Center',     comingSoon: false },
+  // Banks
+  { config: stanbicConfig,        label: 'Stanbic Bank Portal',                comingSoon: false },
+  { config: centenaryConfig,      label: 'Centenary Bank Portal',              comingSoon: false },
+  { config: dfcuConfig,           label: 'DFCU Bank Portal',                   comingSoon: false },
+  { config: equityConfig,         label: 'Equity Bank Portal',                 comingSoon: false },
+  { config: absaConfig,           label: 'Absa Uganda Portal',                 comingSoon: false },
+  { config: hfbConfig,            label: 'Housing Finance Portal',             comingSoon: false },
+  { config: boaConfig,            label: 'Bank of Africa Portal',              comingSoon: false },
+  // RTGS
+  { config: rtgsPortalConfig,     label: 'RTGS Command Center',                comingSoon: false },
+  // Treasury
+  { config: treasuryPortalConfig, label: 'Treasury Portal — MoF',             comingSoon: false },
+  // Agencies
+  { config: uraConfig,            label: 'Uganda Revenue Authority',           comingSoon: false },
+  { config: niraConfig,           label: 'NIRA — National ID & Registration',  comingSoon: false },
+  { config: ursbConfig,           label: 'URSB — Business Registration',       comingSoon: false },
+  { config: molConfig,            label: 'Ministry of Lands',                  comingSoon: false },
+  { config: upfConfig,            label: 'Uganda Police Force',                comingSoon: false },
+  { config: immConfig,            label: 'Immigration & Citizenship',          comingSoon: false },
+  { config: kccaConfig,           label: 'Kampala Capital City Authority',     comingSoon: false },
+  // Mobile Money
+  { config: mtnConfig,            label: 'MTN Mobile Money',                   comingSoon: false },
+  { config: airtelConfig,         label: 'Airtel Money',                       comingSoon: false },
 ]
