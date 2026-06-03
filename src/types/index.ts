@@ -23,6 +23,8 @@ export type Role =
   | 'Treasury Auditor'
   | 'Mobile Operator'
   | 'Mobile Auditor'
+  | 'Aggregator Admin'
+  | 'Aggregator Analyst'
 
 // ─── Portal ───────────────────────────────────────
 export type PortalType =
@@ -32,6 +34,7 @@ export type PortalType =
   | 'treasury'
   | 'agency'
   | 'mobile'
+  | 'aggregator'
 
 export interface NavItem {
   path: string
@@ -42,7 +45,7 @@ export interface NavItem {
 
 export interface NavSection {
   header: string
-  accent?: 'amber' | 'emerald' | 'violet' | 'cyan' | 'orange'
+  accent?: 'amber' | 'emerald' | 'violet' | 'cyan' | 'orange' | 'indigo'
   items: NavItem[]
 }
 
@@ -586,4 +589,61 @@ export interface ConsolidatedFundEntry {
   receipts: number
   disbursements: number
   closingBalance: number
+}
+
+// ─── Aggregator Portal ────────────────────────────────────────────────────────
+export interface AggregatorMerchant {
+  id: string
+  aggregatorId: string
+  name: string
+  category: 'E-Commerce' | 'Utilities' | 'Education' | 'Health' | 'Transport' | 'Hospitality' | 'FMCG'
+  status: 'active' | 'suspended' | 'onboarding'
+  dailyVolume: number
+  monthlyVolume: number
+  transactionCount: number
+  settlementAccount: string
+  joinedDate: string
+  apiHealth: 'healthy' | 'degraded' | 'down'
+}
+
+export interface AggregatorTransaction {
+  id: string
+  aggregatorId: string
+  merchantId: string
+  merchantName: string
+  amount: number
+  type: 'card' | 'mobile_money' | 'bank_transfer' | 'ussd'
+  channel: string
+  status: 'completed' | 'pending' | 'failed' | 'reversed'
+  reference: string
+  timestamp: string
+  fee: number
+  failureReason?: string
+}
+
+export interface AggregatorSettlement {
+  id: string
+  aggregatorId: string
+  merchantId: string
+  merchantName: string
+  batchRef: string
+  batchDate: string
+  grossAmount: number
+  netAmount: number
+  fee: number
+  transactionCount: number
+  status: 'pending' | 'processing' | 'completed' | 'failed'
+  settledAt?: string
+  slaStatus: 'compliant' | 'breach' | 'warning'
+}
+
+export interface AggregatorFeeSchedule {
+  id: string
+  aggregatorId: string
+  merchantCategory: string
+  transactionType: AggregatorTransaction['type']
+  feeType: 'flat' | 'percentage'
+  feeValue: number
+  minFee?: number
+  maxFee?: number
 }
