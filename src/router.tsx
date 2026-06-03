@@ -72,7 +72,17 @@ import MobileExceptionsPage       from './routes/app/mobile/exceptions'
 import MobileReconciliationPage   from './routes/app/mobile/reconciliation'
 import MobileReportsPage          from './routes/app/mobile/reports'
 
-import { nationalPortalConfig, rtgsPortalConfig, BANK_CONFIGS, treasuryPortalConfig, AGENCY_CONFIGS, MOBILE_CONFIGS } from './data/mockPortalConfigs'
+// ─── Aggregator portal pages ──────────────────────────────────────────────────
+import AggregatorDashboardPage    from './routes/app/aggregator/dashboard'
+import AggregatorMerchantsPage    from './routes/app/aggregator/merchants'
+import AggregatorTransactionsPage from './routes/app/aggregator/transactions'
+import AggregatorSettlementPage   from './routes/app/aggregator/settlement'
+import AggregatorFeesPage         from './routes/app/aggregator/fees'
+import AggregatorDisputesPage     from './routes/app/aggregator/disputes'
+import AggregatorReportsPage      from './routes/app/aggregator/reports'
+import AggregatorProfilePage      from './routes/app/aggregator/profile'
+
+import { nationalPortalConfig, rtgsPortalConfig, BANK_CONFIGS, treasuryPortalConfig, AGENCY_CONFIGS, MOBILE_CONFIGS, AGGREGATOR_CONFIGS } from './data/mockPortalConfigs'
 import type { Role } from './types'
 import { Lock } from 'lucide-react'
 
@@ -138,6 +148,15 @@ export const ROUTE_ROLES: Record<string, Role[]> = {
   '/app/mobile/:operatorId/exceptions':     ['Mobile Operator', 'Super Admin'],
   '/app/mobile/:operatorId/reconciliation': ['Mobile Operator', 'Mobile Auditor', 'Super Admin'],
   '/app/mobile/:operatorId/reports':        ['Mobile Operator', 'Mobile Auditor', 'Super Admin'],
+  // Aggregator portal
+  '/app/aggregator/:aggregatorId/dashboard':    ['Aggregator Admin', 'Aggregator Analyst', 'Super Admin'],
+  '/app/aggregator/:aggregatorId/merchants':    ['Aggregator Admin', 'Aggregator Analyst', 'Super Admin'],
+  '/app/aggregator/:aggregatorId/transactions': ['Aggregator Admin', 'Aggregator Analyst', 'Super Admin'],
+  '/app/aggregator/:aggregatorId/settlement':   ['Aggregator Admin', 'Super Admin'],
+  '/app/aggregator/:aggregatorId/fees':         ['Aggregator Admin', 'Aggregator Analyst', 'Super Admin'],
+  '/app/aggregator/:aggregatorId/disputes':     ['Aggregator Admin', 'Super Admin'],
+  '/app/aggregator/:aggregatorId/reports':      ['Aggregator Admin', 'Aggregator Analyst', 'Super Admin'],
+  '/app/aggregator/:aggregatorId/profile':      ['Aggregator Admin', 'Aggregator Analyst', 'Super Admin'],
 }
 
 function canAccess(path: string, role: Role | null): boolean {
@@ -146,6 +165,7 @@ function canAccess(path: string, role: Role | null): boolean {
     .replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
     .replace(/\/app\/agency\/[^/]+/, '/app/agency/:agencyId')
     .replace(/\/app\/mobile\/[^/]+/, '/app/mobile/:operatorId')
+    .replace(/\/app\/aggregator\/[^/]+/, '/app/aggregator/:aggregatorId')
   return (ROUTE_ROLES[normPath] ?? []).includes(role)
 }
 
@@ -154,6 +174,7 @@ function AccessDenied({ path }: { path: string }) {
     .replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
     .replace(/\/app\/agency\/[^/]+/, '/app/agency/:agencyId')
     .replace(/\/app\/mobile\/[^/]+/, '/app/mobile/:operatorId')
+    .replace(/\/app\/aggregator\/[^/]+/, '/app/aggregator/:aggregatorId')
   const allowed = ROUTE_ROLES[normPath] ?? []
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
@@ -220,6 +241,13 @@ function MobilePortalShell() {
       </div>
     )
   }
+  return <PortalShell config={config} />
+}
+
+function AggregatorPortalShell() {
+  const { aggregatorId } = useParams({ strict: false }) as { aggregatorId: string }
+  const config = AGGREGATOR_CONFIGS[aggregatorId]
+  if (!config) return <div className="p-8 text-sm text-muted">Unknown aggregator: {aggregatorId}</div>
   return <PortalShell config={config} />
 }
 
@@ -370,6 +398,22 @@ const mExceptions   = createRoute({ getParentRoute: () => mobileShellRoute, path
 const mRecon        = createRoute({ getParentRoute: () => mobileShellRoute, path: '/reconciliation', component: guardedRoute('/app/mobile/:operatorId/reconciliation', MobileReconciliationPage) })
 const mReports      = createRoute({ getParentRoute: () => mobileShellRoute, path: '/reports',        component: guardedRoute('/app/mobile/:operatorId/reports',        MobileReportsPage) })
 
+// ─── Aggregator portal ────────────────────────────────────────────────────────
+const aggregatorShellRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: '/aggregator/$aggregatorId',
+  component: AggregatorPortalShell,
+})
+
+const aggrDashboard    = createRoute({ getParentRoute: () => aggregatorShellRoute, path: '/dashboard',    component: guardedRoute('/app/aggregator/:aggregatorId/dashboard',    AggregatorDashboardPage) })
+const aggrMerchants    = createRoute({ getParentRoute: () => aggregatorShellRoute, path: '/merchants',    component: guardedRoute('/app/aggregator/:aggregatorId/merchants',    AggregatorMerchantsPage) })
+const aggrTransactions = createRoute({ getParentRoute: () => aggregatorShellRoute, path: '/transactions', component: guardedRoute('/app/aggregator/:aggregatorId/transactions', AggregatorTransactionsPage) })
+const aggrSettlement   = createRoute({ getParentRoute: () => aggregatorShellRoute, path: '/settlement',   component: guardedRoute('/app/aggregator/:aggregatorId/settlement',   AggregatorSettlementPage) })
+const aggrFees         = createRoute({ getParentRoute: () => aggregatorShellRoute, path: '/fees',         component: guardedRoute('/app/aggregator/:aggregatorId/fees',         AggregatorFeesPage) })
+const aggrDisputes     = createRoute({ getParentRoute: () => aggregatorShellRoute, path: '/disputes',     component: guardedRoute('/app/aggregator/:aggregatorId/disputes',     AggregatorDisputesPage) })
+const aggrReports      = createRoute({ getParentRoute: () => aggregatorShellRoute, path: '/reports',      component: guardedRoute('/app/aggregator/:aggregatorId/reports',      AggregatorReportsPage) })
+const aggrProfile      = createRoute({ getParentRoute: () => aggregatorShellRoute, path: '/profile',      component: guardedRoute('/app/aggregator/:aggregatorId/profile',      AggregatorProfilePage) })
+
 // ─── Route tree assembly ──────────────────────────────────────────────────────
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -398,6 +442,9 @@ const routeTree = rootRoute.addChildren([
     ]),
     mobileShellRoute.addChildren([
       mDashboard, mTransactions, mFloat, mSettlement, mExceptions, mRecon, mReports,
+    ]),
+    aggregatorShellRoute.addChildren([
+      aggrDashboard, aggrMerchants, aggrTransactions, aggrSettlement, aggrFees, aggrDisputes, aggrReports, aggrProfile,
     ]),
   ]),
 ])
