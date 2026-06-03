@@ -43,7 +43,36 @@ import BankTreasuryTransfersPage from './routes/app/bank/treasury-transfers'
 import BankReconciliationPage    from './routes/app/bank/reconciliation'
 import BankReportsPage           from './routes/app/bank/reports'
 
-import { nationalPortalConfig, rtgsPortalConfig, BANK_CONFIGS } from './data/mockPortalConfigs'
+// ─── Treasury portal pages ────────────────────────────────────────────────────
+import TreasuryDashboardPage      from './routes/app/treasury/dashboard'
+import TreasuryFundPage           from './routes/app/treasury/consolidated-fund'
+import TreasuryDisbursementsPage  from './routes/app/treasury/disbursements'
+import TreasuryApprovalsPage      from './routes/app/treasury/approvals'
+import TreasuryCommitmentsPage    from './routes/app/treasury/commitments'
+import TreasuryAccountsPage       from './routes/app/treasury/accounts'
+import TreasuryReconciliationPage from './routes/app/treasury/reconciliation'
+import TreasuryReportsPage        from './routes/app/treasury/reports'
+
+// ─── Agency portal pages ──────────────────────────────────────────────────────
+import AgencyDashboardPage        from './routes/app/agency/dashboard'
+import AgencyCollectionsPage      from './routes/app/agency/collections'
+import AgencyPendingPage          from './routes/app/agency/pending'
+import AgencySettlementPage       from './routes/app/agency/settlement'
+import AgencyReconciliationPage   from './routes/app/agency/reconciliation'
+import AgencyReversalsPage        from './routes/app/agency/reversals'
+import AgencyReportsPage          from './routes/app/agency/reports'
+import AgencyProfilePage          from './routes/app/agency/profile'
+
+// ─── Mobile portal pages ──────────────────────────────────────────────────────
+import MobileDashboardPage        from './routes/app/mobile/dashboard'
+import MobileTransactionsPage     from './routes/app/mobile/transactions'
+import MobileFloatPage            from './routes/app/mobile/float'
+import MobileSettlementPage       from './routes/app/mobile/settlement'
+import MobileExceptionsPage       from './routes/app/mobile/exceptions'
+import MobileReconciliationPage   from './routes/app/mobile/reconciliation'
+import MobileReportsPage          from './routes/app/mobile/reports'
+
+import { nationalPortalConfig, rtgsPortalConfig, BANK_CONFIGS, treasuryPortalConfig, AGENCY_CONFIGS, MOBILE_CONFIGS } from './data/mockPortalConfigs'
 import type { Role } from './types'
 import { Lock } from 'lucide-react'
 
@@ -83,16 +112,48 @@ export const ROUTE_ROLES: Record<string, Role[]> = {
   '/app/bank/:bankId/treasury-transfers': ['Bank RTGS Operator', 'Bank Auditor', 'Super Admin'],
   '/app/bank/:bankId/reconciliation':     ['Bank RTGS Operator', 'Bank Auditor', 'Super Admin'],
   '/app/bank/:bankId/reports':            ['Bank RTGS Operator', 'Liquidity Manager', 'Bank Auditor', 'Super Admin'],
+  // Treasury portal
+  '/app/treasury/dashboard':         ['Treasury Officer', 'Treasury Approver', 'Treasury Auditor', 'Super Admin'],
+  '/app/treasury/consolidated-fund': ['Treasury Officer', 'Treasury Approver', 'Treasury Auditor', 'Super Admin'],
+  '/app/treasury/disbursements':     ['Treasury Officer', 'Treasury Approver', 'Treasury Auditor', 'Super Admin'],
+  '/app/treasury/approvals':         ['Treasury Approver', 'Super Admin'],
+  '/app/treasury/commitments':       ['Treasury Officer', 'Treasury Approver', 'Treasury Auditor', 'Super Admin'],
+  '/app/treasury/accounts':          ['Treasury Officer', 'Treasury Approver', 'Treasury Auditor', 'Super Admin'],
+  '/app/treasury/reconciliation':    ['Treasury Officer', 'Treasury Auditor', 'Super Admin'],
+  '/app/treasury/reports':           ['Treasury Officer', 'Treasury Approver', 'Treasury Auditor', 'Super Admin'],
+  // Agency portal
+  '/app/agency/:agencyId/dashboard':      ['Agency Officer', 'Collections Manager', 'Agency Auditor', 'Super Admin'],
+  '/app/agency/:agencyId/collections':    ['Agency Officer', 'Collections Manager', 'Agency Auditor', 'Super Admin'],
+  '/app/agency/:agencyId/pending':        ['Agency Officer', 'Collections Manager', 'Super Admin'],
+  '/app/agency/:agencyId/settlement':     ['Agency Officer', 'Collections Manager', 'Agency Auditor', 'Super Admin'],
+  '/app/agency/:agencyId/reconciliation': ['Agency Officer', 'Collections Manager', 'Agency Auditor', 'Super Admin'],
+  '/app/agency/:agencyId/reversals':      ['Agency Officer', 'Collections Manager', 'Super Admin'],
+  '/app/agency/:agencyId/reports':        ['Agency Officer', 'Collections Manager', 'Agency Auditor', 'Super Admin'],
+  '/app/agency/:agencyId/profile':        ['Agency Officer', 'Collections Manager', 'Agency Auditor', 'Super Admin'],
+  // Mobile portal
+  '/app/mobile/:operatorId/dashboard':      ['Mobile Operator', 'Mobile Auditor', 'Super Admin'],
+  '/app/mobile/:operatorId/transactions':   ['Mobile Operator', 'Mobile Auditor', 'Super Admin'],
+  '/app/mobile/:operatorId/float':          ['Mobile Operator', 'Super Admin'],
+  '/app/mobile/:operatorId/settlement':     ['Mobile Operator', 'Mobile Auditor', 'Super Admin'],
+  '/app/mobile/:operatorId/exceptions':     ['Mobile Operator', 'Super Admin'],
+  '/app/mobile/:operatorId/reconciliation': ['Mobile Operator', 'Mobile Auditor', 'Super Admin'],
+  '/app/mobile/:operatorId/reports':        ['Mobile Operator', 'Mobile Auditor', 'Super Admin'],
 }
 
 function canAccess(path: string, role: Role | null): boolean {
   if (!role) return false
-  const normPath = path.replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
+  const normPath = path
+    .replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
+    .replace(/\/app\/agency\/[^/]+/, '/app/agency/:agencyId')
+    .replace(/\/app\/mobile\/[^/]+/, '/app/mobile/:operatorId')
   return (ROUTE_ROLES[normPath] ?? []).includes(role)
 }
 
 function AccessDenied({ path }: { path: string }) {
-  const normPath = path.replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
+  const normPath = path
+    .replace(/\/app\/bank\/[^/]+/, '/app/bank/:bankId')
+    .replace(/\/app\/agency\/[^/]+/, '/app/agency/:agencyId')
+    .replace(/\/app\/mobile\/[^/]+/, '/app/mobile/:operatorId')
   const allowed = ROUTE_ROLES[normPath] ?? []
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
@@ -130,6 +191,32 @@ function BankPortalShell() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-muted text-sm">Unknown bank: {bankId}</p>
+      </div>
+    )
+  }
+  return <PortalShell config={config} />
+}
+
+function AgencyPortalShell() {
+  const { agencyId } = useParams({ strict: false }) as { agencyId: string }
+  const config = AGENCY_CONFIGS[agencyId]
+  if (!config) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-muted text-sm">Unknown agency: {agencyId}</p>
+      </div>
+    )
+  }
+  return <PortalShell config={config} />
+}
+
+function MobilePortalShell() {
+  const { operatorId } = useParams({ strict: false }) as { operatorId: string }
+  const config = MOBILE_CONFIGS[operatorId]
+  if (!config) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-muted text-sm">Unknown operator: {operatorId}</p>
       </div>
     )
   }
@@ -236,6 +323,53 @@ const bTreasuryTransfers = createRoute({ getParentRoute: () => bankShellRoute, p
 const bRecon             = createRoute({ getParentRoute: () => bankShellRoute, path: '/reconciliation',     component: guardedRoute('/app/bank/:bankId/reconciliation',     BankReconciliationPage) })
 const bReports           = createRoute({ getParentRoute: () => bankShellRoute, path: '/reports',            component: guardedRoute('/app/bank/:bankId/reports',            BankReportsPage) })
 
+// ─── Treasury portal ──────────────────────────────────────────────────────────
+const treasuryShellRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: '/treasury',
+  component: () => <PortalShell config={treasuryPortalConfig} />,
+})
+
+const tDashboard    = createRoute({ getParentRoute: () => treasuryShellRoute, path: '/dashboard',         component: guardedRoute('/app/treasury/dashboard',         TreasuryDashboardPage) })
+const tFund         = createRoute({ getParentRoute: () => treasuryShellRoute, path: '/consolidated-fund', component: guardedRoute('/app/treasury/consolidated-fund', TreasuryFundPage) })
+const tDisbursements= createRoute({ getParentRoute: () => treasuryShellRoute, path: '/disbursements',     component: guardedRoute('/app/treasury/disbursements',     TreasuryDisbursementsPage) })
+const tApprovals    = createRoute({ getParentRoute: () => treasuryShellRoute, path: '/approvals',         component: guardedRoute('/app/treasury/approvals',         TreasuryApprovalsPage) })
+const tCommitments  = createRoute({ getParentRoute: () => treasuryShellRoute, path: '/commitments',       component: guardedRoute('/app/treasury/commitments',       TreasuryCommitmentsPage) })
+const tAccounts     = createRoute({ getParentRoute: () => treasuryShellRoute, path: '/accounts',          component: guardedRoute('/app/treasury/accounts',          TreasuryAccountsPage) })
+const tRecon        = createRoute({ getParentRoute: () => treasuryShellRoute, path: '/reconciliation',    component: guardedRoute('/app/treasury/reconciliation',    TreasuryReconciliationPage) })
+const tReports      = createRoute({ getParentRoute: () => treasuryShellRoute, path: '/reports',           component: guardedRoute('/app/treasury/reports',           TreasuryReportsPage) })
+
+// ─── Agency portal ────────────────────────────────────────────────────────────
+const agencyShellRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: '/agency/$agencyId',
+  component: AgencyPortalShell,
+})
+
+const aDashboard   = createRoute({ getParentRoute: () => agencyShellRoute, path: '/dashboard',      component: guardedRoute('/app/agency/:agencyId/dashboard',      AgencyDashboardPage) })
+const aCollections = createRoute({ getParentRoute: () => agencyShellRoute, path: '/collections',    component: guardedRoute('/app/agency/:agencyId/collections',    AgencyCollectionsPage) })
+const aPending     = createRoute({ getParentRoute: () => agencyShellRoute, path: '/pending',        component: guardedRoute('/app/agency/:agencyId/pending',        AgencyPendingPage) })
+const aSettlement  = createRoute({ getParentRoute: () => agencyShellRoute, path: '/settlement',     component: guardedRoute('/app/agency/:agencyId/settlement',     AgencySettlementPage) })
+const aRecon       = createRoute({ getParentRoute: () => agencyShellRoute, path: '/reconciliation', component: guardedRoute('/app/agency/:agencyId/reconciliation', AgencyReconciliationPage) })
+const aReversals   = createRoute({ getParentRoute: () => agencyShellRoute, path: '/reversals',      component: guardedRoute('/app/agency/:agencyId/reversals',      AgencyReversalsPage) })
+const aReports     = createRoute({ getParentRoute: () => agencyShellRoute, path: '/reports',        component: guardedRoute('/app/agency/:agencyId/reports',        AgencyReportsPage) })
+const aProfile     = createRoute({ getParentRoute: () => agencyShellRoute, path: '/profile',        component: guardedRoute('/app/agency/:agencyId/profile',        AgencyProfilePage) })
+
+// ─── Mobile portal ────────────────────────────────────────────────────────────
+const mobileShellRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: '/mobile/$operatorId',
+  component: MobilePortalShell,
+})
+
+const mDashboard    = createRoute({ getParentRoute: () => mobileShellRoute, path: '/dashboard',      component: guardedRoute('/app/mobile/:operatorId/dashboard',      MobileDashboardPage) })
+const mTransactions = createRoute({ getParentRoute: () => mobileShellRoute, path: '/transactions',   component: guardedRoute('/app/mobile/:operatorId/transactions',   MobileTransactionsPage) })
+const mFloat        = createRoute({ getParentRoute: () => mobileShellRoute, path: '/float',          component: guardedRoute('/app/mobile/:operatorId/float',          MobileFloatPage) })
+const mSettlement   = createRoute({ getParentRoute: () => mobileShellRoute, path: '/settlement',     component: guardedRoute('/app/mobile/:operatorId/settlement',     MobileSettlementPage) })
+const mExceptions   = createRoute({ getParentRoute: () => mobileShellRoute, path: '/exceptions',     component: guardedRoute('/app/mobile/:operatorId/exceptions',     MobileExceptionsPage) })
+const mRecon        = createRoute({ getParentRoute: () => mobileShellRoute, path: '/reconciliation', component: guardedRoute('/app/mobile/:operatorId/reconciliation', MobileReconciliationPage) })
+const mReports      = createRoute({ getParentRoute: () => mobileShellRoute, path: '/reports',        component: guardedRoute('/app/mobile/:operatorId/reports',        MobileReportsPage) })
+
 // ─── Route tree assembly ──────────────────────────────────────────────────────
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -254,6 +388,16 @@ const routeTree = rootRoute.addChildren([
     bankShellRoute.addChildren([
       bDashboard, bIncoming, bOutgoing, bRtgsQueue, bSettlement,
       bLiquidity, bExceptions, bTreasuryTransfers, bRecon, bReports,
+    ]),
+    treasuryShellRoute.addChildren([
+      tDashboard, tFund, tDisbursements, tApprovals, tCommitments,
+      tAccounts, tRecon, tReports,
+    ]),
+    agencyShellRoute.addChildren([
+      aDashboard, aCollections, aPending, aSettlement, aRecon, aReversals, aReports, aProfile,
+    ]),
+    mobileShellRoute.addChildren([
+      mDashboard, mTransactions, mFloat, mSettlement, mExceptions, mRecon, mReports,
     ]),
   ]),
 ])
