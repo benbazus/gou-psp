@@ -1,4 +1,4 @@
-import type { Transaction, SettlementBatch, AgencyTransaction, AgencySettlement, AgencyException, MobileTransaction, MobileFloat, MobileSettlement, TreasuryDisbursement, TreasuryApproval, TreasuryAccount, TreasuryCommitment, ConsolidatedFundEntry } from '../types'
+import type { Transaction, SettlementBatch, AgencyTransaction, AgencySettlement, AgencyException, MobileTransaction, MobileFloat, MobileSettlement, TreasuryDisbursement, TreasuryApproval, TreasuryAccount, TreasuryCommitment, ConsolidatedFundEntry, AggregatorMerchant, AggregatorTransaction, AggregatorSettlement, AggregatorFeeSchedule } from '../types'
 import type { BankTransaction } from '../data/mockBankTransactions'
 import type { BankLiquidity } from '../data/mockBankLiquidity'
 import type { BankSettlement } from '../data/mockBankSettlements'
@@ -22,6 +22,7 @@ import {
   mockTreasuryDisbursements, mockTreasuryApprovals, mockTreasuryAccounts,
   mockTreasuryCommitments, mockConsolidatedFund,
 } from '../data/mockTreasuryData'
+import { mockAggregatorMerchants, mockAggregatorTransactions, mockAggregatorSettlements, mockAggregatorFees } from '../data/mockAggregatorData'
 
 function delay<T>(value: T, ms = 400): Promise<T> {
   return new Promise((resolve) => setTimeout(() => resolve(value), ms))
@@ -98,4 +99,10 @@ export const tenantService = {
 
   getTreasuryConsolidatedFund: (): Promise<ConsolidatedFundEntry[]> =>
     delay(mockConsolidatedFund),
+
+  // ── Aggregator portal ────────────────────────────────────────────────────────
+  getAggregatorMerchants:    (aggregatorId: string): Promise<AggregatorMerchant[]>    => delay(mockAggregatorMerchants.filter((m) => m.aggregatorId === aggregatorId)),
+  getAggregatorTransactions: (aggregatorId: string): Promise<AggregatorTransaction[]> => delay(mockAggregatorTransactions.filter((t) => t.aggregatorId === aggregatorId)),
+  getAggregatorSettlements:  (aggregatorId: string): Promise<AggregatorSettlement[]>  => delay(mockAggregatorSettlements.filter((s) => s.aggregatorId === aggregatorId)),
+  getAggregatorFees:         (aggregatorId: string): Promise<AggregatorFeeSchedule[]> => delay(mockAggregatorFees.filter((f) => f.aggregatorId === aggregatorId)),
 }
