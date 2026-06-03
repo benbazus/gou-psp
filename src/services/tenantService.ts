@@ -1,4 +1,4 @@
-import type { Transaction, SettlementBatch } from '../types'
+import type { Transaction, SettlementBatch, AgencyTransaction, AgencySettlement, AgencyException, MobileTransaction, MobileFloat, MobileSettlement, TreasuryDisbursement, TreasuryApproval, TreasuryAccount, TreasuryCommitment, ConsolidatedFundEntry } from '../types'
 import type { BankTransaction } from '../data/mockBankTransactions'
 import type { BankLiquidity } from '../data/mockBankLiquidity'
 import type { BankSettlement } from '../data/mockBankSettlements'
@@ -12,13 +12,23 @@ import { mockBankLiquidity } from '../data/mockBankLiquidity'
 import { mockBankSettlements } from '../data/mockBankSettlements'
 import { mockBankQueue } from '../data/mockBankQueue'
 import { mockBankExceptions } from '../data/mockBankExceptions'
+import { mockAgencyTransactions } from '../data/mockAgencyTransactions'
+import { mockAgencySettlements } from '../data/mockAgencySettlements'
+import { mockAgencyExceptions } from '../data/mockAgencyExceptions'
+import { mockMobileTransactions } from '../data/mockMobileTransactions'
+import { mockMobileFloat } from '../data/mockMobileFloat'
+import { mockMobileSettlements } from '../data/mockMobileSettlements'
+import {
+  mockTreasuryDisbursements, mockTreasuryApprovals, mockTreasuryAccounts,
+  mockTreasuryCommitments, mockConsolidatedFund,
+} from '../data/mockTreasuryData'
 
 function delay<T>(value: T, ms = 400): Promise<T> {
   return new Promise((resolve) => setTimeout(() => resolve(value), ms))
 }
 
 export const tenantService = {
-  // National portal — platform-level transactions
+  // ── National portal ─────────────────────────────────────────────────────────
   getPlatformTransactions: (tenantId: string): Promise<Transaction[]> =>
     delay(
       tenantId === 'national'
@@ -26,7 +36,6 @@ export const tenantService = {
         : mockTransactions.filter((t) => t.tenantId === tenantId)
     ),
 
-  // National portal — settlement batches
   getPlatformSettlements: (tenantId: string): Promise<SettlementBatch[]> =>
     delay(
       tenantId === 'national'
@@ -34,7 +43,7 @@ export const tenantService = {
         : mockSettlementBatches.filter((s) => s.tenantId === tenantId)
     ),
 
-  // Bank portal — transactions (optionally filtered by direction)
+  // ── Bank portal ──────────────────────────────────────────────────────────────
   getBankTransactions: (tenantId: string, direction?: 'incoming' | 'outgoing'): Promise<BankTransaction[]> =>
     delay(
       mockBankTransactions
@@ -42,19 +51,51 @@ export const tenantService = {
         .filter((t) => !direction || t.direction === direction)
     ),
 
-  // Bank portal — liquidity position
   getBankLiquidity: (tenantId: string): Promise<BankLiquidity> =>
     delay(mockBankLiquidity[tenantId] ?? mockBankLiquidity['stanbic']),
 
-  // Bank portal — settlement batches
   getBankSettlements: (tenantId: string): Promise<BankSettlement[]> =>
     delay(mockBankSettlements.filter((s) => s.tenantId === tenantId)),
 
-  // Bank portal — RTGS queue
   getBankQueue: (tenantId: string): Promise<BankQueueEntry[]> =>
     delay(mockBankQueue.filter((q) => q.tenantId === tenantId)),
 
-  // Bank portal — exceptions
   getBankExceptions: (tenantId: string): Promise<BankException[]> =>
     delay(mockBankExceptions.filter((e) => e.tenantId === tenantId)),
+
+  // ── Agency portal ────────────────────────────────────────────────────────────
+  getAgencyTransactions: (agencyId: string): Promise<AgencyTransaction[]> =>
+    delay(mockAgencyTransactions.filter((t) => t.agencyId === agencyId)),
+
+  getAgencySettlements: (agencyId: string): Promise<AgencySettlement[]> =>
+    delay(mockAgencySettlements.filter((s) => s.agencyId === agencyId)),
+
+  getAgencyExceptions: (agencyId: string): Promise<AgencyException[]> =>
+    delay(mockAgencyExceptions.filter((e) => e.agencyId === agencyId)),
+
+  // ── Mobile portal ────────────────────────────────────────────────────────────
+  getMobileTransactions: (operatorId: string): Promise<MobileTransaction[]> =>
+    delay(mockMobileTransactions.filter((t) => t.operatorId === operatorId)),
+
+  getMobileFloat: (operatorId: string): Promise<MobileFloat> =>
+    delay(mockMobileFloat[operatorId] ?? mockMobileFloat['mtn']),
+
+  getMobileSettlements: (operatorId: string): Promise<MobileSettlement[]> =>
+    delay(mockMobileSettlements.filter((s) => s.operatorId === operatorId)),
+
+  // ── Treasury portal ──────────────────────────────────────────────────────────
+  getTreasuryDisbursements: (): Promise<TreasuryDisbursement[]> =>
+    delay(mockTreasuryDisbursements),
+
+  getTreasuryApprovals: (): Promise<TreasuryApproval[]> =>
+    delay(mockTreasuryApprovals),
+
+  getTreasuryAccounts: (): Promise<TreasuryAccount[]> =>
+    delay(mockTreasuryAccounts),
+
+  getTreasuryCommitments: (): Promise<TreasuryCommitment[]> =>
+    delay(mockTreasuryCommitments),
+
+  getTreasuryConsolidatedFund: (): Promise<ConsolidatedFundEntry[]> =>
+    delay(mockConsolidatedFund),
 }
